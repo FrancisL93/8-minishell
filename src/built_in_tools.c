@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   built_in_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/29 13:00:40 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/29 16:46:35 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 void	set_pwd(char *oldpath)
 {
-	int	i;
+	int		i;
 	char	*buff;
-	buff = NULL;
 
+	buff = NULL;
 	i = 0;
 	while (environ[i] && ft_strncmp(environ[i], "PWD=", 4))
 		i++;
-	environ[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
-	environ[i + 1] = ft_strjoin("OLDPWD=", oldpath);
+	if (environ[i])
+		environ[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
+	i = 0;
+	while (environ[i] && ft_strncmp(environ[i], "OLDPWD=", 7))
+		i++;
+	if (environ[i])
+		environ[i] = ft_strjoin("OLDPWD=", oldpath);
 }
 
 int	ftstrnstr(char *current_path, char *cmd)
@@ -56,18 +61,11 @@ char	*ftstrjoin(char *cmd, char *current_path)
 	size += ft_strlen(cmd);
 	new_path = calloc(sizeof(char), size + 2);
 	while (current_path[++i])
-	{
-		new_path[j] = current_path[i];
-		j++;
-	}
+		new_path[j++] = current_path[i];
 	new_path[j] = '/';
 	i = -1;
-	j++;
 	while (cmd[++i])
-	{
-		new_path[j] = cmd[i];
-		j++;
-	}
+		new_path[++j] = cmd[i];
 	return (new_path);
 }
 

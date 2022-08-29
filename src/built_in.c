@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/29 12:58:14 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/29 16:46:19 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,26 @@ void	cd(char *input)
 	free (new_path);
 	free (cmd);
 	free (current_path);
+}
+
+void	export(char *input)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*tmp;
+
+	i = 0;
+	j = -1;
+	k = 6;
+	tmp = malloc(sizeof(char) * ft_strlen(input - 6));
+	while (input[k] == ' ')
+		k++;
+	while (input[k + ++j])
+		tmp[j] = input[k + j];
+	while (input[j] == ' ')
+		j++;
+	while (environ[i])
+		i++;
+	environ[i] = tmp;
 }

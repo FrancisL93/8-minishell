@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/29 12:51:12 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/29 16:41:28 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ delimiter is seen. However, it doesn’t have to update the history
 	Rediriger le output si | (Pipe)
 	Être réceptif si recoît (ctrl-c / ctrl-d / ctrl-\)
 5- Générer un historique de commandes
+
+
 */
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -55,30 +57,42 @@ extern char	**environ;
 
 typedef struct s_vars
 {
-	char	**envp;
 	char	*prompt;
+	char	*cmd;
+	int		built_in;
 }t_vars;
 
-//cd utils
+//built_in.c
+void	cd(char *input);
+void	print_env(void);
+void	print_path(void);
+void	echo(char *str);
+void	export(char *input);
+
+//built_in_tools.c
 void	set_pwd(char *oldpath);
 int		ftstrnstr(char *current_path, char *cmd);
 char	*ftstrjoin(char *cmd, char *current_path);
 char	*ftstrtrim(char	*current_path);
 char	*check_path(char *cmd, char *current_path);
 
-//built_in
-void	cd(char *input);
-void	print_env(void);
-void	print_path(void);
-void	echo(char *str);
-
 //exe.c
-int		execute_input(t_vars *vars, char *input);
+int		execute(t_vars *vars, char *input);
+
+//exe_tools.c
+char	*get_path(char *cmnd, char **envp);
+int		ft_strichr(const char *s, int c);
 
 //lexer
 void	lexer(char *input);
 
 //main.c
+
+//parsing.c
+void	filter_input(t_vars *vars, char *input);
+
+//tools.c
+char	*tolower_str(char *str);
 char	*get_cmd(char *input);
 
 #endif

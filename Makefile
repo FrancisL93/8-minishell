@@ -6,15 +6,16 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/29 11:57:14 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/29 16:38:52 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c src/exe.c \
+SRC = src/main.c src/exe.c src/exe_tools.c \
 	src/lexer.c src/parsing.c \
-	src/built_in.c src/cd.c
+	src/built_in.c src/built_in_tools.c \
+	src/tools.c
 
 LIBFTA = inc/libft.a
 
