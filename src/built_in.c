@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/29 11:43:55 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/08/29 12:58:14 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// echo
+// echo (Implementer $ sign)
 void	echo(char *str)
 {
 	int	n_l;
@@ -69,9 +69,11 @@ void	cd(char *input)
 	char	*current_path;
 	char	*new_path;
 	char	*cmd;
+	char	*oldpath;
 
-	cmd = get_cmd(input);
 	buff = NULL;
+	oldpath = getcwd(buff, 1024);
+	cmd = get_cmd(input);
 	current_path = getcwd(buff, 1024);
 	if (cmd[0] == '.')
 		new_path = check_path(cmd, current_path);
@@ -84,7 +86,7 @@ void	cd(char *input)
 		printf("Not a directory\n");
 		return ;
 	}
-	set_pwd();
+	set_pwd(oldpath);
 	free (buff);
 	free (new_path);
 	free (cmd);

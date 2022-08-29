@@ -3,18 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/29 11:44:46 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/08/29 13:00:40 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	set_pwd(void)
+void	set_pwd(char *oldpath)
 {
-	printf("%s\n", getenv("PWD"));
+	int	i;
+	char	*buff;
+	buff = NULL;
+
+	i = 0;
+	while (environ[i] && ft_strncmp(environ[i], "PWD=", 4))
+		i++;
+	environ[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
+	environ[i + 1] = ft_strjoin("OLDPWD=", oldpath);
 }
 
 int	ftstrnstr(char *current_path, char *cmd)

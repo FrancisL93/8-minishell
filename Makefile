@@ -3,16 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/18 10:44:36 by anhebert         ###   ########.fr        #
+#    Updated: 2022/08/29 11:57:14 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c src/exe.c src/lexer.c
+SRC = src/main.c src/exe.c \
+	src/lexer.c src/parsing.c \
+	src/built_in.c src/cd.c
 
 LIBFTA = inc/libft.a
 
