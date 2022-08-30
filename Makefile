@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/30 13:23:12 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/30 17:01:14 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME = minishell
 SRC = src/main.c src/exe.c src/exe_tools.c \
 	src/lexer.c src/parsing.c \
 	src/built_in.c src/built_in_tools.c \
-	src/tools.c
+	src/tools.c src/exe_pipes.c \
+	src/exit.c
 
 LIBFTA = inc/libft.a
 
@@ -68,18 +69,38 @@ re: fclean
 exe: $(NAME)
 	./$(NAME)
 
+gitupdate:
+	printf '\nEnter pull or fetch to update from Origin: ' && read PULLFETCH && \
+	printf '\nEnter Branch Name (Press Enter For All Branches): ' && \
+	read BRANCH && git $$PULLFETCH origin $$BRANCH
+
 #Clean repo before adding files
 gitadd: fclean
 	git add *
 
 #Commit modifications locally before push, takes user input for commit's name
 gitcommit: gitadd
-	@printf 'Enter Commit Name: '
+	@printf '\nEnter Commit Name: '
 	@read COMMIT && git commit -m $$COMMIT
 
 #Push commit to remote repo
 gitpush: gitcommit
-	@printf 'Enter Branch To Push (Press Enter For ALL): '
+	@printf '\nEnter Branch To Push (Press Enter For ALL): '
 	@read PUSH && git push origin $$PUSH && git push gitmini $$PUSH
+
+#Merge specific branch to current branch
+gitmerge:
+	@printf '\nEnter Branch To Merge With (Press Enter To Merge ALL): '
+	@read MERGE && git merge $$MERGE && git merge $$MERGE
+
+#Fetch to update branches without merging with local repo
+gitfetch:
+	@printf '\nEnter Branch To Fetch (Press Enter For All Branches): '
+	@read FETCH && git fetch origin $$FETCH
+	
+#Pull to overwrite local data if repo is different
+gitpull:
+	@printf '\nEnter Branch To Pull (Press Enter For All Branches): '
+	@read PULL && git pull origin $$FETCH
 
 .PHONY: all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:17:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/29 16:46:48 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 17:03:50 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	execute_cmd(char *input)
 	if (ft_strichr(cmdstr[0], '/') > -1)
 		cmd = cmdstr[0];
 	else
-		cmd = get_path(cmdstr[0], environ);
+		cmd = get_path(cmdstr[0], environ);	
 	execve(cmd, cmdstr, environ);
 	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
@@ -52,10 +52,12 @@ int	execute(t_vars *vars, char *input)
 
 	if (vars->built_in)
 		execute_built_in(vars, input);
+//	else if (vars->pipe > 0)
+	//	execute_pipes(vars, input);
 	else
 	{
 		pid = fork();
-		if (pid == 0)
+		if (pid == 0 && !vars->pipe)
 			execute_cmd(input);
 		else if (pid != 0)
 			wait(&pid);

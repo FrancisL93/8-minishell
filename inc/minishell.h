@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/30 09:45:56 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:01:34 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ delimiter is seen. However, it doesn’t have to update the history
 	utiliser variables environnement ($ARG, $PATH, etc)
 	Rediriger le output si | (Pipe)
 	Être réceptif si recoît (ctrl-c / ctrl-d / ctrl-\)
-5- Générer un historique de commandes
+5- Générer un historique de commandes (Arranger le décalage)
 
+*Modifier export, recréer réalloc pour ENV
 
 */
 #ifndef MINISHELL_H
@@ -63,7 +64,11 @@ typedef struct s_vars
 {
 	char	*prompt;
 	char	*cmd;
+	int		heredoc_fd;
+	int		fdin;
+	int		fdout;
 	int		built_in;
+	int		pipe;
 	int		nb_tokens;
 	t_token	token;
 }t_vars;
@@ -84,6 +89,10 @@ char	*check_path(char *cmd, char *current_path);
 
 //exe.c
 int		execute(t_vars *vars, char *input);
+void	execute_cmd(char *input);
+
+//exe_pipes.c
+void	execute_pipes(t_vars *vars, char *input);
 
 //exe_tools.c
 char	*get_path(char *cmnd, char **envp);
@@ -100,5 +109,8 @@ void	filter_input(t_vars *vars, char *input);
 //tools.c
 char	*tolower_str(char *str);
 char	*get_cmd(char *input);
+
+//quit.c
+void	quit(t_vars *vars);
 
 #endif

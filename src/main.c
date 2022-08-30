@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/30 12:03:38 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:14:36 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,14 @@
 
 int	init_struct(t_vars *vars)
 {
+	char	*tmp_path;
+	
+	tmp_path = ft_strjoin(getenv("TMPDIR"), "heredoc_minishell");
+	vars->heredoc_fd = open(tmp_path, O_RDWR, O_CREAT);
 	vars->prompt = "\e[1;34mminishell >> \e[0;37m";
 	vars->built_in = 0;
+	vars->pipe = 0;
+	free(tmp_path);
 	return (0);
 }
 
@@ -33,10 +39,13 @@ int	main(int argc, char **argv)
 		input = readline(vars.prompt);
 		while (input)
 		{
-			filter_input(&vars, input);
-			lexer(input, &vars);
+			if (input && *input)
+				add_history(input);
+			//filter_input(&vars, input); segfault si on fait enter vide
+			//lexer(input, &vars); meme chose
 			if (execute(&vars, input))
 				exit(1);
+			free(input);
 			input = readline(vars.prompt);
 		}	
 	}
