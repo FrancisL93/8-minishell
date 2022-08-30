@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/29 16:46:35 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 11:39:12 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,11 @@ char	*ftstrtrim(char	*current_path)
 
 char	*check_path(char *cmd, char *current_path)
 {
+	char	*buff;
+
+	buff = NULL;
 	if (cmd[0] == '.' && cmd[1] == '\0')
-		return (current_path);
+		return (getcwd(buff, 1024));
 	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '\0')
 		return (ftstrtrim(current_path));
 	return (NULL);

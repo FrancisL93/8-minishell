@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/29 16:29:06 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 12:03:38 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	main(int argc, char **argv)
 		while (input)
 		{
 			filter_input(&vars, input);
+			lexer(input, &vars);
 			if (execute(&vars, input))
 				exit(1);
 			input = readline(vars.prompt);

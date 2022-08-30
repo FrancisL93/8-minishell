@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:48:08 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/29 16:48:15 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 11:49:50 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ char	*get_cmd(char *input)
 	i = 2;
 	j = 0;
 	cmd = calloc(sizeof(char), ft_strlen(input) - 2);
-	while (input[++i])
+	while (input[i] == ' ')
+		i++;
+	while (input[i] != ' ' && input[i])
 	{
 		cmd[j] = input[i];
 		j++;
+		i++;
 	}
 	return (cmd);
 }

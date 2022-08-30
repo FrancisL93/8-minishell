@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/29 16:46:19 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 11:47:08 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ void	cd(char *input)
 	oldpath = getcwd(buff, 1024);
 	cmd = get_cmd(input);
 	current_path = getcwd(buff, 1024);
-	if (cmd[0] == '.')
+	if (cmd[0] == '\0')
+		new_path = ft_strchr(getenv("HOME="), '/');
+	else if (cmd[0] == '.')
 		new_path = check_path(cmd, current_path);
 	else if (ftstrnstr(current_path, cmd) != 0)
 		new_path = cmd;
@@ -87,10 +89,11 @@ void	cd(char *input)
 		return ;
 	}
 	set_pwd(oldpath);
-	free (buff);
+	// Faire une fonction pour tout free
+/*	free (buff);
 	free (new_path);
 	free (cmd);
-	free (current_path);
+	free (current_path); */
 }
 
 void	export(char *input)

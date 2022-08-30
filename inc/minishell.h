@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/29 16:41:28 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 09:45:56 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,19 @@ delimiter is seen. However, it doesn’t have to update the history
 # define CLEAN "\e[1;1H\e[2J"
 # define BLUE "\e[1;34m"
 
-extern char	**environ;
 
+extern char	**environ;
+typedef struct s_token
+{
+	char	**tokens;
+}	t_token;
 typedef struct s_vars
 {
 	char	*prompt;
 	char	*cmd;
 	int		built_in;
+	int		nb_tokens;
+	t_token	token;
 }t_vars;
 
 //built_in.c
@@ -84,7 +90,7 @@ char	*get_path(char *cmnd, char **envp);
 int		ft_strichr(const char *s, int c);
 
 //lexer
-void	lexer(char *input);
+void	lexer(char *input, t_vars *vars);
 
 //main.c
 
