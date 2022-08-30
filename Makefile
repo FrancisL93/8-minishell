@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/29 16:38:52 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/30 12:35:36 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,5 +67,15 @@ re: fclean
 
 exe: $(NAME)
 	./$(NAME)
+
+#Clean repo before adding files
+gitadd: fclean
+	git add *
+
+#Commit modifications locally before push, takes user input for commit's name
+COMMIT_NAME ?= $(shell bash -c 'read -p "Commit_Name: " Commit Name; echo $$Commit Name')
+gitcommit: gitadd
+	@echo Commit_Name > $(COMMIT_NAME)
+	git commit -m $(COMMIT_NAME)
 
 .PHONY: all clean fclean re
