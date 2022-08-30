@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/30 13:13:26 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/30 13:14:40 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ all: $(NAME)
 
 $O:
 	@mkdir $@
-	@echo "\033[0;32mGenerating objects..."
+	@echo "\033[0;32mGenerating objects...\033[0m"
 
 $(OBJ): | $O
 
@@ -45,9 +45,9 @@ $(OBJ): $O%.o: $S%
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	@echo "\033[0;32mCompiling minishell..."
+	@echo "\033[0;32mCompiling minishell...\033[0m"
 	@$(CC) -lreadline $(LIBFTA) $(OBJ) -o $(NAME)
-	@echo "\033[0;32mMinishell compiled! Execute as: ./minishell"
+	@echo "\033[0;32mMinishell compiled! Execute as: ./minishell\033[0m"
 	
 cleanobj:
 	@$(RM) $(wildcard $(OBJ))
