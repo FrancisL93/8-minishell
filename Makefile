@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/30 13:08:02 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/30 13:13:26 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,9 +73,8 @@ gitadd: fclean
 	git add *
 
 #Commit modifications locally before push, takes user input for commit's name
-
-gitcommit: $(COMMIT) gitadd
-	read -r -p "Enter Commit Name: " COMMIT;
-	git commit -m $COMMIT
+gitcommit: gitadd
+	@printf 'Enter Commit Name: '
+	@read COMMIT && git commit -m $$COMMIT
 
 .PHONY: all clean fclean re
