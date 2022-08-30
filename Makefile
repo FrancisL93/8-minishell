@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/30 13:14:40 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/30 13:23:12 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,11 +56,11 @@ cleanobjdir: cleanobj
 	@$(RMDIR) $O
 
 clean: cleanobjdir
-	@echo "\033[0;31mObjects deleted!"
+	@echo "\033[0;31mObjects deleted!\033[0m"
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "Executable deleted!"
+	@echo "\033[0;31mExecutable deleted!\033[0m"
 
 re: fclean
 	@make
@@ -76,5 +76,10 @@ gitadd: fclean
 gitcommit: gitadd
 	@printf 'Enter Commit Name: '
 	@read COMMIT && git commit -m $$COMMIT
+
+#Push commit to remote repo
+gitpush: gitcommit
+	@printf 'Enter Branch To Push (Press Enter For ALL): '
+	@read PUSH && git push origin $$PUSH && git push gitmini $$PUSH
 
 .PHONY: all clean fclean re
