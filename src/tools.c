@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 16:48:08 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 11:42:03 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 14:06:56 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,23 @@ void	set_prompt(t_vars *vars)
 	while (prompt[i] != '/')
 		i--;
 	vars->prompt = ft_strjoin("\e[1;34m", &prompt[i]);
-	vars->prompt = ft_strjoin(vars->prompt, ": \e[0;37m");
+	vars->prompt = ft_strjoin(vars->prompt, " >> \e[0;37m");
+}
+
+void	realloc_env(int	new)
+{
+	int		i;
+	char	**env;
+
+	i = 0;
+	while (environ[i])
+		i++;
+	env = malloc(sizeof(char**) * (i));
+	i = -1;
+	while (environ[++i])
+		env[i] = ft_strdup(environ[i]);
+	environ = malloc(sizeof(char **) * (i + new));
+	i = -1;
+	while (env[++i])
+		environ[i] = ft_strdup(env[i]);
 }

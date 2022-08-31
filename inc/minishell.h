@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 16:27:10 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 16:49:28 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,19 @@ delimiter is seen. However, it doesn’t have to update the history
 
 
 extern char	**environ;
+
+ typedef struct s_varlist
+{
+	char			*var;
+	char			*content;
+	struct s_varlist	*next;
+}					t_varlist;
+
 typedef struct s_token
 {
 	char	**tokens;
 }	t_token;
+
 typedef struct s_vars
 {
 	char	*prompt;
@@ -72,6 +81,7 @@ typedef struct s_vars
 	int		nb_tokens;
 	int		token_len;
 	t_token	token;
+	t_list	variables;
 }t_vars;
 
 typedef struct s_indexes
@@ -87,7 +97,7 @@ void	cd(char *input);
 void	print_env(void);
 void	print_path(void);
 void	echo(char *str);
-void	export(char *input);
+void	export(t_vars *vars, char *input);
 
 //built_in_tools.c
 void	set_pwd(char *oldpath);
@@ -107,6 +117,10 @@ void	execute_pipes(t_vars *vars, char *input);
 char	*get_path(char *cmnd, char **envp);
 int		ft_strichr(const char *s, int c);
 
+//heredoc.c
+char	*find_variable(t_vars *vars, char *input);
+void	add_variable(t_vars *vars, char *input);
+
 //lexer
 void	lexer(char *input, t_vars *vars);
 
@@ -119,6 +133,7 @@ void	filter_input(t_vars *vars, char *input);
 char	*tolower_str(char *str);
 char	*get_cmd(char *input);
 void	set_prompt(t_vars *vars);
+void	realloc_env(int	new);
 
 //quit.c
 void	quit(t_vars *vars);

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 16:13:36 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 16:49:25 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ int	init_struct(t_vars *vars)
 	char	*tmp_path;
 
 	tmp_path = ft_strjoin(getenv("TMPDIR"), "heredoc_minishell");
-	vars->heredoc_fd = open(tmp_path, O_RDWR, O_CREAT);
-	//vars->prompt = "\e[1;34mminishell >> \e[0;37m";
-	//vars->prompt = ft_strjoin("\e[1;34m", getenv("PWD"));
-	//vars->prompt = ft_strjoin(vars->prompt, ": \e[0;37m");
+	printf("%s\n", tmp_path);
+	vars->heredoc_fd = open(tmp_path, O_TRUNC| S_IRUSR | S_IWUSR, 0777);
+	printf("%d\n", vars->heredoc_fd);
 	set_prompt(vars);
 	vars->built_in = 0;
 	vars->pipe = 0;
@@ -29,9 +28,25 @@ int	init_struct(t_vars *vars)
 	return (0);
 }
 
-void	test(void)
+void	test()
 {
-	printf("%d\n", chdir("/"));
+	t_vars	vars;
+	char	*input;
+	char	*str;
+
+	if (init_struct(&vars))
+		return ;
+	input = readline("Test: ");
+	ft_putstr_fd("salut", vars.heredoc_fd);
+	str = get_next_line(vars.heredoc_fd);
+	printf("%s\n", str);
+	
+	//printf("%d\n", chdir("/"));
+	//printf("%s", get_cmd(input));
+	//add_variable(&vars, input);
+	//export(&vars, input);
+	//print_env();
+	exit(0);
 }
 
 int	main(int argc, char **argv)
@@ -39,7 +54,7 @@ int	main(int argc, char **argv)
 	char	*input;
 	t_vars	vars;
 
-	if (argc == 2 && ft_strncmp(argv[1], "test", 4))
+	if (argc == 2 && !ft_strncmp(argv[1], "test", 4))
 		test();
 	else if (argc == 1 && argv[0])
 	{

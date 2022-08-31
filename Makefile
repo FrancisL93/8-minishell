@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/30 17:01:14 by flahoud          ###   ########.fr        #
+#    Updated: 2022/08/31 14:07:14 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC = src/main.c src/exe.c src/exe_tools.c \
 	src/lexer.c src/parsing.c \
 	src/built_in.c src/built_in_tools.c \
 	src/tools.c src/exe_pipes.c \
+	src/heredoc.c \
 	src/exit.c
 
 LIBFTA = inc/libft.a
