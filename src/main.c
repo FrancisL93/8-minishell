@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 12:20:08 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 16:05:41 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	init_struct(t_vars *vars)
 	char	*tmp_path;
 	
 	tmp_path = ft_strjoin(getenv("TMPDIR"), "heredoc_minishell");
-	vars->heredoc_fd = open(tmp_path, O_RDWR, O_CREAT);
+	printf("%s\n", tmp_path);
+	vars->heredoc_fd = open(tmp_path, O_TRUNC| S_IRUSR | S_IWUSR, 0777);
+	printf("%d\n", vars->heredoc_fd);
 	set_prompt(vars);
 	vars->built_in = 0;
 	vars->pipe = 0;
@@ -28,11 +30,23 @@ int	init_struct(t_vars *vars)
 
 void	test()
 {
+	t_vars	vars;
 	char	*input;
+	char	*str;
 
+	if (init_struct(&vars))
+		return ;
 	input = readline("Test: ");
-	printf("%d\n", chdir("/"));
-	printf("%s", get_cmd(input));
+	ft_putstr_fd("salut", vars.heredoc_fd);
+	str = get_next_line(vars.heredoc_fd);
+	printf("%s\n", str);
+	
+	//printf("%d\n", chdir("/"));
+	//printf("%s", get_cmd(input));
+	//add_variable(&vars, input);
+	//export(&vars, input);
+	//print_env();
+	exit(0);
 }
 
 int	main(int argc, char **argv)

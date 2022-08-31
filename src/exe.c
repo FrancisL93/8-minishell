@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:17:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 11:07:24 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 15:03:00 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	execute_built_in(t_vars *vars, char *input)
 	if (!ft_strncmp(tolower_str(vars->cmd), "cd", 2))
 		cd(input);
 	if (!ft_strncmp(tolower_str(vars->cmd), "export", 6))
-		export(input);
+		export(vars, input);
 }
 
 //remplacer ft_split par lexer

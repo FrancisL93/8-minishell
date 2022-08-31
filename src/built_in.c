@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/31 12:23:01 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 14:26:37 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,24 +98,24 @@ void	cd(char *input)
 	free (current_path); */
 }
 
-void	export(char *input)
+void	export(t_vars *vars, char *input)
 {
 	int		i;
 	int		j;
-	int		k;
-	char	*tmp;
+	int		nb_var;
+	char	*var;
 
 	i = 0;
-	j = -1;
-	k = 6;
-	tmp = malloc(sizeof(char) * ft_strlen(input - 6));
-	while (input[k] == ' ')
-		k++;
-	while (input[k + ++j])
-		tmp[j] = input[k + j];
-	while (input[j] == ' ')
-		j++;
+	j = 0;
+	nb_var = 1;
+	var = find_variable(vars, input);
+	if (!var)
+		return ;
 	while (environ[i])
 		i++;
-	environ[i] = tmp;
+	realloc_env(nb_var);
+	while (j < nb_var)
+		environ[i + j++] = var;
+	if (input)
+		return ;
 }
