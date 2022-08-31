@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 11:53:02 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 12:20:08 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@ int	init_struct(t_vars *vars)
 	
 	tmp_path = ft_strjoin(getenv("TMPDIR"), "heredoc_minishell");
 	vars->heredoc_fd = open(tmp_path, O_RDWR, O_CREAT);
-	//vars->prompt = "\e[1;34mminishell >> \e[0;37m";
-	//vars->prompt = ft_strjoin("\e[1;34m", getenv("PWD"));
-	//vars->prompt = ft_strjoin(vars->prompt, ": \e[0;37m");
 	set_prompt(vars);
 	vars->built_in = 0;
 	vars->pipe = 0;
@@ -29,9 +26,13 @@ int	init_struct(t_vars *vars)
 	return (0);
 }
 
-void	test(void)
+void	test()
 {
+	char	*input;
+
+	input = readline("Test: ");
 	printf("%d\n", chdir("/"));
+	printf("%s", get_cmd(input));
 }
 
 int	main(int argc, char **argv)
@@ -39,7 +40,7 @@ int	main(int argc, char **argv)
 	char	*input;
 	t_vars	vars;
 
-	if (argc == 2 && ft_strncmp(argv[1], "test", 4))
+	if (argc == 2 && !ft_strncmp(argv[1], "test", 4))
 		test();
 	else if (argc == 1 && argv[0])
 	{

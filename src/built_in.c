@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/30 11:47:08 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/08/31 12:23:01 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	cd(char *input)
 	else if (cmd[0] == '.')
 		new_path = check_path(cmd, current_path);
 	else if (ftstrnstr(current_path, cmd) != 0)
+		new_path = cmd;
+	else if (ft_strlen(cmd) == 1 && cmd[0] == '/')
 		new_path = cmd;
 	else
 		new_path = ftstrjoin(cmd, current_path);
