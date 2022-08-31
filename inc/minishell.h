@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/30 17:01:34 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 11:32:32 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	filter_input(t_vars *vars, char *input);
 //tools.c
 char	*tolower_str(char *str);
 char	*get_cmd(char *input);
+void	set_prompt(t_vars *vars);
 
 //quit.c
 void	quit(t_vars *vars);
