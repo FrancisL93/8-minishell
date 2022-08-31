@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/30 17:01:34 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 14:31:03 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,17 @@ typedef struct s_vars
 	int		built_in;
 	int		pipe;
 	int		nb_tokens;
+	int		token_len;
 	t_token	token;
 }t_vars;
+
+typedef struct s_indexes
+{
+	int	i;
+	int	ii;
+	int	j;
+	int	jj;
+}	t_indexes;
 
 //built_in.c
 void	cd(char *input);
