@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 11:53:02 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 16:13:36 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	init_struct(t_vars *vars)
 {
 	char	*tmp_path;
-	
+
 	tmp_path = ft_strjoin(getenv("TMPDIR"), "heredoc_minishell");
 	vars->heredoc_fd = open(tmp_path, O_RDWR, O_CREAT);
 	//vars->prompt = "\e[1;34mminishell >> \e[0;37m";
