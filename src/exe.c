@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:17:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 11:07:24 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/30 17:03:50 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	execute(t_vars *vars, char *input)
 
 	if (vars->built_in)
 		execute_built_in(vars, input);
-	else if (vars->pipe > 0)
-		execute_pipes(vars, input);
+//	else if (vars->pipe > 0)
+	//	execute_pipes(vars, input);
 	else
 	{
 		pid = fork();

@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 10:09:26 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/31 11:21:28 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/08/31 14:23:59 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// return # of pipes
-int	build_lexer(t_vars *vars, char *input)
+void	build_lexer(t_vars *vars, char *input)
 {
 	if (vars || input)
-		return (0);
-	return (0);
+		return ;
 }
 
 void	check_built_in(t_vars *vars, char *cmd)
@@ -46,5 +44,5 @@ void	filter_input(t_vars *vars, char *input)
 	check_built_in(vars, args[0]);
 	vars->cmd = ft_strdup(args[0]);
 	free(args);
-	vars->pipe = build_lexer(vars, input);
+	build_lexer(vars, input);
 }
