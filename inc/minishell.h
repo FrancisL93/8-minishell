@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 14:31:03 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/01 15:24:38 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,19 @@ delimiter is seen. However, it doesn’t have to update the history
 
 
 extern char	**environ;
+
+ typedef struct s_varlist
+{
+	char			*var;
+	char			*content;
+	struct s_varlist	*next;
+}					t_varlist;
+
 typedef struct s_token
 {
 	char	**tokens;
 }	t_token;
+
 typedef struct s_vars
 {
 	char	*prompt;
@@ -72,6 +81,7 @@ typedef struct s_vars
 	int		nb_tokens;
 	int		token_len;
 	t_token	token;
+	t_list	variables;
 }t_vars;
 
 typedef struct s_indexes
@@ -86,8 +96,8 @@ typedef struct s_indexes
 void	cd(char *input);
 void	print_env(void);
 void	print_path(void);
-void	echo(char *str);
-void	export(char *input);
+void	echo(t_vars *vars);
+void	export(t_vars *vars, char *input);
 
 //built_in_tools.c
 void	set_pwd(char *oldpath);
@@ -98,26 +108,37 @@ char	*check_path(char *cmd, char *current_path);
 
 //exe.c
 int		execute(t_vars *vars, char *input);
-void	execute_cmd(char *input);
+void	execute_cmd(t_vars *vars);
 
 //exe_pipes.c
-void	execute_pipes(t_vars *vars, char *input);
+void	execute_pipes(t_vars *vars);
 
 //exe_tools.c
 char	*get_path(char *cmnd, char **envp);
 int		ft_strichr(const char *s, int c);
 
+//heredoc.c
+char	*find_variable(t_vars *vars, char *input);
+void	add_variable(t_vars *vars, char *input);
+
 //lexer
+void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
+void	new_token(char *in, t_vars *vars, t_indexes i);
+void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
+int		inquoteslen(int i, char *input, char c);
+int		inquotes(int i, char *input, char c, t_vars *vars);
 void	lexer(char *input, t_vars *vars);
 
 //main.c
 
 //parsing.c
-void	filter_input(t_vars *vars, char *input);
+void	filter_tokens(t_vars *vars);
 
 //tools.c
 char	*tolower_str(char *str);
 char	*get_cmd(char *input);
+void	set_prompt(t_vars *vars);
+void	realloc_env(int new);
 
 //quit.c
 void	quit(t_vars *vars);
