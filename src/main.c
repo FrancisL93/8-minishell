@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 16:49:25 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/01 11:34:18 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	test()
 	ft_putstr_fd("salut", vars.heredoc_fd);
 	str = get_next_line(vars.heredoc_fd);
 	printf("%s\n", str);
-	
+
 	//printf("%d\n", chdir("/"));
 	//printf("%s", get_cmd(input));
 	//add_variable(&vars, input);
@@ -66,12 +66,13 @@ int	main(int argc, char **argv)
 		{
 			if (input && *input)
 				add_history(input);
-			filter_input(&vars, input);
 			lexer(input, &vars);
+			filter_tokens(&vars);
 			if (execute(&vars, input))
 				exit(1);
 			set_prompt(&vars);
 			free(input);
+			vars.built_in = 0;
 			input = readline(vars.prompt);
 		}	
 	}

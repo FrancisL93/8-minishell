@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 16:49:28 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/01 11:33:11 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct s_indexes
 void	cd(char *input);
 void	print_env(void);
 void	print_path(void);
-void	echo(char *str);
+void	echo(t_vars *vars);
 void	export(t_vars *vars, char *input);
 
 //built_in_tools.c
@@ -108,7 +108,7 @@ char	*check_path(char *cmd, char *current_path);
 
 //exe.c
 int		execute(t_vars *vars, char *input);
-void	execute_cmd(char *input);
+void	execute_cmd(t_vars *vars);
 
 //exe_pipes.c
 void	execute_pipes(t_vars *vars, char *input);
@@ -122,18 +122,23 @@ char	*find_variable(t_vars *vars, char *input);
 void	add_variable(t_vars *vars, char *input);
 
 //lexer
+void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
+void	new_token(char *in, t_vars *vars, t_indexes i);
+void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
+int		inquoteslen(int i, char *input, char c);
+int		inquotes(int i, char *input, char c, t_vars *vars);
 void	lexer(char *input, t_vars *vars);
 
 //main.c
 
 //parsing.c
-void	filter_input(t_vars *vars, char *input);
+void	filter_tokens(t_vars *vars);
 
 //tools.c
 char	*tolower_str(char *str);
 char	*get_cmd(char *input);
 void	set_prompt(t_vars *vars);
-void	realloc_env(int	new);
+void	realloc_env(int new);
 
 //quit.c
 void	quit(t_vars *vars);

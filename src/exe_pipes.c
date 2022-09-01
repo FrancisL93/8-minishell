@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:06:47 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/30 17:01:21 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/01 09:53:15 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_pipes(t_vars *vars, char *input)
 	pid_t	*pid;
 	int		**pipefd;
 	int		i;
-	
+
 	i = 0;
 	pipefd = malloc(sizeof(int**) * (vars->pipe + 1));
 	pid = malloc(sizeof(*pid) * (vars->pipe + 1));

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/31 14:26:37 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/01 10:44:04 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 // echo (Implementer $ sign)
-void	echo(char *str)
+/* void	echo(char *str)
 {
 	int	n_l;
 	int	i;
@@ -36,6 +36,59 @@ void	echo(char *str)
 		if (str[i] == ' ' && str[i + 1] == '\0')
 			break ;
 		printf("%c", str[i]);
+		i++;
+	}
+	if (n_l == 1)
+		printf("\n");
+} */
+
+int	check_flag(char *flag)
+{
+	int	i;
+
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[0] != '-')
+			return (0);
+		i++;
+		if (flag[1] != 'n')
+			return (0);
+		i++;
+		if (flag[2] == '\0')
+			return (1);
+		if (flag[2] != 'n' && flag[2] != ' ')
+			return (0);
+		while (flag[i] == 'n')
+		{
+			i++;
+			if (flag[i] == ' ' || flag[i] == '\0')
+				return (1);
+		}
+	}
+	return (0);
+}
+
+void	echo(t_vars *vars)
+{
+	int	n_l;
+	int	i;
+	int	n_flag;
+
+	i = 1;
+	n_l = 1;
+	n_flag = 0;
+	while (i < vars->nb_tokens)
+	{
+		if (check_flag(vars->token.tokens[i]) == 1 && n_flag == 0)
+			n_l = 0;
+		else
+		{
+			printf("%s", vars->token.tokens[i]);
+			if (i + 1 != vars->nb_tokens)
+				printf(" ");
+			n_flag = 1;
+		}
 		i++;
 	}
 	if (n_l == 1)

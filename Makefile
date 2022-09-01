@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
+#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/08/31 14:07:14 by flahoud          ###   ########.fr        #
+#    Updated: 2022/09/01 11:33:43 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRC = src/main.c src/exe.c src/exe_tools.c \
 	src/built_in.c src/built_in_tools.c \
 	src/tools.c src/exe_pipes.c \
 	src/heredoc.c \
-	src/exit.c
+	src/exit.c \
+	src/lexer_tools.c
 
 LIBFTA = inc/libft.a
 
