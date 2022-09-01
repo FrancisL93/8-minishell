@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/09/01 11:33:43 by anhebert         ###   ########.fr        #
+#    Updated: 2022/09/01 15:23:59 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC = src/main.c src/exe.c src/exe_tools.c \
 	src/lexer.c src/parsing.c \
 	src/built_in.c src/built_in_tools.c \
 	src/tools.c src/exe_pipes.c \
-	src/heredoc.c \
+	src/heredoc.c src/var.c \
 	src/exit.c \
 	src/lexer_tools.c
 

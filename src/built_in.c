@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/01 10:44:04 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/01 17:00:12 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,24 +151,36 @@ void	cd(char *input)
 	free (current_path); */
 }
 
-void	export(t_vars *vars, char *input)
+void	export(t_vars *vars)
 {
 	int		i;
 	int		j;
-	int		nb_var;
+	int		init;
 	char	*var;
-
+	
 	i = 0;
 	j = 0;
-	nb_var = 1;
-	var = find_variable(vars, input);
-	if (!var)
-		return ;
-	while (environ[i])
-		i++;
-	realloc_env(nb_var);
-	while (j < nb_var)
-		environ[i + j++] = var;
-	if (input)
-		return ;
+	while (vars->token.tokens[++j] != NULL)
+	{
+		if (!vars->token.tokens[j])
+			return ;
+		init = ft_strichr(vars->token.tokens[j], '=');
+		if (init > 0)
+		{
+			while (environ[i] && ft_strncmp(environ[i], vars->token.tokens[j], init))
+				i++;
+			if (!environ[i])
+				export_to_env(vars->token.tokens[j++]);
+			else
+				environ[i] = ft_strdup(vars->token.tokens[j++]);
+			i = 0;
+		}
+		else if (vars->token.tokens[j][0] == '$')
+		{
+			var = get_variable(vars, vars->token.tokens[j]);
+			printf("%s\n", var);
+		}
+		//	export_to_env(get_variable(vars, vars->token.tokens[j]));
+	}
+	return ;
 }

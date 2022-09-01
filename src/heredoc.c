@@ -6,46 +6,29 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 14:06:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/31 14:32:06 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/01 12:36:46 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*get_variable(char *input)
-{
-	char	*var;
-	int		i;
 
-	i = 0;
-	while (input[++i] != ' ')
-		i++;
-	while (input[++i] == ' ')
-		i++;
-	var = &input[i];
-	return (var);
-}
 
-char	*find_variable(t_vars *vars, char *input)
+void	heredoc(t_vars *vars)
 {
-	char	*heredoc_var;
-	char	*var;
+	char	*input;
+	char	*herestr;
+	t_list	**here;
 	
-	var = get_variable(input);
-	heredoc_var = get_next_line(vars->heredoc_fd);
-	while (heredoc_var)
+	here = NULL;	
+	rl_on_new_line();
+	input = readline("heredoc> ");
+	while (ft_strncmp(input, vars->heredoc_eof, (ft_strlen(input))))
 	{
-		printf("%s\n", heredoc_var);
-		if (!ft_strncmp(heredoc_var, var, ft_strlen(var)))
-			return (heredoc_var);
-		free(heredoc_var);
-		heredoc_var = get_next_line(vars->heredoc_fd);
+		ft_lstadd_back(here, ft_lstnew(&input));
+		herestr = ft_strdup(herestr);
+		free(input);
+		rl_on_new_line();
+		input = readline("heredoc> ");
 	}
-	return (NULL);
-}
-
-void	add_variable(t_vars *vars, char *input)
-{
-	ft_putstr_fd(get_variable(input), vars->heredoc_fd);
-	ft_putstr_fd("\n", vars->heredoc_fd);
 }

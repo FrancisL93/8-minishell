@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/01 11:33:11 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/01 16:36:55 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,6 @@ delimiter is seen. However, it doesn’t have to update the history
 
 extern char	**environ;
 
- typedef struct s_varlist
-{
-	char			*var;
-	char			*content;
-	struct s_varlist	*next;
-}					t_varlist;
-
 typedef struct s_token
 {
 	char	**tokens;
@@ -73,7 +66,7 @@ typedef struct s_vars
 {
 	char	*prompt;
 	char	*cmd;
-	int		heredoc_fd;
+	char*	heredoc_eof;
 	int		fdin;
 	int		fdout;
 	int		built_in;
@@ -81,7 +74,8 @@ typedef struct s_vars
 	int		nb_tokens;
 	int		token_len;
 	t_token	token;
-	t_list	variables;
+	t_list	*var;
+	t_list	*here;
 }t_vars;
 
 typedef struct s_indexes
@@ -97,7 +91,7 @@ void	cd(char *input);
 void	print_env(void);
 void	print_path(void);
 void	echo(t_vars *vars);
-void	export(t_vars *vars, char *input);
+void	export(t_vars *vars);
 
 //built_in_tools.c
 void	set_pwd(char *oldpath);
@@ -111,15 +105,14 @@ int		execute(t_vars *vars, char *input);
 void	execute_cmd(t_vars *vars);
 
 //exe_pipes.c
-void	execute_pipes(t_vars *vars, char *input);
+void	execute_pipes(t_vars *vars);
 
 //exe_tools.c
 char	*get_path(char *cmnd, char **envp);
 int		ft_strichr(const char *s, int c);
 
 //heredoc.c
-char	*find_variable(t_vars *vars, char *input);
-void	add_variable(t_vars *vars, char *input);
+void	heredoc(t_vars *vars);
 
 //lexer
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
@@ -138,9 +131,14 @@ void	filter_tokens(t_vars *vars);
 char	*tolower_str(char *str);
 char	*get_cmd(char *input);
 void	set_prompt(t_vars *vars);
-void	realloc_env(int new);
+void	export_to_env(char *variable);
 
 //quit.c
 void	quit(t_vars *vars);
+
+//var.c
+char	*find_variable(t_vars *vars);
+void	add_variable(t_vars *vars, char *variable);
+char	*get_variable(t_vars *vars, char *variable);
 
 #endif

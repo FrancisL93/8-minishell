@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 15:06:47 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/01 09:53:15 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/01 12:14:51 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	execute_pipes(t_vars *vars, char *input)
+void	execute_pipes(t_vars *vars)
 {
 	pid_t	*pid;
 	int		**pipefd;
@@ -43,7 +43,7 @@ void	execute_pipes(t_vars *vars, char *input)
 			if (vars->fdin == STDIN_FILENO)
 				exit(1);
 			else
-				execute_cmd(input);
+				execute_cmd(vars);
 		}
 	}
 }

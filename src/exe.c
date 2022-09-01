@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:17:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/01 11:19:47 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/01 16:30:05 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	execute_built_in(t_vars *vars, char *input)
 {
+	int	i;
+
+	i = 0;
 	if (!ft_strncmp(tolower_str(vars->cmd), "env", 3))
 		print_env();
 	if (!ft_strncmp(tolower_str(vars->cmd), "pwd", 3))
@@ -23,7 +26,12 @@ void	execute_built_in(t_vars *vars, char *input)
 	if (!ft_strncmp(tolower_str(vars->cmd), "cd", 2))
 		cd(input);
 	if (!ft_strncmp(tolower_str(vars->cmd), "export", 6))
-		export(vars, input);
+		export(vars);
+	if (!ft_strncmp(input, "add_var", 7))
+	{
+		while (vars->token.tokens[i])
+			add_variable(vars, vars->token.tokens[i++]);
+	}
 }
 
 //remplacer ft_split par lexer
@@ -54,6 +62,11 @@ void	execute_cmd(t_vars *vars)
 		exit(127);
 	if (ft_strichr(vars->token.tokens[0], '/') > -1)
 		cmd = vars->token.tokens[0];
+	if (ft_strichr(vars->token.tokens[0], '=') > -1)
+	{
+		execute_built_in(vars, "add_var");
+		exit(0);
+	}
 	else
 		cmd = get_path(vars->token.tokens[0], environ);
 	execve(cmd, vars->token.tokens, environ);
@@ -70,7 +83,7 @@ int	execute(t_vars *vars, char *input)
 	if (vars->built_in)
 		execute_built_in(vars, input);
 	else if (vars->pipe > 0)
-		execute_pipes(vars, input);
+		execute_pipes(vars);
 	else
 	{
 		pid = fork();
