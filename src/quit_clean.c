@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/09 14:10:26 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/09 15:47:46 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 void free_redir(t_vars *vars, int i, int ii)
 {
-    (void)i;
-    (void)ii;
-    if (vars->inf != NULL)
+/*     if (vars->inf != NULL)
         free (vars->inf);
     if (vars->outf != NULL)
         free (vars->outf);
     if (vars->outappf != NULL)
-        free (vars->outappf);
-    ft_bzero(vars->cmds[i][ii], ft_strlen(vars->cmds[i][ii]));
+        free (vars->outappf); */
+	free(vars->cmds[i][ii]);
+	vars->cmds[i][ii] = NULL;
+	free(vars->cmds[i][ii + 1]);
+	vars->cmds[i][ii + 1] = NULL;
+/*     ft_bzero(vars->cmds[i][ii], ft_strlen(vars->cmds[i][ii]));
     ii++;
-    ft_bzero(vars->cmds[i][ii], ft_strlen(vars->cmds[i][ii]));
+    ft_bzero(vars->cmds[i][ii], ft_strlen(vars->cmds[i][ii])); */
 }
 
 void	quit_terminal(t_vars *vars, t_list *variables)
