@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/09 14:36:36 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/13 10:13:02 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	init_struct(t_vars *vars, char **envp)
 	set_prompt(vars);
 	vars->var = malloc(sizeof(*vars->var));
 	vars->pipe = 1;
-	vars->fdin = 0;
-	vars->fdout = 1;
 	while (envp[i])
 		i++;
 	vars->env = malloc(sizeof(char **) * (i + 1));

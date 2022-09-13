@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/09 14:14:29 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/13 11:33:26 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,18 @@ delimiter is seen. However, it doesn’t have to update the history
 # define CLEAN "\e[1;1H\e[2J"
 # define BLUE "\e[1;34m"
 
- typedef struct s_varlist
+typedef struct s_cmds
 {
-	char				*var;
-	char				*content;
-	struct s_varlist	*next;
-}					t_varlist;
+	char				*cmd; // commande isolée pour execve ex(ls)
+	char				**cmds; // commande avec ses arguments ex(ls -l)
+	char				*inf;
+	char				*outf;
+	char				*outfapp;
+	int					fdin;
+	int					fdout;
+	int					index;
+	pid_t				pid;
+}					t_cmds;
 
 typedef struct s_token
 {
@@ -68,24 +74,19 @@ typedef struct s_token
 
 typedef struct s_vars
 {
-	char	**env;
-	char	*prompt;
-	char	*cmd;
-	char	***cmds;
-	char	*inf;
-	char	*outf;
-	char	*outappf;
-	int		fdin;
-	int		fdout;
-	int		pipe;
-	int		nb_tokens;
-	int		token_len;
-	char	*heredoc_eof;
-	int		pipe_num;
-	int		**pipefd;
-	pid_t	*pid;
-	t_token	token;
-	t_list	*var;
+	char		***args; // ensemble des commandes séparées par un pipe, incluant les redirections et files
+	char		**env;
+	char		*prompt;
+	int			pipe;
+	int			nb_tokens;
+	int			token_len;
+	char		*heredoc_eof;
+	int			pipe_num;
+	int			**pipefd;
+	pid_t		*pid;
+	t_token		token;
+	t_list		*var;
+	t_cmds	*cmds;
 }t_vars;
 
 typedef struct s_indexes
@@ -121,7 +122,7 @@ char	*ft_strndup(char *str, unsigned int n);
 void	lexer(char *input, t_vars *vars);
 
 //pipe_tools.c
-char	***split_cmds(t_vars *vars);
+void	split_cmds(t_vars *vars);
 
 //quit_clean.c
 void	quit_terminal(t_vars *vars, t_list *variables);

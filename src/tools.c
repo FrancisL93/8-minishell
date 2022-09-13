@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/09 14:14:20 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/13 11:55:30 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*tolower_str(char *str, int capital)
 	{
 		while (str[++i])
 			if (str[i] >= 97 && str[i] <= 122)
-				str[i] -=32;
+				str[i] -= 32;
 	}
 	else
 	{

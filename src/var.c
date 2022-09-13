@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/08 12:02:50 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/13 08:32:02 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	export_to_env(t_vars *vars, char *variable)
 		return ;
 	while (vars->env[i])
 		i++;
-	env = malloc(sizeof(char**) * (i + 2));
+	env = malloc(sizeof(char **) * (i + 2));
 	i = -1;
 	while (vars->env[++i])
 	{
@@ -49,7 +49,7 @@ char	*use_variable(t_vars *vars, char *var)
 		i++;
 	if (vars->env[i])
 	{
-		var_content = &vars->env[i][ft_strlen(var)+1];
+		var_content = &vars->env[i][ft_strlen(var) + 1];
 		return (var_content);
 	}
 	tmp = vars->var;
@@ -68,7 +68,7 @@ void	add_variable(t_vars *vars, char *variable)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	j = 0;
 	while (variable[i] != '=')
