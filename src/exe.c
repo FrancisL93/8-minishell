@@ -21,7 +21,14 @@ void	ft_is_redirector(t_vars *vars, int i)
 	vars->cmds[i].fdout = 1;
 	while (vars->args[i][ii] != NULL)
 	{
-		if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
+		if (vars->args[i][ii][0] == '>' && vars->args[i][ii + 1][0] == '>')
+		{
+			vars->cmds[i].outfapp = ft_strdup(vars->args[i][ii + 2]);
+			vars->cmds[i].fdout = open(vars->cmds[i].outfapp, O_CREAT | O_APPEND
+					| O_WRONLY, 0777);
+			return ;
+		}
+		else if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
 		{
 			vars->cmds[i].inf = ft_strdup(vars->args[i][ii + 1]);
 			vars->cmds[i].fdin = open(vars->cmds[i].inf, O_RDONLY, 0777);
@@ -31,13 +38,6 @@ void	ft_is_redirector(t_vars *vars, int i)
 		{
 			vars->cmds[i].outf = ft_strdup(vars->args[i][ii + 1]);
 			vars->cmds[i].fdout = open(vars->cmds[i].outf, O_CREAT | O_TRUNC | O_WRONLY, 0777);
-			return ;
-		}
-		else if (vars->args[i][ii][0] == '>' && vars->args[i][ii][1] == '>')
-		{
-			vars->cmds[i].outfapp = ft_strdup(vars->args[i][ii + 1]);
-			vars->cmds[i].fdout = open(vars->cmds[i].outfapp, O_CREAT | O_APPEND
-					| O_WRONLY, 0777);
 			return ;
 		}
 		ii ++;
@@ -158,8 +158,6 @@ void	execute(t_vars *vars)
 	while (i < vars->pipe)
 	{
 		ft_is_redirector(vars, i);
-		printf("%d vs 0\n", vars->cmds->fdin);
-		printf("%d vs 1\n", vars->cmds->fdout);
 		execute_command(vars, i);
 		i++;
 	}
