@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/09 10:34:29 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/14 11:19:30 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,18 @@ int	inquotes(int i, char *input, char c, t_vars *vars)
 }
 
 // Calcule la longueur des tokens
-int	inquoteslen(t_vars *vars, int i, char *input, char c)
+int	inquoteslen(int i, char *input, char c)
 {
-	int		ii;
 	int		varlen;
 
-	ii = i;
 	varlen = 0;
-	while (input[++i])
-	{
+	while (input[i])
+	{	
 		if (input[i] == c)
 			return (varlen);
 		varlen++;
+		i++;
 	}
-	if (vars)
-		return (0);
 	return (0);
 }
 
@@ -60,7 +57,7 @@ void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
 			vars->nb_tokens++;
 			ind.i++;
 		}
-		else if (input[ind.i] == 39 || input[ind.i] == '"')
+		else if (input[ind.i] == 39 || input[ind.i] == 34)
 			ind.i = inquotes(ind.i + 1, input, input[ind.i], vars);
 		else if (input[ind.i] == ' ')
 			ind.i++;
@@ -99,13 +96,15 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 		i.jj = 0;
 		if (in[i.i] == '<' || in[i.i] == '>' || in[i.i] == '|')
 			tokenizer(vars, &i, in);
-		else if (in[i.i] == 39 || in[i.i] == '"')
+		else if (in[i.i] == 39 || in[i.i] == 34)
 		{
-			i.i = inquoteslen(vars, i.i + 1, in, in[i.i]);
-			if (i.i != 0)
+			i.i += inquoteslen(i.i + 1, in, in[i.i]);
+			if (i.i != i.ii)
+			{
+				i.ii ++;
 				tokenizer(vars, &i, in);
-			else
-				i.i = i.ii + 1;
+			}
+			i.i++;
 		}
 		else if (in[i.i] == ' ')
 			i.i++;

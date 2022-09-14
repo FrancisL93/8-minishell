@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/13 11:55:30 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/14 11:35:12 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,30 @@ char	*tolower_str(char *str, int capital)
 	return (str);
 }
 
+char	*ft_getenv(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	if (vars->env != NULL)
+	{
+		while (vars->env[i] != NULL)
+		{
+			if (!ft_strncmp(vars->env[i], "PWD", 3))
+				return (vars->env[i]);
+			i++;
+		}
+	}
+	return ("minishell");
+}
+
 void	set_prompt(t_vars *vars)
 {
 	int		i;
 	char	*prompt;
 	char	*tmp;
 
-	prompt = getenv("PWD");
+	prompt = ft_getenv(vars);
 	i = ft_strlen(prompt) - 1;
 	while (prompt[i] != '/')
 		i--;

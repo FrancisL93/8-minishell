@@ -107,6 +107,29 @@ void	execute(t_vars *vars)
 } */
 
 // Doit piper et closer soit l'entrée ou sortie du pipe
+int	check_cd(t_vars *vars, int i)
+{
+	if (!ft_strncmp(vars->cmds[i].cmds[0], "cd", 2))
+		cd(vars, vars->cmds[i].cmds[1]);
+	else
+		return (0);
+	return (1);
+}
+
+int	check_built_in(t_vars *vars, int i)
+{
+	if (!ft_strncmp(vars->cmds[i].cmds[0], "echo", 4))
+		echo(vars, i);
+	else if (!ft_strncmp(vars->cmds[i].cmds[0], "pwd", 3))
+		print_path();
+	else if (!ft_strncmp(vars->cmds[i].cmds[0], "env", 3))
+		print_env(vars);
+	else if (!ft_strncmp(vars->cmds[i].cmds[0], "export", 6))
+		export(vars);
+	else
+		return (0);
+	return (1);
+}
 
 void	child_process(t_vars *vars, int i)
 {
@@ -115,6 +138,9 @@ void	child_process(t_vars *vars, int i)
 	ret = 0;
 	if (!vars->cmds || !vars->cmds[i].cmds[0])
 		exit(127);
+	ret = check_built_in(vars, i);
+	if (ret == 1)
+		exit(0);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
 	else
@@ -136,7 +162,10 @@ void	execute_command(t_vars *vars, int i)
 	if (vars->cmds[i].pid < 0)
 		return ;
 	else if (vars->cmds[i].pid == 0)
+	{
+		ft_is_redirector(vars, i);
 		child_process(vars, i);
+	}
 	else
 	{
 		if (vars->pipe > 1)
@@ -154,13 +183,15 @@ void	execute(t_vars *vars)
 {
 	int	status;
 	int	i;
+	int	ret;
 
 	i = 0;
 	split_cmds(vars);
 	while (i < vars->pipe)
 	{
-		ft_is_redirector(vars, i);
-		execute_command(vars, i);
+		ret = check_cd(vars, i);
+		if (ret != 1)
+			execute_command(vars, i);
 		i++;
 	}
 	i = 0;

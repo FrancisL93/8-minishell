@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/13 11:33:26 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/14 09:22:26 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef struct s_indexes
 void	cd(t_vars *vars, char *input);
 void	print_env(t_vars *vars);
 void	print_path(void);
-void	echo(t_vars *vars);
+void	echo(t_vars *vars, int i);
 void	export(t_vars *vars);
 
 //built_in_tools.c

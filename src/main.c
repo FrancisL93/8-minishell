@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/13 10:13:02 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/14 11:32:35 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	init_struct(t_vars *vars, char **envp)
 	int	i;
 
 	i = 0;
-	set_prompt(vars);
 	vars->var = malloc(sizeof(*vars->var));
 	vars->pipe = 1;
 	while (envp[i])
@@ -29,6 +28,7 @@ int	init_struct(t_vars *vars, char **envp)
 	while (envp[++i])
 		vars->env[i] = ft_strdup(envp[i]);
 	vars->env[i] = NULL;
+	set_prompt(vars);
 	return (0);
 }
 

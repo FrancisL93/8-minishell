@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/13 09:01:59 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/14 11:41:58 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // utiliser ft_putstr_fd plutot que printf et envoyer dans le outfile
 
 // echo (Implementer $ sign)
-/* void	echo(char *str)
+/* void	print_echo(char *str)
 {
 	int	n_l;
 	int	i;
@@ -43,7 +43,6 @@
 	if (n_l == 1)
 		printf("\n");
 } */
-
 int	check_flag(char *flag)
 {
 	int	i;
@@ -71,7 +70,33 @@ int	check_flag(char *flag)
 	return (0);
 }
 
-void	echo(t_vars *vars)
+void	echo(t_vars *vars, int i)
+{
+	int	j;
+	int	nl;
+
+	j = 1;
+	nl = 1;
+	while (check_flag(vars->cmds[i].cmds[j]) == 1)
+		j++;
+	if (j != 1)
+		nl = 0;
+	while (vars->cmds[i].cmds[j] != NULL)
+	{
+		if (vars->cmds[i].cmds[j + 1] == NULL && nl == 1)
+		{
+			if (nl == 1)
+				printf("%s\n", vars->cmds[i].cmds[j]);
+			else if (nl == 0)
+				printf("%s", vars->cmds[i].cmds[j]);
+			break ;
+		}
+		printf("%s ", vars->cmds[i].cmds[j]);
+		j++;
+	}
+}
+
+/* void	echo(t_vars *vars)
 {
 	int	n_l;
 	int	i;
@@ -95,7 +120,7 @@ void	echo(t_vars *vars)
 	}
 	if (n_l == 1)
 		printf("\n");
-}
+} */
 
 // pwd
 void	print_path(void)
@@ -126,9 +151,8 @@ void	cd(t_vars *vars, char *input)
 	char	*oldpath;
 
 	oldpath = getcwd(buff, 1024);
-	//cmd = get_cmd(input);
 	current_path = getcwd(buff, 1024);
-	if (input && input[0] == '\0')
+	if (!input)
 		new_path = ft_strchr(getenv("HOME="), '/');
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
@@ -158,7 +182,7 @@ void	export(t_vars *vars)
 	int		j;
 	int		init;
 	char	*var;
-	
+
 	i = 0;
 	j = 0;
 	while (vars->token.tokens[++j] != NULL)
@@ -168,7 +192,8 @@ void	export(t_vars *vars)
 		init = ft_strichr(vars->token.tokens[j], '=');
 		if (init > 0)
 		{
-			while (vars->env[i] && ft_strncmp(vars->env[i], vars->token.tokens[j], init))
+			while (vars->env[i] && ft_strncmp(vars->env[i],
+					vars->token.tokens[j], init))
 				i++;
 			if (!vars->env[i])
 				export_to_env(vars, vars->token.tokens[j++]);
