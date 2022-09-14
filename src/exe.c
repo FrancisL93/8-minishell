@@ -106,6 +106,8 @@ void	execute(t_vars *vars)
 		waitpid(pid[--i], &status, 0);
 } */
 
+// Doit piper et closer soit l'entrée ou sortie du pipe
+
 void	child_process(t_vars *vars, int i)
 {
 	int		ret;
@@ -168,4 +170,3 @@ void	execute(t_vars *vars)
 		i++;
 	}
 }
-
