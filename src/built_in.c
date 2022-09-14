@@ -6,14 +6,16 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/01 10:44:04 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/14 11:41:58 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+// utiliser ft_putstr_fd plutot que printf et envoyer dans le outfile
+
 // echo (Implementer $ sign)
-/* void	echo(char *str)
+/* void	print_echo(char *str)
 {
 	int	n_l;
 	int	i;
@@ -41,7 +43,6 @@
 	if (n_l == 1)
 		printf("\n");
 } */
-
 int	check_flag(char *flag)
 {
 	int	i;
@@ -69,7 +70,33 @@ int	check_flag(char *flag)
 	return (0);
 }
 
-void	echo(t_vars *vars)
+void	echo(t_vars *vars, int i)
+{
+	int	j;
+	int	nl;
+
+	j = 1;
+	nl = 1;
+	while (check_flag(vars->cmds[i].cmds[j]) == 1)
+		j++;
+	if (j != 1)
+		nl = 0;
+	while (vars->cmds[i].cmds[j] != NULL)
+	{
+		if (vars->cmds[i].cmds[j + 1] == NULL && nl == 1)
+		{
+			if (nl == 1)
+				printf("%s\n", vars->cmds[i].cmds[j]);
+			else if (nl == 0)
+				printf("%s", vars->cmds[i].cmds[j]);
+			break ;
+		}
+		printf("%s ", vars->cmds[i].cmds[j]);
+		j++;
+	}
+}
+
+/* void	echo(t_vars *vars)
 {
 	int	n_l;
 	int	i;
@@ -93,7 +120,7 @@ void	echo(t_vars *vars)
 	}
 	if (n_l == 1)
 		printf("\n");
-}
+} */
 
 // pwd
 void	print_path(void)
@@ -106,69 +133,82 @@ void	print_path(void)
 }
 
 // env
-void	print_env(void)
+void	print_env(t_vars *vars)
 {
 	int	i;
 
 	i = -1;
-	while (environ[++i])
-		printf("%s\n", environ[i]);
+	while (vars->env[++i])
+		printf("%s\n", vars->env[i]);
 }
 
 //cd
-void	cd(char *input)
+void	cd(t_vars *vars, char *input)
 {
-	char	*buff;
+	char	buff[1024];
 	char	*current_path;
 	char	*new_path;
-	char	*cmd;
 	char	*oldpath;
 
-	buff = NULL;
 	oldpath = getcwd(buff, 1024);
-	cmd = get_cmd(input);
 	current_path = getcwd(buff, 1024);
-	if (cmd[0] == '\0')
+	if (!input)
 		new_path = ft_strchr(getenv("HOME="), '/');
-	else if (cmd[0] == '.')
-		new_path = check_path(cmd, current_path);
-	else if (ftstrnstr(current_path, cmd) != 0)
-		new_path = cmd;
-	else if (ft_strlen(cmd) == 1 && cmd[0] == '/')
-		new_path = cmd;
+	else if (input[0] == '.')
+		new_path = check_path(input, current_path);
+	else if (ftstrnstr(current_path, input) != 0)
+		new_path = input;
+	else if (ft_strlen(input) == 1 && input[0] == '/')
+		new_path = input;
 	else
-		new_path = ftstrjoin(cmd, current_path);
+		new_path = ftstrjoin(input, current_path);
 	if (chdir(new_path) != 0)
 	{
+		//free(new_path);
 		printf("Not a directory\n");
 		return ;
 	}
-	set_pwd(oldpath);
+	//free(new_path);
+	set_pwd(vars, oldpath);
 	// Faire une fonction pour tout free
-/*	free (buff);
-	free (new_path);
+/*	free (new_path);
 	free (cmd);
 	free (current_path); */
 }
 
-void	export(t_vars *vars, char *input)
+void	export(t_vars *vars)
 {
 	int		i;
 	int		j;
-	int		nb_var;
+	int		init;
 	char	*var;
 
 	i = 0;
 	j = 0;
-	nb_var = 1;
-	var = find_variable(vars, input);
-	if (!var)
-		return ;
-	while (environ[i])
-		i++;
-	realloc_env(nb_var);
-	while (j < nb_var)
-		environ[i + j++] = var;
-	if (input)
-		return ;
+	while (vars->token.tokens[++j] != NULL)
+	{
+		if (!vars->token.tokens[j])
+			return ;
+		init = ft_strichr(vars->token.tokens[j], '=');
+		if (init > 0)
+		{
+			while (vars->env[i] && ft_strncmp(vars->env[i],
+					vars->token.tokens[j], init))
+				i++;
+			if (!vars->env[i])
+				export_to_env(vars, vars->token.tokens[j++]);
+			else
+			{
+				free(vars->env[i]);
+				vars->env[i] = ft_strdup(vars->token.tokens[j++]);
+			}
+			i = 0;
+		}
+		else if (vars->token.tokens[j][0] == '$')
+		{
+			var = get_variable(vars, vars->token.tokens[j]);
+			export_to_env(vars, get_variable(vars, vars->token.tokens[j]));
+		}
+	}
+	return ;
 }

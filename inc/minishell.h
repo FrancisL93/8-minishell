@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/07 10:58:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/01 15:24:38 by anhebert         ###   ########.fr       */
+/*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
+/*   Updated: 2022/09/14 09:22:26 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,18 @@ delimiter is seen. However, it doesn’t have to update the history
 # define CLEAN "\e[1;1H\e[2J"
 # define BLUE "\e[1;34m"
 
-
-extern char	**environ;
-
- typedef struct s_varlist
+typedef struct s_cmds
 {
-	char			*var;
-	char			*content;
-	struct s_varlist	*next;
-}					t_varlist;
+	char				*cmd; // commande isolée pour execve ex(ls)
+	char				**cmds; // commande avec ses arguments ex(ls -l)
+	char				*inf;
+	char				*outf;
+	char				*outfapp;
+	int					fdin;
+	int					fdout;
+	int					index;
+	pid_t				pid;
+}					t_cmds;
 
 typedef struct s_token
 {
@@ -71,17 +74,19 @@ typedef struct s_token
 
 typedef struct s_vars
 {
-	char	*prompt;
-	char	*cmd;
-	int		heredoc_fd;
-	int		fdin;
-	int		fdout;
-	int		built_in;
-	int		pipe;
-	int		nb_tokens;
-	int		token_len;
-	t_token	token;
-	t_list	variables;
+	char		***args; // ensemble des commandes séparées par un pipe, incluant les redirections et files
+	char		**env;
+	char		*prompt;
+	int			pipe;
+	int			nb_tokens;
+	int			token_len;
+	char		*heredoc_eof;
+	int			pipe_num;
+	int			**pipefd;
+	pid_t		*pid;
+	t_token		token;
+	t_list		*var;
+	t_cmds	*cmds;
 }t_vars;
 
 typedef struct s_indexes
@@ -93,54 +98,47 @@ typedef struct s_indexes
 }	t_indexes;
 
 //built_in.c
-void	cd(char *input);
-void	print_env(void);
+void	cd(t_vars *vars, char *input);
+void	print_env(t_vars *vars);
 void	print_path(void);
-void	echo(t_vars *vars);
-void	export(t_vars *vars, char *input);
+void	echo(t_vars *vars, int i);
+void	export(t_vars *vars);
 
 //built_in_tools.c
-void	set_pwd(char *oldpath);
+void	set_pwd(t_vars *vars, char *oldpath);
 int		ftstrnstr(char *current_path, char *cmd);
 char	*ftstrjoin(char *cmd, char *current_path);
 char	*ftstrtrim(char	*current_path);
 char	*check_path(char *cmd, char *current_path);
 
 //exe.c
-int		execute(t_vars *vars, char *input);
-void	execute_cmd(t_vars *vars);
-
-//exe_pipes.c
-void	execute_pipes(t_vars *vars);
+void	execute(t_vars *vars);
 
 //exe_tools.c
 char	*get_path(char *cmnd, char **envp);
-int		ft_strichr(const char *s, int c);
+char	*ft_strndup(char *str, unsigned int n);
 
-//heredoc.c
-char	*find_variable(t_vars *vars, char *input);
-void	add_variable(t_vars *vars, char *input);
-
-//lexer
-void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
-void	new_token(char *in, t_vars *vars, t_indexes i);
-void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
-int		inquoteslen(int i, char *input, char c);
-int		inquotes(int i, char *input, char c, t_vars *vars);
+//lexer.c
 void	lexer(char *input, t_vars *vars);
 
-//main.c
+//pipe_tools.c
+void	split_cmds(t_vars *vars);
 
-//parsing.c
-void	filter_tokens(t_vars *vars);
+//quit_clean.c
+void	quit_terminal(t_vars *vars, t_list *variables);
+void	clean_command(t_vars *vars, char *input);
+void 	free_redir(t_vars *vars, int i, int ii);
 
 //tools.c
-char	*tolower_str(char *str);
-char	*get_cmd(char *input);
+char	*tolower_str(char *str, int capital);
 void	set_prompt(t_vars *vars);
-void	realloc_env(int new);
+int		ft_strichr(const char *s, int c);
+char	*get_cmd(char *input);
 
-//quit.c
-void	quit(t_vars *vars);
+//var.c
+void	export_to_env(t_vars *vars, char *variable);
+void	add_variable(t_vars *vars, char *variable);
+char	*get_variable(t_vars *vars, char *variable);
+char	*use_variable(t_vars *vars, char *var);
 
 #endif

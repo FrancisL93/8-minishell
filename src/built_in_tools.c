@@ -6,28 +6,28 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/08/31 12:59:29 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/06 14:01:01 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	set_pwd(char *oldpath)
+void	set_pwd(t_vars *vars, char *oldpath)
 {
 	int		i;
 	char	*buff;
 
 	buff = NULL;
 	i = 0;
-	while (environ[i] && ft_strncmp(environ[i], "PWD=", 4))
+	while (vars->env[i] && ft_strncmp(vars->env[i], "PWD=", 4))
 		i++;
-	if (environ[i])
-		environ[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
+	if (vars->env[i])
+		vars->env[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
 	i = 0;
-	while (environ[i] && ft_strncmp(environ[i], "OLDPWD=", 7))
+	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))
 		i++;
-	if (environ[i])
-		environ[i] = ft_strjoin("OLDPWD=", oldpath);
+	if (vars->env[i])
+		vars->env[i] = ft_strjoin("OLDPWD=", oldpath);
 }
 
 int	ftstrnstr(char *current_path, char *cmd)

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/29 16:37:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/08/29 16:46:59 by flahoud          ###   ########.fr       */
+/*   Created: 2022/09/09 10:39:03 by flahoud           #+#    #+#             */
+/*   Updated: 2022/09/09 10:40:23 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@ char	*ft_strndup(char *str, unsigned int n)
 		dup[i++] = *str++;
 	dup[n] = 0;
 	return (dup);
-}
-
-int	ft_strichr(const char *s, int c)
-{
-	int		i;
-
-	i = 0;
-	while (s[i] && s[i] != (char) c)
-		i++;
-	if (s[i] == c)
-		return (i);
-	return (-1);
 }
 
 char	*join_path(char *path, char *bin)

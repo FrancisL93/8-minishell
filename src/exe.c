@@ -1,105 +1,203 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exe.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/17 13:17:40 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/01 13:08:21 by anhebert         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   exe.c											  :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: anhebert <anhebert@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2022/09/09 11:26:17 by flahoud		   #+#	#+#			 */
+/*   Updated: 2022/09/09 15:32:39 by anhebert		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	execute_built_in(t_vars *vars, char *input)
+void	ft_is_redirector(t_vars *vars, int i)
 {
-	if (!ft_strncmp(tolower_str(vars->cmd), "env", 3))
-		print_env();
-	if (!ft_strncmp(tolower_str(vars->cmd), "pwd", 3))
-		print_path();
-	if (!ft_strncmp(tolower_str(vars->cmd), "echo", 4))
-		echo(vars);
-	if (!ft_strncmp(tolower_str(vars->cmd), "cd", 2))
-		cd(input);
-	if (!ft_strncmp(tolower_str(vars->cmd), "export", 6))
-		export(vars, input);
-}
+	int	ii;
 
-//remplacer ft_split par lexer
-/* void	execute_cmd(char *input)
-{
-	char	**cmdstr;
-	char	*cmd;
-
-	cmdstr = ft_split(input, ' ');
-	if (cmdstr[0] == NULL)
-		exit(127);
-	if (ft_strichr(cmdstr[0], '/') > -1)
-		cmd = cmdstr[0];
-	else
-		cmd = get_path(cmdstr[0], environ);
-	execve(cmd, cmdstr, environ);
-	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(")\n", STDERR_FILENO);
-	exit(127);
-} */
-
-void	execute_cmd(t_vars *vars)
-{
-	char	*cmd;
-
-	if (vars->token.tokens[0] == NULL)
-		exit(127);
-	if (ft_strichr(vars->token.tokens[0], '/') > -1)
-		cmd = vars->token.tokens[0];
-	else
-		cmd = get_path(vars->token.tokens[0], environ);
-	execve(cmd, vars->token.tokens, environ);
-	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(")\n", STDERR_FILENO);
-	exit(127);
-}
- 
-/* int	execute(t_vars *vars, char *input)
-{
-	pid_t	pid;
-
-	if (vars->built_in)
-		execute_built_in(vars, input);
-	else if (vars->pipe > 0)
-		execute_pipes(vars);
-	else
+	ii = 0;
+	vars->cmds[i].fdin = 0;
+	vars->cmds[i].fdout = 1;
+	while (vars->args[i][ii] != NULL)
 	{
-		pid = fork();
-		if (pid == 0 && !vars->pipe)
-			execute_cmd(vars);
-		else if (pid != 0)
-			wait(&pid);
-	}
-	return (0);
-} */
-
-int	execute(t_vars *vars, char *input)
-{
-	pid_t	pid;
-
-	if (vars->pipe == 0)
-	{
-		if (vars->built_in)
-			execute_built_in(vars, input);
-		else
+		if (vars->args[i][ii][0] == '>' && vars->args[i][ii + 1][0] == '>')
 		{
-			pid = fork();
-			if (pid == 0 && !vars->pipe)
-				execute_cmd(vars);
-			else if (pid != 0)
-				wait(&pid);
+			vars->cmds[i].outfapp = ft_strdup(vars->args[i][ii + 2]);
+			vars->cmds[i].fdout = open(vars->cmds[i].outfapp, O_CREAT | O_APPEND
+					| O_WRONLY, 0777);
+			return ;
+		}
+		else if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
+		{
+			vars->cmds[i].inf = ft_strdup(vars->args[i][ii + 1]);
+			vars->cmds[i].fdin = open(vars->cmds[i].inf, O_RDONLY, 0777);
+			return ;
+		}
+		else if (vars->args[i][ii][0] == '>' && vars->args[i][ii][1] == '\0')
+		{
+			vars->cmds[i].outf = ft_strdup(vars->args[i][ii + 1]);
+			vars->cmds[i].fdout = open(vars->cmds[i].outf, O_CREAT | O_TRUNC | O_WRONLY, 0777);
+			return ;
+		}
+		ii ++;
+	}
+}
+/* 
+void	execute_cmd(t_vars *vars, int i)
+{
+	if (!vars->cmds || !vars->cmds[i].cmds[0])
+		exit(127);
+	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
+		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
+	else
+		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
+	// créer un ** pour avoir seulement les éléments de la commande //
+	execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
+	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
+	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
+	ft_putstr_fd(")\n", STDERR_FILENO);
+	exit(127);
+}
+
+void	execute(t_vars *vars)
+{
+	int	i;
+	int	j;
+	int	**fd;
+	int	*pid;
+	int	status;
+
+	i = -1;
+	split_cmds(vars);
+	pid = malloc(sizeof(int) * vars->pipe);
+	fd = malloc(sizeof(int *) * vars->pipe);
+	while (++i < vars->pipe)
+	{
+		//ft_is_redirector(vars, i, 0);
+		fd[i] = malloc(sizeof(int) * 2);
+		if (pipe(fd[i]))
+			return ;
+		pid[i] = fork();
+		if (pid[i] < 0)
+			return ;
+		if (pid[i] == 0)
+		{	
+			j = -1;
+			while (++j < i)
+			{
+				close(fd[j][0]);
+				close(fd[j][1]);
+			}
+			dup2(fd[i][0], 0);
+			dup2(vars->cmds[i].fdout, 1);
+			close(fd[i][1]);
+			execute_cmd(vars, i);
+			close(vars->cmds[i].fdout);
 		}
 	}
-	else if (vars->pipe > 0)
-		execute_pipes(vars);
-	return (0);
+	i = -1;
+	while (++i < vars->pipe)
+	{
+		close(fd[i][1]);
+		close(fd[i][0]);
+	}
+	while (i > 0)
+		waitpid(pid[--i], &status, 0);
+} */
+
+// Doit piper et closer soit l'entrée ou sortie du pipe
+int	check_cd(t_vars *vars, int i)
+{
+	if (!ft_strncmp(vars->cmds[i].cmds[0], "cd", 2))
+		cd(vars, vars->cmds[i].cmds[1]);
+	else
+		return (0);
+	return (1);
+}
+
+int	check_built_in(t_vars *vars, int i)
+{
+	if (!ft_strncmp(vars->cmds[i].cmds[0], "echo", 4))
+		echo(vars, i);
+	else if (!ft_strncmp(vars->cmds[i].cmds[0], "pwd", 3))
+		print_path();
+	else if (!ft_strncmp(vars->cmds[i].cmds[0], "env", 3))
+		print_env(vars);
+	else if (!ft_strncmp(vars->cmds[i].cmds[0], "export", 6))
+		export(vars);
+	else
+		return (0);
+	return (1);
+}
+
+void	child_process(t_vars *vars, int i)
+{
+	int		ret;
+
+	ret = 0;
+	if (!vars->cmds || !vars->cmds[i].cmds[0])
+		exit(127);
+	ret = check_built_in(vars, i);
+	if (ret == 1)
+		exit(0);
+	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
+		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
+	else
+		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
+	if (dup2(vars->cmds[i].fdin, STDOUT_FILENO) < 0)
+		return ;
+	if (dup2(vars->cmds[i].fdout, STDIN_FILENO) < 0)
+		return ;
+	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
+	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
+	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
+	ft_putstr_fd(")\n", STDERR_FILENO);
+	exit(ret);
+}
+
+void	execute_command(t_vars *vars, int i)
+{
+	vars->cmds[i].pid = fork();
+	if (vars->cmds[i].pid < 0)
+		return ;
+	else if (vars->cmds[i].pid == 0)
+	{
+		ft_is_redirector(vars, i);
+		child_process(vars, i);
+	}
+	else
+	{
+		if (vars->pipe > 1)
+		{
+			close(vars->cmds[i].fdin);
+			if (vars->cmds[i + 1].index == vars->pipe)
+				close(vars->cmds[i].fdout);
+		}
+		if (vars->cmds[i].index != 0)
+			close(vars->cmds[i - 1].fdout);
+	}
+}
+
+void	execute(t_vars *vars)
+{
+	int	status;
+	int	i;
+	int	ret;
+
+	i = 0;
+	split_cmds(vars);
+	while (i < vars->pipe)
+	{
+		ret = check_cd(vars, i);
+		if (ret != 1)
+			execute_command(vars, i);
+		i++;
+	}
+	i = 0;
+	while (i < vars->pipe)
+	{
+		waitpid(vars->cmds[i].pid, &status, 0);
+		i++;
+	}
 }
