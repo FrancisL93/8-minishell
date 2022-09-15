@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/15 09:40:39 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 15:59:06 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,11 @@ char	*get_cmd(char *input);
 
 //var.c
 void	export_to_env(t_vars *vars, char *variable);
-void	add_variable(t_vars *vars, char *variable);
+int		add_variable(t_vars *vars, char *variable);
 char	*get_variable(t_vars *vars, char *variable);
 char	*use_variable(t_vars *vars, char *var);
 t_list	*ft_lst_new(void *content, void *name);
+void	ft_lst_add_front(t_list **lst, t_list *new1);
+char	*ft_str_dup(const char *str);
 
 #endif

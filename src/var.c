@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/15 09:43:17 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 15:58:14 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*use_variable(t_vars *vars, char *var)
 	}
 }
 
-void	add_variable(t_vars *vars, char *variable)
+int	add_variable(t_vars *vars, char *variable)
 {
 	int	nlen;
 	int	j;
@@ -78,13 +78,34 @@ void	add_variable(t_vars *vars, char *variable)
 		while (vars->env[j] && ft_strncmp(vars->env[j], variable, nlen))
 			j++;
 		if (!vars->env[j])
-			ft_lstadd_front(&vars->var, ft_lst_new(ft_strdup(&variable[nlen + 1]), ft_strndup(variable, nlen)));
+		{
+			ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
+				ft_strndup(variable, nlen)));
+			return (1);
+		}
 		else
+		{
 			vars->env[j] = variable;
+			return (1);
+		}
 	}
+	return (0);
 }
 
-char	*get_variable(t_vars *vars, char *variable)
+char	*get_variable(t_vars *vars, char *var)
+{
+	while (vars->var != NULL)
+	{
+		if (!ft_strncmp(&var[1], vars->var->name, ft_strlen(&var[1])))
+		{
+			return (vars->var->content);
+		}
+		vars->var = vars->var->next;
+	}
+	return (NULL);
+}
+
+/* char	*get_variable(t_vars *vars, char *variable)
 {
 	char	*var;
 	int		varlen;
@@ -92,7 +113,6 @@ char	*get_variable(t_vars *vars, char *variable)
 
 	i = -1;
 	varlen = 0;
-	write(2, &variable, ft_strlen(variable));
 	if (!variable || !variable[1])
 		return (NULL);
 	var = &variable[1];
@@ -108,4 +128,4 @@ char	*get_variable(t_vars *vars, char *variable)
 		vars->var = vars->var->next;
 	}
 	return (NULL);
-}
+} */

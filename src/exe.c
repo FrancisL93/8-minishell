@@ -48,15 +48,21 @@ int	check_cd(t_vars *vars, int i)
 	return (1);
 }
 
-void	check_var(t_vars *vars, int i)
+int	check_var(t_vars *vars, int i)
 {
 	int		j;
+	int		res;
 
 	j = -1;
 	if (i != vars->pipe - 1)
-		return ;
+		return (1);
 	while (vars->cmds[i].cmds[++j])
-		add_variable(vars, vars->cmds[i].cmds[j]);
+	{
+		res = add_variable(vars, vars->cmds[i].cmds[j]);
+		if (res == 1)
+			return (1);
+	}
+	return (0);
 }
 
 int	check_built_in(t_vars *vars, int i)
@@ -144,8 +150,9 @@ void	execute(t_vars *vars)
 	while (++i < vars->pipe)
 	{
 		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
-			check_var(vars, i);
-		ret = check_cd(vars, i);
+			ret = check_var(vars, i);
+		if (ret != 1)
+			ret = check_cd(vars, i);
 		if (ret != 1)
 			execute_command(vars, i);
 	}

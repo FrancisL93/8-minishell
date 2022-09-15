@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/14 11:41:58 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 16:07:13 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	check_flag(char *flag)
 	return (0);
 }
 
-void	echo(t_vars *vars, int i)
+/* void	echo(t_vars *vars, int i)
 {
 	int	j;
 	int	nl;
@@ -94,33 +94,41 @@ void	echo(t_vars *vars, int i)
 		printf("%s ", vars->cmds[i].cmds[j]);
 		j++;
 	}
-}
-
-/* void	echo(t_vars *vars)
-{
-	int	n_l;
-	int	i;
-	int	n_flag;
-
-	i = 1;
-	n_l = 1;
-	n_flag = 0;
-	while (i < vars->nb_tokens)
-	{
-		if (check_flag(vars->token.tokens[i]) == 1 && n_flag == 0)
-			n_l = 0;
-		else
-		{
-			printf("%s", vars->token.tokens[i]);
-			if (i + 1 != vars->nb_tokens)
-				printf(" ");
-			n_flag = 1;
-		}
-		i++;
-	}
-	if (n_l == 1)
-		printf("\n");
 } */
+
+void	echo(t_vars *vars, int i)
+{
+	int	j;
+	int	nl;
+
+	j = 1;
+	nl = 1;
+	if (vars->cmds[i].cmds[j] == NULL)
+		printf("\n");
+	while (check_flag(vars->cmds[i].cmds[j]) == 1)
+		j++;
+	if (j != 1)
+		nl = 0;
+	while (vars->cmds[i].cmds[j] != NULL)
+	{
+		if (vars->cmds[i].cmds[j][0] == '$'
+			&& vars->cmds[i].cmds[j][1] != '\0')
+		{
+			if (get_variable(vars, vars->cmds[i].cmds[j]) != NULL)
+				printf("%s", get_variable(vars, vars->cmds[i].cmds[j]));
+		}
+		else
+			printf("%s", vars->cmds[i].cmds[j]);
+		j++;
+		if (vars->cmds[i].cmds[j] != NULL)
+			printf(" ");
+		if (vars->cmds[i].cmds[j] == NULL)
+		{
+			if (nl == 1)
+				printf("\n");
+		}
+	}
+}
 
 // pwd
 void	print_path(void)
@@ -156,6 +164,13 @@ void	cd(t_vars *vars, char *input)
 		new_path = ft_strchr(getenv("HOME="), '/');
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
+	else if (input[0] == '$')
+	{
+		if (get_variable(vars, input) == NULL)
+			new_path = ft_strchr(getenv("HOME="), '/');
+		else
+			new_path = get_variable(vars, input);
+	}
 	else if (ftstrnstr(current_path, input) != 0)
 		new_path = input;
 	else if (ft_strlen(input) == 1 && input[0] == '/')
