@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/14 09:22:26 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 09:40:39 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,13 @@ delimiter is seen. However, it doesn’t have to update the history
 
 # define CLEAN "\e[1;1H\e[2J"
 # define BLUE "\e[1;34m"
+# define IN 0
+# define OUT 1
 
 typedef struct s_cmds
 {
 	char				*cmd; // commande isolée pour execve ex(ls)
 	char				**cmds; // commande avec ses arguments ex(ls -l)
-	char				*inf;
-	char				*outf;
-	char				*outfapp;
-	int					fdin;
-	int					fdout;
 	int					index;
 	pid_t				pid;
 }					t_cmds;
@@ -74,18 +71,19 @@ typedef struct s_token
 
 typedef struct s_vars
 {
-	char		***args; // ensemble des commandes séparées par un pipe, incluant les redirections et files
-	char		**env;
-	char		*prompt;
-	int			pipe;
-	int			nb_tokens;
-	int			token_len;
-	char		*heredoc_eof;
-	int			pipe_num;
-	int			**pipefd;
-	pid_t		*pid;
-	t_token		token;
-	t_list		*var;
+	char	***args; // ensemble des commandes séparées par un pipe, incluant les redirections et files
+	char	**env;
+	char	*prompt;
+	int		*fd;
+	int		pipe;
+	int		nb_tokens;
+	int		token_len;
+	char	*heredoc_eof;
+	int		pipe_num;
+	int		**pipefd;
+	pid_t	*pid;
+	t_list	*var;
+	t_token	token;
 	t_cmds	*cmds;
 }t_vars;
 
@@ -140,5 +138,6 @@ void	export_to_env(t_vars *vars, char *variable);
 void	add_variable(t_vars *vars, char *variable);
 char	*get_variable(t_vars *vars, char *variable);
 char	*use_variable(t_vars *vars, char *var);
+t_list	*ft_lst_new(void *content, void *name);
 
 #endif

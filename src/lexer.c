@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/14 11:19:30 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 09:42:54 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,17 @@ void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
 // Crée les tokens
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 {
+	int	x;
+
+	x = 0;
 	vars->token_len = ind->i - ind->ii;
 	vars->token.tokens[ind->j] = ft_calloc(sizeof(char), vars->token_len + 2);
 	while (ind->ii <= ind->i)
-			vars->token.tokens[ind->j][ind->jj++] = input[ind->ii++];
+	{
+		vars->token.tokens[ind->j][ind->jj] = input[ind->ii];
+		ind->ii++;
+		ind->jj++;
+	}
 	ind->i++;
 	ind->j++;
 }
@@ -112,7 +119,7 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 		{
 			while (in[i.i + 1] != ' ' && in[i.i + 1] != 39 && in[i.i + 1] != '"'
 				&& in[i.i] != '\0' && in[i.i + 1] != '<' && in[i.i + 1] != '>'
-				&& in[i.i + 1] != '|')
+				&& in[i.i + 1] != '|' && in[i.i + 1] != '$')
 				i.i++;
 			tokenizer(vars, &i, in);
 		}

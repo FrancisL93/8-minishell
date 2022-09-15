@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/14 11:32:35 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 09:09:14 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	init_struct(t_vars *vars, char **envp)
 
 	i = 0;
 	vars->var = malloc(sizeof(*vars->var));
+	vars->var = NULL;
 	vars->pipe = 1;
 	while (envp[i])
 		i++;

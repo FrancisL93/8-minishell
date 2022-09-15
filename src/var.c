@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/13 08:32:02 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/15 09:43:17 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,22 @@ char	*use_variable(t_vars *vars, char *var)
 
 void	add_variable(t_vars *vars, char *variable)
 {
-	int	i;
+	int	nlen;
 	int	j;
 
-	i = 0;
+	nlen = 0;
 	j = 0;
-	while (variable[i] != '=')
-		i++;
-	while (vars->env[j] && ft_strncmp(vars->env[j], variable, i))
-		j++;
-	if (!vars->env[j])
-		ft_lstadd_front(&vars->var, ft_lstnew(variable));
-	else
-		vars->env[i] = variable;
+	if (variable != NULL)
+	{
+		while (variable[nlen] != '=')
+			nlen++;
+		while (vars->env[j] && ft_strncmp(vars->env[j], variable, nlen))
+			j++;
+		if (!vars->env[j])
+			ft_lstadd_front(&vars->var, ft_lst_new(ft_strdup(&variable[nlen + 1]), ft_strndup(variable, nlen)));
+		else
+			vars->env[j] = variable;
+	}
 }
 
 char	*get_variable(t_vars *vars, char *variable)
@@ -89,6 +92,7 @@ char	*get_variable(t_vars *vars, char *variable)
 
 	i = -1;
 	varlen = 0;
+	write(2, &variable, ft_strlen(variable));
 	if (!variable || !variable[1])
 		return (NULL);
 	var = &variable[1];

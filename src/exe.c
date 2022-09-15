@@ -16,97 +16,29 @@ void	ft_is_redirector(t_vars *vars, int i)
 {
 	int	ii;
 
-	ii = 0;
-	vars->cmds[i].fdin = 0;
-	vars->cmds[i].fdout = 1;
-	while (vars->args[i][ii] != NULL)
+	ii = -1;
+	while (vars->args[i][++ii] != NULL)
 	{
 		if (vars->args[i][ii][0] == '>' && vars->args[i][ii + 1][0] == '>')
 		{
-			vars->cmds[i].outfapp = ft_strdup(vars->args[i][ii + 2]);
-			vars->cmds[i].fdout = open(vars->cmds[i].outfapp, O_CREAT | O_APPEND
+			vars->fd[OUT] = open(vars->args[i][ii + 2], O_CREAT | O_APPEND
 					| O_WRONLY, 0777);
 			return ;
-		}
+		}	
 		else if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
 		{
-			vars->cmds[i].inf = ft_strdup(vars->args[i][ii + 1]);
-			vars->cmds[i].fdin = open(vars->cmds[i].inf, O_RDONLY, 0777);
+			vars->fd[IN] = open(vars->args[i][ii + 1], O_RDONLY, 0777);
 			return ;
 		}
 		else if (vars->args[i][ii][0] == '>' && vars->args[i][ii][1] == '\0')
 		{
-			vars->cmds[i].outf = ft_strdup(vars->args[i][ii + 1]);
-			vars->cmds[i].fdout = open(vars->cmds[i].outf, O_CREAT | O_TRUNC | O_WRONLY, 0777);
+			vars->fd[IN] = open(vars->args[i][ii + 1], O_CREAT | O_TRUNC
+					| O_WRONLY, 0777);
 			return ;
 		}
-		ii ++;
 	}
 }
-/* 
-void	execute_cmd(t_vars *vars, int i)
-{
-	if (!vars->cmds || !vars->cmds[i].cmds[0])
-		exit(127);
-	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
-		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
-	else
-		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
-	// créer un ** pour avoir seulement les éléments de la commande //
-	execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
-	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
-	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
-	ft_putstr_fd(")\n", STDERR_FILENO);
-	exit(127);
-}
 
-void	execute(t_vars *vars)
-{
-	int	i;
-	int	j;
-	int	**fd;
-	int	*pid;
-	int	status;
-
-	i = -1;
-	split_cmds(vars);
-	pid = malloc(sizeof(int) * vars->pipe);
-	fd = malloc(sizeof(int *) * vars->pipe);
-	while (++i < vars->pipe)
-	{
-		//ft_is_redirector(vars, i, 0);
-		fd[i] = malloc(sizeof(int) * 2);
-		if (pipe(fd[i]))
-			return ;
-		pid[i] = fork();
-		if (pid[i] < 0)
-			return ;
-		if (pid[i] == 0)
-		{	
-			j = -1;
-			while (++j < i)
-			{
-				close(fd[j][0]);
-				close(fd[j][1]);
-			}
-			dup2(fd[i][0], 0);
-			dup2(vars->cmds[i].fdout, 1);
-			close(fd[i][1]);
-			execute_cmd(vars, i);
-			close(vars->cmds[i].fdout);
-		}
-	}
-	i = -1;
-	while (++i < vars->pipe)
-	{
-		close(fd[i][1]);
-		close(fd[i][0]);
-	}
-	while (i > 0)
-		waitpid(pid[--i], &status, 0);
-} */
-
-// Doit piper et closer soit l'entrée ou sortie du pipe
 int	check_cd(t_vars *vars, int i)
 {
 	if (!ft_strncmp(vars->cmds[i].cmds[0], "cd", 2))
@@ -114,6 +46,17 @@ int	check_cd(t_vars *vars, int i)
 	else
 		return (0);
 	return (1);
+}
+
+void	check_var(t_vars *vars, int i)
+{
+	int		j;
+
+	j = -1;
+	if (i != vars->pipe - 1)
+		return ;
+	while (vars->cmds[i].cmds[++j])
+		add_variable(vars, vars->cmds[i].cmds[j]);
 }
 
 int	check_built_in(t_vars *vars, int i)
@@ -131,29 +74,30 @@ int	check_built_in(t_vars *vars, int i)
 	return (1);
 }
 
+// check built in, si derniere commande et contient =, ajouter la ou les variables à la linkedlist ,
 void	child_process(t_vars *vars, int i)
 {
 	int		ret;
+	int		j;
 
+	j = -1;
 	ret = 0;
+	while (++j < (vars->pipe - 1) * 2)
+		close(vars->fd[j]);
+	ft_is_redirector(vars, i);
 	if (!vars->cmds || !vars->cmds[i].cmds[0])
 		exit(127);
 	ret = check_built_in(vars, i);
-	if (ret == 1)
-		exit(0);
+	if (ret)
+		exit(ret);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
 	else
 		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
-	if (dup2(vars->cmds[i].fdin, STDOUT_FILENO) < 0)
-		return ;
-	if (dup2(vars->cmds[i].fdout, STDIN_FILENO) < 0)
-		return ;
 	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
 	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(")\n", STDERR_FILENO);
-	exit(ret);
 }
 
 void	execute_command(t_vars *vars, int i)
@@ -161,21 +105,25 @@ void	execute_command(t_vars *vars, int i)
 	vars->cmds[i].pid = fork();
 	if (vars->cmds[i].pid < 0)
 		return ;
-	else if (vars->cmds[i].pid == 0)
+	if (vars->cmds[i].pid == 0)
 	{
-		ft_is_redirector(vars, i);
-		child_process(vars, i);
-	}
-	else
-	{
-		if (vars->pipe > 1)
+		if (i != 0)
 		{
-			close(vars->cmds[i].fdin);
-			if (vars->cmds[i + 1].index == vars->pipe)
-				close(vars->cmds[i].fdout);
+			if (dup2(vars->fd[(i - 1) * 2], STDIN_FILENO) < 0)
+			{
+				perror("Couldn't dup2 standard input fd\n");
+				return ;
+			}
 		}
-		if (vars->cmds[i].index != 0)
-			close(vars->cmds[i - 1].fdout);
+		if (i < vars->pipe - 1)
+		{
+			if (dup2(vars->fd[i * 2 + 1], STDOUT_FILENO) < 0)
+			{
+				perror("Couldn't dup2 standard output fd\n");
+				return ;
+			}
+		}
+		child_process(vars, i);
 	}
 }
 
@@ -185,19 +133,29 @@ void	execute(t_vars *vars)
 	int	i;
 	int	ret;
 
-	i = 0;
+	i = -1;
+	ret = 0;
+	vars->fd = malloc(sizeof(int) * (vars->pipe -1) * 2);
 	split_cmds(vars);
-	while (i < vars->pipe)
+	while (++i < vars->pipe - 1)
+		if (pipe(vars->fd + i * 2) == -1)
+			return ;
+	i = -1;
+	while (++i < vars->pipe)
 	{
+		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
+			check_var(vars, i);
 		ret = check_cd(vars, i);
 		if (ret != 1)
 			execute_command(vars, i);
-		i++;
 	}
-	i = 0;
-	while (i < vars->pipe)
-	{
+	i = -1;
+	while (++i < (vars->pipe - 1) * 2)
+		close(vars->fd[i]);
+	i = -1;
+	i = -1;
+	while (++i < vars->pipe)
 		waitpid(vars->cmds[i].pid, &status, 0);
-		i++;
-	}
+	free(vars->fd);
+	//vars->exit_status = status; ou créer une variable $? 
 }
