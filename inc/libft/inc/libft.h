@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:17:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 13:27:24 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/19 15:28:02 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
-# include "get_next_line.h"
+# include <fcntl.h>
 
 typedef struct s_list
 {
@@ -74,5 +74,8 @@ int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+//Add-ons
+char	*get_next_line(int fd);
 
 #endif 
