@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/15 16:07:13 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/16 12:48:59 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,7 @@ void	echo(t_vars *vars, int i)
 		nl = 0;
 	while (vars->cmds[i].cmds[j] != NULL)
 	{
-		if (vars->cmds[i].cmds[j][0] == '$'
-			&& vars->cmds[i].cmds[j][1] != '\0')
-		{
-			if (get_variable(vars, vars->cmds[i].cmds[j]) != NULL)
-				printf("%s", get_variable(vars, vars->cmds[i].cmds[j]));
-		}
-		else
-			printf("%s", vars->cmds[i].cmds[j]);
+		printf("%s", vars->cmds[i].cmds[j]);
 		j++;
 		if (vars->cmds[i].cmds[j] != NULL)
 			printf(" ");
@@ -164,7 +157,7 @@ void	cd(t_vars *vars, char *input)
 		new_path = ft_strchr(getenv("HOME="), '/');
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
-	else if (input[0] == '$')
+	else if (input[0] == 36)
 	{
 		if (get_variable(vars, input) == NULL)
 			new_path = ft_strchr(getenv("HOME="), '/');

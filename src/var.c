@@ -6,12 +6,13 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/15 15:58:14 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 08:59:16 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+// afficher env si !varible sinon export variable if variable existe || variable définie au moment d'export
 void	export_to_env(t_vars *vars, char *variable)
 {
 	int		i;
@@ -75,57 +76,34 @@ int	add_variable(t_vars *vars, char *variable)
 	{
 		while (variable[nlen] != '=')
 			nlen++;
-		while (vars->env[j] && ft_strncmp(vars->env[j], variable, nlen))
-			j++;
-		if (!vars->env[j])
-		{
-			ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
+		if (variable[nlen] == '\0')
+			return (0);
+		ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
 				ft_strndup(variable, nlen)));
-			return (1);
-		}
-		else
-		{
-			vars->env[j] = variable;
-			return (1);
-		}
 	}
-	return (0);
+	return (1);
 }
 
-char	*get_variable(t_vars *vars, char *var)
+char	*get_variable(t_vars *vars, char *dolvar)
 {
+	int	len;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	len = dolvar_len(&dolvar[1]);
+	while (vars->env[i])
+	{
+		if (!ft_strncmp(&dolvar[1], vars->env[i], len))
+			return (&vars->env[i][len + 2]);
+		i++;
+	}
 	while (vars->var != NULL)
 	{
-		if (!ft_strncmp(&var[1], vars->var->name, ft_strlen(&var[1])))
-		{
+		if (!ft_strncmp(&dolvar[1], vars->var->name, len))
 			return (vars->var->content);
-		}
 		vars->var = vars->var->next;
 	}
 	return (NULL);
 }
-
-/* char	*get_variable(t_vars *vars, char *variable)
-{
-	char	*var;
-	int		varlen;
-	int		i;
-
-	i = -1;
-	varlen = 0;
-	if (!variable || !variable[1])
-		return (NULL);
-	var = &variable[1];
-	while (var[varlen] && var[varlen] != ' ')
-		varlen++;
-	while (vars->env[++i])
-		if (!ft_strncmp(vars->env[i], var, varlen))
-			return (vars->env[i]);
-	while (vars->var && vars->var->content)
-	{
-		if (!ft_strncmp(vars->var->content, var, varlen))
-			return (vars->var->content);
-		vars->var = vars->var->next;
-	}
-	return (NULL);
-} */

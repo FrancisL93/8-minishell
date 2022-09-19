@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/15 09:09:14 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 08:21:55 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline(vars.prompt);
 		while (input)
 		{
-			if (!ft_strncmp("exit", tolower_str(input, 0), 4))
+			if (!ft_strncmp("exit", input, 4))
 				quit_terminal(&vars, vars.var);
 			if (input && *input)
 				add_history(input);

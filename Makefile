@@ -6,7 +6,7 @@
 #    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/09/15 09:43:49 by anhebert         ###   ########.fr        #
+#    Updated: 2022/09/16 08:38:42 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 SRC = src/main.c \
 		src/exe.c \
-		src/exe_tools.c src/pipe_tools.c \
+		src/exe_tools.c src/cmds_tools.c \
 		src/lexer.c src/tools.c src/var.c\
 		src/built_in.c src/built_in_tools.c \
 		src/quit_clean.c src/list_tools.c

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/15 14:09:28 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 08:02:31 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	inquoteslen(int i, char *input, char c)
 {
 	int		varlen;
 
-	varlen = 0;
+	varlen = 1;
 	while (input[i])
 	{	
 		if (input[i] == c)
@@ -94,7 +94,8 @@ void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 	ind->j++;
 }
 
-// Sépare les tokens selon les '', "", ou ' '
+// Garder les ' ' " " dans les tokens et $
+// Sépare les tokens selon les '', "", ' ' et laisser $ dans les strings
 void	new_token(char *in, t_vars *vars, t_indexes i)
 {
 	while (in[i.i])
@@ -107,19 +108,17 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 		{
 			i.i += inquoteslen(i.i + 1, in, in[i.i]);
 			if (i.i != i.ii)
-			{
-				i.ii ++;
 				tokenizer(vars, &i, in);
-			}
-			i.i++;
+			else
+				i.i++;
 		}
 		else if (in[i.i] == ' ')
 			i.i++;
-		else
+		else if (in[i.i] != '\0')
 		{
 			while (in[i.i + 1] != ' ' && in[i.i + 1] != 39 && in[i.i + 1] != '"'
-				&& in[i.i] != '\0' && in[i.i + 1] != '<' && in[i.i + 1] != '>'
-				&& in[i.i + 1] != '|' && in[i.i + 1] != '$')
+				&& in[i.i + 1] != '\0' && in[i.i + 1] != '<' && in[i.i + 1] != '>'
+				&& in[i.i + 1] != '|')
 				i.i++;
 			tokenizer(vars, &i, in);
 		}

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/14 11:35:12 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/16 15:45:39 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,16 @@ char	*get_cmd(char *input)
 		i++;
 	}
 	return (cmd);
+}
+
+size_t	ft_str_len(const char *str)
+{
+	int	size;
+
+	size = 0;
+	if (!str || str[0] == '\0')
+		return (0);
+	while (str[size])
+		size++;
+	return (size);
 }

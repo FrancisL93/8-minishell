@@ -149,6 +149,8 @@ void	execute(t_vars *vars)
 	i = -1;
 	while (++i < vars->pipe)
 	{
+		if (!vars->cmds[i]. cmds[0])
+			break ;
 		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret != 1)

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/15 15:59:06 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/16 14:28:17 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,14 @@ void	split_cmds(t_vars *vars);
 //quit_clean.c
 void	quit_terminal(t_vars *vars, t_list *variables);
 void	clean_command(t_vars *vars, char *input);
-void 	free_redir(t_vars *vars, int i, int ii);
+void	free_redir(t_vars *vars, int i, int ii);
 
 //tools.c
 char	*tolower_str(char *str, int capital);
 void	set_prompt(t_vars *vars);
 int		ft_strichr(const char *s, int c);
 char	*get_cmd(char *input);
+size_t	ft_str_len(const char *str);
 
 //var.c
 void	export_to_env(t_vars *vars, char *variable);
@@ -139,6 +140,7 @@ int		add_variable(t_vars *vars, char *variable);
 char	*get_variable(t_vars *vars, char *variable);
 char	*use_variable(t_vars *vars, char *var);
 t_list	*ft_lst_new(void *content, void *name);
+int		dolvar_len(char *token);
 void	ft_lst_add_front(t_list **lst, t_list *new1);
 char	*ft_str_dup(const char *str);
 
