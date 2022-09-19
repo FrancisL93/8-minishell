@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/16 12:48:59 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:18:24 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	print_env(t_vars *vars)
 	int	i;
 
 	i = -1;
-	while (vars->env[++i])
+	while (vars->env[++i] != NULL)
 		printf("%s\n", vars->env[i]);
 }
 
@@ -184,7 +184,7 @@ void	cd(t_vars *vars, char *input)
 	free (current_path); */
 }
 
-void	export(t_vars *vars)
+/* void	export(t_vars *vars, char *input)
 {
 	int		i;
 	int		j;
@@ -217,6 +217,42 @@ void	export(t_vars *vars)
 			var = get_variable(vars, vars->token.tokens[j]);
 			export_to_env(vars, get_variable(vars, vars->token.tokens[j]));
 		}
+	}
+	return ;
+} */
+// gérer strings vides, export var=... et changement de valeur de var
+void	export(t_vars *vars, char *input)
+{
+	int		i;
+	int		j;
+	int		init;
+	char	*var;
+
+	i = 0;
+	j = 0;
+	if (input == NULL)
+		return ;
+	init = ft_strichr(input, '=');
+	if (init > 0)
+	{
+		while (vars->env[i] && ft_strncmp(vars->env[i],
+				input, init))
+			i++;
+		if (!vars->env[i])
+		{
+			export_to_env(vars, input, get_variable(vars, input));
+		}
+		else
+		{
+			free(vars->env[i]);
+			vars->env[i] = ft_strdup(input);
+		}
+		i = 0;
+	}
+	else
+	{
+		var = get_variable(vars, input);
+		export_to_env(vars, input, get_variable(vars, input));
 	}
 	return ;
 }

@@ -6,21 +6,30 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 09:30:25 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:19:08 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// afficher env si !varible sinon export variable if variable existe || variable définie au moment d'export
-void	export_to_env(t_vars *vars, char *variable)
+void	export_to_env(t_vars *vars, char *input, char *variable)
 {
 	int		i;
+	char	*new_var;
 	char	**env;
 
 	i = 0;
-	if (!variable)
-		return ;
+	if (!variable && ft_strichr(input, '=') == -1)
+	{
+		if (get_variable(vars, input) != NULL)
+			new_var = ft_strjoin(input, "=");
+		else
+			return ;
+	}
+	else if (!variable && ft_strichr(input, '='))
+		new_var = input;
+	else
+		new_var = ft_strjoin(ft_strjoin(input, "="), variable);
 	while (vars->env[i])
 		i++;
 	env = malloc(sizeof(char **) * (i + 2));
@@ -31,11 +40,12 @@ void	export_to_env(t_vars *vars, char *variable)
 		free(vars->env[i]);
 	}
 	free(vars->env);
+	env[i] = new_var;
+	env[i + 1] = NULL;
 	vars->env = malloc(sizeof(char **) * (i + 2));
 	i = -1;
-	while (env[++i])
+	while (env[++i] != NULL)
 		vars->env[i] = ft_strdup(env[i]);
-	vars->env[i++] = ft_strdup(variable);
 	vars->env[i] = NULL;
 }
 
@@ -65,12 +75,15 @@ char	*use_variable(t_vars *vars, char *var)
 	}
 }
 
+// modifier la variable si elle se trouve dans env
 int	add_variable(t_vars *vars, char *variable)
 {
 	int	nlen;
+	int	i;
 	int	j;
 
 	nlen = 0;
+	i = 0;
 	j = 0;
 	if (variable != NULL)
 	{
@@ -80,6 +93,13 @@ int	add_variable(t_vars *vars, char *variable)
 			return (0);
 		ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
 				ft_strndup(variable, nlen)));
+		while (vars->env[i] != NULL && ft_strncmp(variable, vars->env[i], nlen))
+			i++;
+		if (vars->env[i] != NULL)
+		{
+			free(vars->env[i]);
+			vars->env[i] = ft_str_dup(variable);
+		}
 	}
 	return (1);
 }
@@ -92,16 +112,22 @@ char	*get_variable(t_vars *vars, char *dolvar)
 
 	i = 0;
 	j = 0;
-	len = dolvar_len(&dolvar[1]);
+	if (dolvar[0] != 36)
+		len = ft_strlen(dolvar);
+	else
+	{
+		len = dolvar_len(&dolvar[1]);
+		j = 1;
+	}
 	while (vars->env[i] != NULL)
 	{
-		if (!ft_strncmp(&dolvar[1], vars->env[i], len))
+		if (!ft_strncmp(&dolvar[j], vars->env[i], len))
 			return (&vars->env[i][len + 2]);
 		i++;
 	}
 	while (vars->var != NULL)
 	{
-		if (!ft_strncmp(&dolvar[1], vars->var->name, len))
+		if (!ft_strncmp(&dolvar[j], vars->var->name, len))
 			return (vars->var->content);
 		vars->var = vars->var->next;
 	}

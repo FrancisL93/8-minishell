@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/16 14:28:17 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:15:48 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	cd(t_vars *vars, char *input);
 void	print_env(t_vars *vars);
 void	print_path(void);
 void	echo(t_vars *vars, int i);
-void	export(t_vars *vars);
+void	export(t_vars *vars, char *input);
 
 //built_in_tools.c
 void	set_pwd(t_vars *vars, char *oldpath);
@@ -135,7 +135,7 @@ char	*get_cmd(char *input);
 size_t	ft_str_len(const char *str);
 
 //var.c
-void	export_to_env(t_vars *vars, char *variable);
+void	export_to_env(t_vars *vars, char *input, char *variable);
 int		add_variable(t_vars *vars, char *variable);
 char	*get_variable(t_vars *vars, char *variable);
 char	*use_variable(t_vars *vars, char *var);
