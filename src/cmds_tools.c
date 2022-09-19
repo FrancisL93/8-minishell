@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 08:46:36 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 09:41:17 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i)
 			var = get_variable(vars, &token[i.i]);
 			vars->var = head;
 			i.i += dolvar_len(&token[i.i]);
-			if (vars != NULL)
+			if (var != NULL)
 				while (var[i.ii])
 					cmd[i.j++] = var[i.ii++];
 		}

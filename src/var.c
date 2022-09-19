@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 08:59:16 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 09:30:25 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*get_variable(t_vars *vars, char *dolvar)
 	i = 0;
 	j = 0;
 	len = dolvar_len(&dolvar[1]);
-	while (vars->env[i])
+	while (vars->env[i] != NULL)
 	{
 		if (!ft_strncmp(&dolvar[1], vars->env[i], len))
 			return (&vars->env[i][len + 2]);
