@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/19 10:15:48 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:34:49 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ delimiter is seen. However, it doesn’t have to update the history
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
+# include "libft/inc/libft.h"
 # include "stdio.h"
 # include "readline/readline.h"
 # include "readline/history.h"
 # include "errno.h"
+# include "signal.h"
+# include "sys/ioctl.h"
 
 # define CLEAN "\e[1;1H\e[2J"
 # define BLUE "\e[1;34m"
@@ -109,6 +111,10 @@ char	*ftstrjoin(char *cmd, char *current_path);
 char	*ftstrtrim(char	*current_path);
 char	*check_path(char *cmd, char *current_path);
 
+//cmds_tools.c
+void	split_cmds(t_vars *vars);
+int		dolvar_len(char *token);
+
 //exe.c
 void	execute(t_vars *vars);
 
@@ -116,31 +122,33 @@ void	execute(t_vars *vars);
 char	*get_path(char *cmnd, char **envp);
 char	*ft_strndup(char *str, unsigned int n);
 
+//heredoc.c
+void	check_heredoc(t_vars *vars, int i);
+
 //lexer.c
 void	lexer(char *input, t_vars *vars);
-
-//pipe_tools.c
-void	split_cmds(t_vars *vars);
 
 //quit_clean.c
 void	quit_terminal(t_vars *vars, t_list *variables);
 void	clean_command(t_vars *vars, char *input);
-void	free_redir(t_vars *vars, int i, int ii);
+void 	free_redir(t_vars *vars, int i, int ii);
+
+//signals.c
+void	init_signals(int children);
+void	check_signal(t_vars *vars);
 
 //tools.c
 char	*tolower_str(char *str, int capital);
 void	set_prompt(t_vars *vars);
 int		ft_strichr(const char *s, int c);
 char	*get_cmd(char *input);
-size_t	ft_str_len(const char *str);
 
 //var.c
-void	export_to_env(t_vars *vars, char *input, char *variable);
+void    export_to_env(t_vars *vars, char *input, char *variable);
 int		add_variable(t_vars *vars, char *variable);
 char	*get_variable(t_vars *vars, char *variable);
 char	*use_variable(t_vars *vars, char *var);
 t_list	*ft_lst_new(void *content, void *name);
-int		dolvar_len(char *token);
 void	ft_lst_add_front(t_list **lst, t_list *new1);
 char	*ft_str_dup(const char *str);
 

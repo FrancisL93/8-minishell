@@ -115,6 +115,7 @@ void	child_process(t_vars *vars, int i)
 	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(")\n", STDERR_FILENO);
+	exit(0);
 }
 
 void	execute_command(t_vars *vars, int i)
@@ -124,6 +125,7 @@ void	execute_command(t_vars *vars, int i)
 		return ;
 	if (vars->cmds[i].pid == 0)
 	{
+		init_signals(1);
 		if (i != 0)
 		{
 			if (dup2(vars->fd[(i - 1) * 2], STDIN_FILENO) < 0)
@@ -142,6 +144,7 @@ void	execute_command(t_vars *vars, int i)
 		}
 		child_process(vars, i);
 	}
+		init_signals(2);
 }
 
 void	execute(t_vars *vars)
@@ -180,4 +183,5 @@ void	execute(t_vars *vars)
 		waitpid(vars->cmds[i].pid, &status, 0);
 	free(vars->fd);
 	//vars->exit_status = status; ou créer une variable $? 
+	init_signals(0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:17:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/15 14:15:28 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:27:24 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
-# include <fcntl.h>
-# include <limits.h>
+# include "get_next_line.h"
 
 typedef struct s_list
 {
@@ -35,7 +34,6 @@ char	*ft_strrchr(const char *s, int c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f) (unsigned int, char));
-char	*get_next_line(int fd);
 char	**ft_split(char const *s, char c);
 
 int		ft_isalpha(int c);
@@ -67,8 +65,8 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_calloc(size_t count, size_t size);
 void	*ft_memset(void *b, int c, size_t len);
 
-void	ft_lstadd_front(t_list **lst, t_list *new1);
-void	ft_lstadd_back(t_list **lst, t_list *new1);
+void	ft_lstadd_front(t_list **lst, t_list *new);
+void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void*));

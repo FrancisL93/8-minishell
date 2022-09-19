@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 11:03:52 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/19 13:31:18 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	init_struct(t_vars *vars, char **envp)
 		vars->env[i] = ft_strdup(envp[i]);
 	vars->env[i] = NULL;
 	set_prompt(vars);
+	init_signals(0);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/09/16 08:38:42 by anhebert         ###   ########.fr        #
+#    Updated: 2022/09/19 13:29:50 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,16 +17,19 @@ SRC = src/main.c \
 		src/exe_tools.c src/cmds_tools.c \
 		src/lexer.c src/tools.c src/var.c\
 		src/built_in.c src/built_in_tools.c \
-		src/quit_clean.c src/list_tools.c
+		src/quit_clean.c src/list_tools.c \
+		src/heredoc.c src/signals.c
 
-LIBFTA = inc/libft.a
+LIBFT = inc/libft
+LIBFTA = inc/libft/libft.a
+LIBREADLINE = inc/readline/libhistory.a inc/readline/libreadline.a
 
 S = src/
 O = obj/
 I = inc/
 
 CC = gcc
-CFLAGS += -Wall -Wextra -Werror -g
+CFLAGS += -Wall -Wextra -Werror
 CFLAGS += -I$I
 LDFLAGS +=
 
@@ -37,37 +40,59 @@ RMDIR = /bin/rm -rf
 
 all: $(NAME)
 
-$O:
+
+$O: #Create obj directory
 	@mkdir $@
 	@echo "\033[0;32mGenerating objects...\033[0m"
 
 $(OBJ): | $O
 
-$(OBJ): $O%.o: $S%
+$(OBJ): $O%.o: $S% #Build objectfs $< take the name on the right of ":", $@ take the name on the left of ":"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ)
+$(LIBFTA): #Compile Liibft
+	@echo "\033[0;32mCompiling libft...\033[0m"
+	@make -C $(LIBFT)
+	@make clean -C $(LIBFT)
+	@echo "\033[0;32mLibft compiled!\033[0m"
+	
+$(NAME): $(LIBFTA) $(OBJ) #Libft will compile only once, use "make libft" to recompile
 	@echo "\033[0;32mCompiling minishell...\033[0m"
-	@$(CC) -lreadline $(LIBFTA) $(OBJ) -o $(NAME)
+	@$(CC) $(CFLAGS) $(LIBREADLINE) $(LIBFTA) $(OBJ) -o $(NAME) -lreadline -lcurses
 	@echo "\033[0;32mMinishell compiled! Execute as: ./minishell\033[0m"
 	
-cleanobj:
+cleanobj: #Delete .o files in obj directory
 	@$(RM) $(wildcard $(OBJ))
 
-cleanobjdir: cleanobj
+cleanobjdir: cleanobj #Delete obj directory
 	@$(RMDIR) $O
 
-clean: cleanobjdir
+clean: cleanobjdir #Delete obj directory and content
 	@echo "\033[0;31mObjects deleted!\033[0m"
 
-fclean: clean
+fclean: clean #Delete objects and executable
 	@$(RM) $(NAME)
 	@echo "\033[0;31mExecutable deleted!\033[0m"
 
-re: fclean
+fclean-all: fclean #Delete objects, executable, and libft
+	@make fclean -C $(LIBFT)
+	@echo "\033[0;31mLibft deleted!\033[0m"
+
+re: fclean #Delete all and rebuild executable
 	@make
 
-exe: $(NAME)
+libft: #Rebuild libft
+	@echo "\033[0;31mLibft deleted!\033[0m"
+	@make re -C $(LIBFT)
+	@make clean -C $(LIBFT)
+	@echo "\033[0;32mLibft recompiled!\033[0m"
+
+debug: $(LIBFTA) $(OBJ) #Compile for debugger
+	@echo "\033[0;32mCompiling minishell...\033[0m"
+	@$(CC) $(CFLAGS) $(LIBREADLINE) $(LIBFTA) $(OBJ) -o $(NAME) -lreadline -lcurses
+	@echo "\033[0;32mMinishell compiled! Execute as: ./minishell\033[0m"
+	
+exe: $(NAME) #Execute program
 	./$(NAME)
 
 gitupdate:
@@ -75,33 +100,30 @@ gitupdate:
 	printf '\nEnter Branch Name (Press Enter For All Branches): ' && \
 	read BRANCH && git $$PULLFETCH origin $$BRANCH
 
-#Clean repo before adding files
-gitadd: fclean
+gitadd: fclean #Clean repo before adding files to git
 	git add *
 
-#Commit modifications locally before push, takes user input for commit's name
-gitcommit: gitadd
+gitcommit: gitadd #Commit modifications locally before push, takes user input for commit's name
 	@printf '\nEnter Commit Name: '
 	@read COMMIT && git commit -m $$COMMIT
 
-#Push commit to remote repo
-gitpush: gitcommit
+gitpush: gitcommit #Push commit to remote repo
 	@printf '\nEnter Branch To Push (Press Enter For ALL): '
 	@read PUSH && git push origin $$PUSH && git push gitmini $$PUSH
 
-#Merge specific branch to current branch
-gitmerge:
+gitmerge: #Merge specific branch to current branch
 	@printf '\nEnter Branch To Merge With (Press Enter To Merge ALL): '
 	@read MERGE && git merge $$MERGE && git merge $$MERGE
 
-#Fetch to update branches without merging with local repo
-gitfetch:
+gitfetch: #Fetch to update branches without merging with local repo
 	@printf '\nEnter Branch To Fetch (Press Enter For All Branches): '
 	@read FETCH && git fetch origin $$FETCH
 	
-#Pull to overwrite local data if repo is different
-gitpull:
+gitpull: #Pull to overwrite local data if repo is different
 	@printf '\nEnter Branch To Pull (Press Enter For All Branches): '
 	@read PULL && git pull origin $$FETCH
+
+list: 	#Show all make rules
+	@grep '^[^#[:space:]].*:' Makefile
 
 .PHONY: all clean fclean re
