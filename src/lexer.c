@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 08:02:31 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/20 11:03:32 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,24 @@ int	inquoteslen(int i, char *input, char c)
 	return (0);
 }
 
+void	var_len(t_indexes *i, char *in)
+{
+	while (in[i->i + 1] != '\0' && in[i->i + 1] != ' ')
+	{
+		i->i++;
+		if (in[i->i] == 34)
+		{
+			i->i++;
+			i->i += inquoteslen(i->i, in, 34);
+		}
+		if (in[i->i] == 39)
+		{
+			i->i++;
+			i->i += inquoteslen(i->i, in, 39);
+		}
+	}
+}
+
 //Compte le nombre de 'tokens' se trouvant entre double quotes, single quotes et espaces
 void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
 {
@@ -69,6 +87,8 @@ void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
 				&& input[ind.i] != '>' && input[ind.i] != '|')
 			{
 				ind.i++;
+				if (input[ind.i] == '=')
+					var_len(&ind, input);
 				if (input[ind.i] == '\0')
 					break ;
 			}
@@ -119,7 +139,11 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 			while (in[i.i + 1] != ' ' && in[i.i + 1] != 39 && in[i.i + 1] != '"'
 				&& in[i.i + 1] != '\0' && in[i.i + 1] != '<' && in[i.i + 1] != '>'
 				&& in[i.i + 1] != '|')
+			{
 				i.i++;
+				if (in[i.i] == '=')
+					var_len(&i, in);
+			}
 			tokenizer(vars, &i, in);
 		}
 	}

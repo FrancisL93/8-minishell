@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/06 14:01:01 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/20 13:21:38 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void	set_pwd(t_vars *vars, char *oldpath)
 		i++;
 	if (vars->env[i])
 		vars->env[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
+	if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
+	{
+		export(vars, ft_strjoin("OLDPWD=", oldpath));
+		return ;
+	}
 	i = 0;
 	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))
 		i++;

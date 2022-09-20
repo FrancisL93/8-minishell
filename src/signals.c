@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:41:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 15:07:12 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/20 13:58:39 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void	sig_handler(int sig)
 	}
 }
 
-
 void	init_signals(int children)
 {
 	struct sigaction	sa;
+
 	if (children == 2)
 		sa.sa_handler = &sig_handler_parent;
 	else if (children == 1)

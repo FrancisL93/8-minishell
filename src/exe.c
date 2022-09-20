@@ -144,7 +144,7 @@ void	execute_command(t_vars *vars, int i)
 		}
 		child_process(vars, i);
 	}
-		init_signals(2);
+	init_signals(2);
 }
 
 void	execute(t_vars *vars)

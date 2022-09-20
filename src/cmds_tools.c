@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 13:34:15 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/20 11:04:35 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,47 +52,43 @@ int	dolvar_len(char *token)
 	return (len);
 }
 
-int	token_len(char *token, t_vars *vars, char sep)
+void	token_len(char *token, t_vars *vars, char sep, int *len)
 {
-	int		len;
 	int		i;
 	t_list	*head;
 
-	len = 0;
 	i = 0;
 	head = vars->var;
 	if (sep == 39)
-		while (token[len] != 39)
-			len++;
+		while (token[*len] != 39)
+			*len += 1;
 	else
 	{
 		while (token[i] && token[i] != 34)
 		{
 			if (token[i] == 36)
 			{
-				len += dolvar_len(get_variable(vars, &token[len]));
+				*len += dolvar_len(get_variable(vars, &token[*len]));
 				vars->var = head;
 				while (token[i] && token[i] != ' ' && token[i] != 34)
 					i++;
 			}
 			else
 			{
-				len++;
+				*len += 1;
 				i++;
 			}
 		}
 	}
-	return (len);
 }
 
-char	*split_db_quotes(char *token, t_vars *vars, t_indexes i)
+char	*split_db_quotes(char *token, t_vars *vars, t_indexes i, int len)
 {
-	int		len;
 	char	*cmd;
 	char	*var;
 	t_list	*head;
 
-	len = token_len(&token[1], vars, token[0]);
+	token_len(&token[1], vars, token[0], &len);
 	cmd = ft_calloc(sizeof(char), len + 1);
 	head = vars->var;
 	while (token[i.i] != 34)
@@ -113,26 +109,24 @@ char	*split_db_quotes(char *token, t_vars *vars, t_indexes i)
 	return (cmd);
 }
 
-char	*split_quotes(char *token, t_vars *vars, t_indexes i)
+char	*split_quotes(char *token, t_vars *vars, t_indexes i, int len)
 {
-	int		len;
 	char	*cmd;
 
-	len = token_len(&token[1], vars, token[0]);
+	token_len(&token[1], vars, token[0], &len);
 	cmd = malloc(sizeof(char) * len + 1);
 	while (token[i.i] != 39)
 		cmd[i.j++] = token[i.i++];
 	return (cmd);
 }
 
-char	*split_tokens(char *token, t_vars *vars, t_indexes i)
+char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 {
-	int		len;
 	char	*cmd;
 	char	*var;
 	t_list	*head;
 
-	len = token_len(token, vars, token[0]);
+	token_len(token, vars, token[0], &len);
 	if (len == 0)
 		return (NULL);
 	cmd = ft_calloc(sizeof(char), len + 1);
@@ -140,7 +134,9 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i)
 	while (token[i.i])
 	{
 		i.ii = 0;
-		if (token[i.i] == 36)
+		if (token[i.i] == 34 || token[i.i] == 39)
+			i.i++;
+		else if (token[i.i] == 36)
 		{
 			var = get_variable(vars, &token[i.i]);
 			vars->var = head;
@@ -158,24 +154,23 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i)
 char	*subsubsplit(t_vars *vars, int *j)
 {
 	t_indexes	i;
+	int			len;
 
 	i.j = 0;
 	i.i = 1;
-	if (!vars->token.tokens[*j])
-		return (NULL);
-	if (*j > vars->nb_tokens)
-		return (NULL);
-	if (!ft_strncmp(vars->token.tokens[*j], "|", 1))
+	len = 0;
+	if (!vars->token.tokens[*j] || *j > vars->nb_tokens
+		|| !ft_strncmp(vars->token.tokens[*j], "|", 1))
 		return (NULL);
 	if (vars->token.tokens[*j][0] == 39 || vars->token.tokens[*j][0] == 34)
 	{
 		if (vars->token.tokens[*j][0] == 39)
-			return (split_quotes(vars->token.tokens[*j], vars, i));
+			return (split_quotes(vars->token.tokens[*j], vars, i, len));
 		else if (vars->token.tokens[*j][0] == 34)
-			return (split_db_quotes(vars->token.tokens[*j], vars, i));
+			return (split_db_quotes(vars->token.tokens[*j], vars, i, len));
 	}
 	i.i = 0;
-	return (split_tokens(vars->token.tokens[*j], vars, i));
+	return (split_tokens(vars->token.tokens[*j], vars, i, len));
 }
 
 char	**subsplit(t_vars *vars, int *j, int index)

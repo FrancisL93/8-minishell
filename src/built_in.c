@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/19 11:18:24 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/20 08:55:33 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,6 @@
 
 // utiliser ft_putstr_fd plutot que printf et envoyer dans le outfile
 
-// echo (Implementer $ sign)
-/* void	print_echo(char *str)
-{
-	int	n_l;
-	int	i;
-
-	i = 5;
-	n_l = 1;
-	while (str[i] == ' ')
-		i++;
-	if (str[i] == '-' && str[i + 1] == 'n')
-	{
-		n_l = 0;
-		i += 2;
-	}
-	while (str[i] == ' ')
-		i++;
-	while (str[i])
-	{
-		while (str[i] == ' ' && str[i + 1] == ' ')
-			i++;
-		if (str[i] == ' ' && str[i + 1] == '\0')
-			break ;
-		printf("%c", str[i]);
-		i++;
-	}
-	if (n_l == 1)
-		printf("\n");
-} */
 int	check_flag(char *flag)
 {
 	int	i;
@@ -69,32 +40,6 @@ int	check_flag(char *flag)
 	}
 	return (0);
 }
-
-/* void	echo(t_vars *vars, int i)
-{
-	int	j;
-	int	nl;
-
-	j = 1;
-	nl = 1;
-	while (check_flag(vars->cmds[i].cmds[j]) == 1)
-		j++;
-	if (j != 1)
-		nl = 0;
-	while (vars->cmds[i].cmds[j] != NULL)
-	{
-		if (vars->cmds[i].cmds[j + 1] == NULL && nl == 1)
-		{
-			if (nl == 1)
-				printf("%s\n", vars->cmds[i].cmds[j]);
-			else if (nl == 0)
-				printf("%s", vars->cmds[i].cmds[j]);
-			break ;
-		}
-		printf("%s ", vars->cmds[i].cmds[j]);
-		j++;
-	}
-} */
 
 void	echo(t_vars *vars, int i)
 {
@@ -157,13 +102,13 @@ void	cd(t_vars *vars, char *input)
 		new_path = ft_strchr(getenv("HOME="), '/');
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
-	else if (input[0] == 36)
+/* 	else if (input[0] == 36)
 	{
 		if (get_variable(vars, input) == NULL)
 			new_path = ft_strchr(getenv("HOME="), '/');
 		else
 			new_path = get_variable(vars, input);
-	}
+	} */
 	else if (ftstrnstr(current_path, input) != 0)
 		new_path = input;
 	else if (ft_strlen(input) == 1 && input[0] == '/')
@@ -184,75 +129,35 @@ void	cd(t_vars *vars, char *input)
 	free (current_path); */
 }
 
-/* void	export(t_vars *vars, char *input)
-{
-	int		i;
-	int		j;
-	int		init;
-	char	*var;
-
-	i = 0;
-	j = 0;
-	while (vars->token.tokens[++j] != NULL)
-	{
-		if (!vars->token.tokens[j])
-			return ;
-		init = ft_strichr(vars->token.tokens[j], '=');
-		if (init > 0)
-		{
-			while (vars->env[i] && ft_strncmp(vars->env[i],
-					vars->token.tokens[j], init))
-				i++;
-			if (!vars->env[i])
-				export_to_env(vars, vars->token.tokens[j++]);
-			else
-			{
-				free(vars->env[i]);
-				vars->env[i] = ft_strdup(vars->token.tokens[j++]);
-			}
-			i = 0;
-		}
-		else if (vars->token.tokens[j][0] == '$')
-		{
-			var = get_variable(vars, vars->token.tokens[j]);
-			export_to_env(vars, get_variable(vars, vars->token.tokens[j]));
-		}
-	}
-	return ;
-} */
-// gérer strings vides, export var=... et changement de valeur de var
 void	export(t_vars *vars, char *input)
 {
 	int		i;
-	int		j;
 	int		init;
 	char	*var;
+	t_list	*head;
 
-	i = 0;
-	j = 0;
+	head = vars->var;
 	if (input == NULL)
 		return ;
 	init = ft_strichr(input, '=');
 	if (init > 0)
 	{
+		i = 0;
 		while (vars->env[i] && ft_strncmp(vars->env[i],
 				input, init))
 			i++;
 		if (!vars->env[i])
-		{
 			export_to_env(vars, input, get_variable(vars, input));
-		}
 		else
 		{
 			free(vars->env[i]);
 			vars->env[i] = ft_strdup(input);
 		}
-		i = 0;
 	}
 	else
 	{
 		var = get_variable(vars, input);
 		export_to_env(vars, input, get_variable(vars, input));
 	}
-	return ;
+	vars->var = head;
 }

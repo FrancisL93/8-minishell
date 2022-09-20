@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 12:19:08 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/20 13:43:09 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 void	export_to_env(t_vars *vars, char *input, char *variable)
 {
 	int		i;
+	int		ii;
 	char	*new_var;
 	char	**env;
 
 	i = 0;
+	ii = 0;
 	if (!variable && ft_strichr(input, '=') == -1)
 	{
 		if (get_variable(vars, input) != NULL)
@@ -30,17 +32,18 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 		new_var = input;
 	else
 		new_var = ft_strjoin(ft_strjoin(input, "="), variable);
-	while (vars->env[i])
+	while (vars->env[i] != NULL)
 		i++;
 	env = malloc(sizeof(char **) * (i + 2));
 	i = -1;
-	while (vars->env[++i])
+	while (vars->env[++i] != NULL)
 	{
-		env[i] = ft_strdup(vars->env[i]);
+		if (vars->env[i + 1] == NULL)
+			env[ii++] = new_var;
+		env[ii++] = ft_strdup(vars->env[i]);
 		free(vars->env[i]);
 	}
 	free(vars->env);
-	env[i] = new_var;
 	env[i + 1] = NULL;
 	vars->env = malloc(sizeof(char **) * (i + 2));
 	i = -1;
@@ -122,7 +125,7 @@ char	*get_variable(t_vars *vars, char *dolvar)
 	while (vars->env[i] != NULL)
 	{
 		if (!ft_strncmp(&dolvar[j], vars->env[i], len))
-			return (&vars->env[i][len + 2]);
+			return (&vars->env[i][len + 1]);
 		i++;
 	}
 	while (vars->var != NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/19 13:31:18 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/09/20 13:29:38 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 int	init_struct(t_vars *vars, char **envp)
 {
 	int	i;
+	int	ii;
+	int	lev;
 
 	i = 0;
 	vars->var = malloc(sizeof(*vars->var));
@@ -26,9 +28,17 @@ int	init_struct(t_vars *vars, char **envp)
 		i++;
 	vars->env = malloc(sizeof(char **) * (i + 1));
 	i = -1;
+	ii = 0;
 	while (envp[++i])
-		vars->env[i] = ft_strdup(envp[i]);
+	{
+		if (!ft_strncmp("OLDPWD", envp[i], 6))
+			i++;
+		vars->env[ii] = ft_strdup(envp[i]);
+		ii++;
+	}
 	vars->env[i] = NULL;
+	lev = ft_atoi(get_variable(vars, "SHLVL"));
+	export(vars, ft_strjoin("SHLVL=", ft_itoa(lev += 1)));
 	set_prompt(vars);
 	init_signals(0);
 	return (0);
