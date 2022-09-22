@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/20 13:43:09 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:41:41 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 	vars->env = malloc(sizeof(char **) * (i + 2));
 	i = -1;
 	while (env[++i] != NULL)
+	{
 		vars->env[i] = ft_strdup(env[i]);
+		free(env[i]);
+	}
+	free(env);
 	vars->env[i] = NULL;
 }
 

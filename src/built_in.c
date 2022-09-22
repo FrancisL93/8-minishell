@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/20 08:55:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/20 14:50:32 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-// utiliser ft_putstr_fd plutot que printf et envoyer dans le outfile
-
-int	check_flag(char *flag)
-{
-	int	i;
-
-	i = 0;
-	while (flag[i])
-	{
-		if (flag[0] != '-')
-			return (0);
-		i++;
-		if (flag[1] != 'n')
-			return (0);
-		i++;
-		if (flag[2] == '\0')
-			return (1);
-		if (flag[2] != 'n' && flag[2] != ' ')
-			return (0);
-		while (flag[i] == 'n')
-		{
-			i++;
-			if (flag[i] == ' ' || flag[i] == '\0')
-				return (1);
-		}
-	}
-	return (0);
-}
 
 void	echo(t_vars *vars, int i)
 {
@@ -68,7 +39,6 @@ void	echo(t_vars *vars, int i)
 	}
 }
 
-// pwd
 void	print_path(void)
 {
 	char	*buff;
@@ -78,7 +48,6 @@ void	print_path(void)
 	free (buff);
 }
 
-// env
 void	print_env(t_vars *vars)
 {
 	int	i;
@@ -88,7 +57,6 @@ void	print_env(t_vars *vars)
 		printf("%s\n", vars->env[i]);
 }
 
-//cd
 void	cd(t_vars *vars, char *input)
 {
 	char	buff[1024];
@@ -102,13 +70,6 @@ void	cd(t_vars *vars, char *input)
 		new_path = ft_strchr(getenv("HOME="), '/');
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
-/* 	else if (input[0] == 36)
-	{
-		if (get_variable(vars, input) == NULL)
-			new_path = ft_strchr(getenv("HOME="), '/');
-		else
-			new_path = get_variable(vars, input);
-	} */
 	else if (ftstrnstr(current_path, input) != 0)
 		new_path = input;
 	else if (ft_strlen(input) == 1 && input[0] == '/')
@@ -117,16 +78,10 @@ void	cd(t_vars *vars, char *input)
 		new_path = ftstrjoin(input, current_path);
 	if (chdir(new_path) != 0)
 	{
-		//free(new_path);
 		printf("Not a directory\n");
 		return ;
 	}
-	//free(new_path);
 	set_pwd(vars, oldpath);
-	// Faire une fonction pour tout free
-/*	free (new_path);
-	free (cmd);
-	free (current_path); */
 }
 
 void	export(t_vars *vars, char *input)
