@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 09:27:45 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:04:21 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	set_prompt(t_vars *vars)
 	i = ft_strlen(prompt) - 1;
 	while (prompt[i] != '/')
 		i--;
-	tmp = ft_strjoin("\e[1;34m", &prompt[i]);
+	tmp = ft_strjoin(GREEN, &prompt[i]);
 	vars->prompt = ft_strjoin(tmp, " >> \e[0;37m");
 	free(tmp);
 }
@@ -94,16 +94,4 @@ char	*get_cmd(char *input)
 		i++;
 	}
 	return (cmd);
-}
-
-size_t	ft_str_len(const char *str)
-{
-	int	size;
-
-	size = 0;
-	if (!str || str[0] == '\0')
-		return (0);
-	while (str[size])
-		size++;
-	return (size);
 }

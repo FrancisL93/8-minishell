@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 09:22:34 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:04:44 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 	vars->env = malloc(sizeof(char *) * (i + 2));
 	i = -1;
 	while (env[++i] != NULL)
+	{
 		vars->env[i] = ft_strdup(env[i]);
+		free(env[i]);
+	}
+	free(env);
 	vars->env[i] = NULL;
 }
 
@@ -78,7 +82,6 @@ char	*use_variable(t_vars *vars, char *var)
 	}
 }
 
-// modifier la variable si elle se trouve dans env
 int	add_variable(t_vars *vars, char *variable)
 {
 	int	nlen;

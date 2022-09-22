@@ -12,35 +12,7 @@
 
 #include "../inc/minishell.h"
 
-void	ft_is_redirector(t_vars *vars, int i)
-{
-	int	ii;
-
-	ii = -1;
-	while (vars->args[i][++ii] != NULL)
-	{
-		if (vars->args[i][ii][0] == '>' && vars->args[i][ii + 1][0] == '>')
-		{
-			vars->fd[i * 2 + 1] = open(vars->args[i][ii + 2], O_CREAT | O_APPEND
-					| O_WRONLY, 0777);
-			close(1);
-			return ;
-		}	
-		else if (vars->args[i][ii][0] == '>' && vars->args[i][ii][1] == '\0')
-		{
-			vars->fd[i * 2 + 1] = open(vars->args[i][ii + 1], O_CREAT | O_TRUNC
-					| O_WRONLY, 0777);
-			close(1);
-			return ;
-		}
-		else if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
-		{
-			vars->fd[(i - 1) * 2] = open(vars->args[i][ii + 1], O_RDONLY, 0777);
-			close(0);
-			return ;
-		}
-	}
-}
+//if heredoc use heredoc fonctions and print in right fd, no need to open.
 
 int	check_export(t_vars *vars, int i)
 {
@@ -112,6 +84,7 @@ void	child_process(t_vars *vars, int i)
 	ret = 0;
 	while (++j < (vars->pipe - 1) * 2)
 		close(vars->fd[j]);
+	ft_is_redirector(vars, i);
 	if (!vars->cmds || !vars->cmds[i].cmds[0])
 		exit(127);
 	ret = check_built_in(vars, i);
@@ -130,29 +103,12 @@ void	child_process(t_vars *vars, int i)
 
 void	execute_command(t_vars *vars, int i)
 {
-	ft_is_redirector(vars, i);
 	vars->cmds[i].pid = fork();
 	if (vars->cmds[i].pid < 0)
 		return ;
 	if (vars->cmds[i].pid == 0)
 	{
 		init_signals(1);
-		if (i != 0)
-		{
-			if (dup2(vars->fd[(i - 1) * 2], STDIN_FILENO) < 0)
-			{
-				perror("Couldn't dup2 standard input fd\n");
-				return ;
-			}
-		}
-		if (i < vars->pipe - 1)
-		{
-			if (dup2(vars->fd[i * 2 + 1], STDOUT_FILENO) < 0)
-			{
-				perror("Couldn't dup2 standard output fd\n");
-				return ;
-			}
-		}
 		child_process(vars, i);
 	}
 	init_signals(2);

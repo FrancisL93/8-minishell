@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quit_clean.c                                       :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:03:41 by anhebert         ###   ########.fr       */
+/*   Created: 2022/08/30 14:58:35 by flahoud           #+#    #+#             */
+/*   Updated: 2022/09/06 14:27:37 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Free tout, les appels de fonctions sans retour qui utilse des pointeurs doivent être free!
 void	quit_terminal(t_vars *vars, t_list *variables)
 {
 	int	i;
@@ -24,25 +25,4 @@ void	quit_terminal(t_vars *vars, t_list *variables)
 	free(variables);
 	free(vars->prompt);
 	exit(0);
-}
-
-void	clean_command(t_vars *vars, char *input)
-{
-	int	i;
-	int	j;
-
-	j = -1;
-	i = -1;
-	while (vars->token.tokens && vars->token.tokens[++i])
-		free(vars->token.tokens[i]);
-	free(vars->token.tokens);
-	i = -1;
-	while (vars->cmds->cmds[++i])
-		free(vars->cmds->cmds[i]);
-	free(vars->cmds);
-	i = -1;
-	vars->pipe = 1;
-	if (input && *input)
-		free(input);
-	free(vars->prompt);
 }

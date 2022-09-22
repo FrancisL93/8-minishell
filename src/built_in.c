@@ -6,38 +6,11 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/22 09:48:09 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:59:17 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-int	check_flag(char *flag)
-{
-	int	i;
-
-	i = 0;
-	while (flag[i])
-	{
-		if (flag[0] != '-')
-			return (0);
-		i++;
-		if (flag[1] != 'n')
-			return (0);
-		i++;
-		if (flag[2] == '\0')
-			return (1);
-		if (flag[2] != 'n' && flag[2] != ' ')
-			return (0);
-		while (flag[i] == 'n')
-		{
-			i++;
-			if (flag[i] == ' ' || flag[i] == '\0')
-				return (1);
-		}
-	}
-	return (0);
-}
 
 void	echo(t_vars *vars, int i)
 {
@@ -66,7 +39,6 @@ void	echo(t_vars *vars, int i)
 	}
 }
 
-// pwd
 void	print_path(void)
 {
 	char	*buff;
@@ -76,7 +48,6 @@ void	print_path(void)
 	free (buff);
 }
 
-// env
 void	print_env(t_vars *vars)
 {
 	int	i;
@@ -95,7 +66,6 @@ void	print_env(t_vars *vars)
 		printf("%s\n", vars->env[i]);
 }
 
-//cd
 void	cd(t_vars *vars, char *input)
 {
 	char	buff[1024];
