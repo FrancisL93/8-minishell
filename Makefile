@@ -3,22 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
+#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/09/20 15:38:56 by flahoud          ###   ########.fr        #
+#    Updated: 2022/09/22 10:59:46 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = src/main.c \
-		src/exe.c \
-		src/exe_tools.c src/cmds_tools.c \
-		src/lexer.c src/tools.c src/tools2.c src/var.c\
-		src/built_in.c src/built_in_tools.c src/built_in_tools2.c\
-		src/quit_clean.c src/list_tools.c \
-		src/heredoc.c src/signals.c
+		src/built_in_tools.c src/built_in_tools2.c src/built_in.c src/built_in2.c \
+		src/check_builtins.c \
+		src/exe_tools.c src/exe.c \
+		src/heredoc.c \
+		src/lenght_tools.c src/lexer.c src/list_tools.c \
+		src/quit_clean.c \
+		src/signals.c src/splits.c src/splits2.c \
+		src/tools.c \
+		src/var.c
 
 LIBFT = inc/libft
 LIBFTA = inc/libft/libft.a

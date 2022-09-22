@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 09:49:00 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:30:47 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,39 +27,6 @@ int	inquotes(int i, char *input, char c, t_vars *vars)
 		}
 	}
 	return (ii);
-}
-
-int	inquoteslen(int i, char *input, char c)
-{
-	int		varlen;
-
-	varlen = 1;
-	while (input[i])
-	{	
-		if (input[i] == c)
-			return (varlen);
-		varlen++;
-		i++;
-	}
-	return (0);
-}
-
-void	var_len(t_indexes *i, char *in)
-{
-	while (in[i->i + 1] != '\0' && in[i->i + 1] != ' ')
-	{
-		i->i++;
-		if (in[i->i] == 34)
-		{
-			i->i++;
-			i->i += inquoteslen(i->i, in, 34);
-		}
-		if (in[i->i] == 39)
-		{
-			i->i++;
-			i->i += inquoteslen(i->i, in, 39);
-		}
-	}
 }
 
 void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)

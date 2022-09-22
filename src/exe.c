@@ -16,7 +16,7 @@
 void	ft_is_redirector(t_vars *vars, int i)
 {
 	int	ii;
-	
+
 	ii = -1;
 	while (vars->args[i][++ii] != NULL)
 	{
@@ -93,67 +93,6 @@ void	ft_is_redirector(t_vars *vars, int i)
 			return ;
 		}
 	}
-}
-
-int	check_export(t_vars *vars, int i)
-{
-	if (!ft_strncmp(vars->cmds[i].cmds[0], "export", 6))
-		export(vars, vars->cmds[i].cmds[1]);
-	else
-		return (0);
-	return (1);
-}
-
-int	check_unset(t_vars *vars, int i)
-{
-	if (!ft_strncmp(vars->cmds[i].cmds[0], "unset", 5))
-		unset(vars, vars->cmds[i].cmds[1]);
-	else
-		return (0);
-	return (1);
-}
-
-int	check_cd(t_vars *vars, int i)
-{
-	if (!ft_strncmp(vars->cmds[i].cmds[0], "cd", 2))
-		cd(vars, vars->cmds[i].cmds[1]);
-	else
-		return (0);
-	return (1);
-}
-
-int	check_var(t_vars *vars, int i)
-{
-	int		j;
-	int		res;
-
-	j = -1;
-	if (i != vars->pipe - 1)
-		return (1);
-	while (vars->cmds[i].cmds[++j])
-	{
-		res = add_variable(vars, vars->cmds[i].cmds[j]);
-		if (res == 1)
-			return (1);
-	}
-	return (0);
-}
-
-int	check_built_in(t_vars *vars, int i)
-{
-	if (!ft_strncmp(vars->cmds[i].cmds[0], "echo", 4))
-		echo(vars, i);
-	else if (!ft_strncmp(vars->cmds[i].cmds[0], "cd", 2))
-		return (1);
-	else if (!ft_strncmp(vars->cmds[i].cmds[0], "export", 6))
-		return (1);
-	else if (!ft_strncmp(vars->cmds[i].cmds[0], "pwd", 3))
-		print_path();
-	else if (!ft_strncmp(vars->cmds[i].cmds[0], "env", 3))
-		print_env(vars);
-	else
-		return (0);
-	return (1);
 }
 
 void	child_process(t_vars *vars, int i)

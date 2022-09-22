@@ -6,15 +6,18 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:03:41 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:06:16 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Revoir les trucs à free
 void	quit_terminal(t_vars *vars, t_list *variables)
 {
-	int	i;
+	(void)vars;
+	(void)variables;
+/* 	int	i;
 
 	i = -1;
 	clear_history();
@@ -22,13 +25,15 @@ void	quit_terminal(t_vars *vars, t_list *variables)
 		free(vars->env[i]);
 	free(vars->env);
 	free(variables);
-	free(vars->prompt);
+	free(vars->prompt); */
 	exit(0);
 }
 
 void	clean_command(t_vars *vars, char *input)
 {
-	int	i;
+	(void)vars;
+	(void)input;
+/* 	int	i;
 	int	j;
 
 	j = -1;
@@ -44,5 +49,5 @@ void	clean_command(t_vars *vars, char *input)
 	vars->pipe = 1;
 	if (input && *input)
 		free(input);
-	free(vars->prompt);
+	free(vars->prompt); */
 }

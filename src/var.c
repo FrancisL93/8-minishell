@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:04:44 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:24:33 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,21 @@ char	*get_variable(t_vars *vars, char *dolvar)
 		vars->var = vars->var->next;
 	}
 	return (NULL);
+}
+
+int	check_var(t_vars *vars, int i)
+{
+	int		j;
+	int		res;
+
+	j = -1;
+	if (i != vars->pipe - 1)
+		return (1);
+	while (vars->cmds[i].cmds[++j])
+	{
+		res = add_variable(vars, vars->cmds[i].cmds[j]);
+		if (res == 1)
+			return (1);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/22 10:05:29 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:59:28 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,40 +66,62 @@ typedef struct s_indexes
 	int	jj;
 }	t_indexes;
 
-//built_in.c
-void	cd(t_vars *vars, char *input);
-void	print_env(t_vars *vars);
-void	print_path(void);
-void	echo(t_vars *vars, int i);
-void	export(t_vars *vars, char *input);
-void	unset(t_vars *vars, char *variable);
-
 //built_in_tools.c
 void	set_pwd(t_vars *vars, char *oldpath);
 int		ftstrnstr(char *current_path, char *cmd);
 char	*ftstrjoin(char *cmd, char *current_path);
 char	*ftstrtrim(char	*current_path);
 char	*check_path(char *cmd, char *current_path);
+int		check_flag(char *flag);
 
 //built_in_tools2.c
 int		check_flag(char *flag);
 
-//cmds_tools.c
-void	split_cmds(t_vars *vars);
-int		dolvar_len(char *token);
+//built_in.c
+void	cd(t_vars *vars, char *input);
+void	print_env(t_vars *vars);
+void	print_path(void);
+void	echo(t_vars *vars, int i);
 
-//exe.c
-void	execute(t_vars *vars);
+//built_in2.c
+void	export(t_vars *vars, char *input);
+void	unset(t_vars *vars, char *variable);
+
+//check builtins.c
+int		check_built_in(t_vars *vars, int i);
+int		check_export(t_vars *vars, int i);
+int		check_unset(t_vars *vars, int i);
+int		check_cd(t_vars *vars, int i);
 
 //exe_tools.c
+char	*join_path(char *path, char *bin);
 char	*get_path(char *cmnd, char **envp);
 char	*ft_strndup(char *str, unsigned int n);
 
+//exe.c
+void	execute(t_vars *vars);
+void	ft_is_redirector(t_vars *vars, int i);
+void	child_process(t_vars *vars, int i);
+void	execute_command(t_vars *vars, int i);
+
 //heredoc.c
+char	*set_here_prompt(int n_pipe);
+void	start_heredoc(t_vars *vars, char *stopper, int i);
 void	check_heredoc(t_vars *vars, int i);
 
+//lenght_tools.c
+size_t	ft_str_len(const char *str);
+int		dolvar_len(char *token);
+void	token_len(char *token, t_vars *vars, char sep, int *len);
+int		inquoteslen(int i, char *input, char c);
+void	var_len(t_indexes *i, char *in);
+
 //lexer.c
+int		inquotes(int i, char *input, char c, t_vars *vars);
+void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
 void	lexer(char *input, t_vars *vars);
+void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
+void	new_token(char *in, t_vars *vars, t_indexes i);
 
 //list_tools.c
 t_list	*ft_lst_new(void *content, void *name);
@@ -109,25 +131,36 @@ char	*ft_str_dup(const char *str);
 //quit_clean.c
 void	quit_terminal(t_vars *vars, t_list *variables);
 void	clean_command(t_vars *vars, char *input);
-void	free_redir(t_vars *vars, int i, int ii);
 
 //signals.c
+void	sig_handler_children(int sig);
+void	sig_handler_parent(int sig);
+void	sig_handler(int sig);
 void	init_signals(int children);
-void	check_signal(t_vars *vars);
+
+//splits.c
+char	*subsubsplit(t_vars *vars, int *j);
+char	**subsplit(t_vars *vars, int *j, int index);
+void	split_cmds(t_vars *vars);
+
+//splits2.c
+void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind);
+char	*split_db_quotes(char *token, t_vars *vars, t_indexes i, int len);
+char	*split_quotes(char *token, t_vars *vars, t_indexes i, int len);
+char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len);
 
 //tools.c
+char	*ft_getenv(t_vars *vars);
 char	*tolower_str(char *str, int capital);
 void	set_prompt(t_vars *vars);
 int		ft_strichr(const char *s, int c);
 char	*get_cmd(char *input);
-
-//tools2.c
-size_t	ft_str_len(const char *str);
 
 //var.c
 void	export_to_env(t_vars *vars, char *input, char *variable);
 int		add_variable(t_vars *vars, char *variable);
 char	*get_variable(t_vars *vars, char *variable);
 char	*use_variable(t_vars *vars, char *var);
+int		check_var(t_vars *vars, int i);
 
 #endif
