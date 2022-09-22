@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/16 15:45:39 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:27:45 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	set_prompt(t_vars *vars)
 
 int	ft_strichr(const char *s, int c)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (s[i] && s[i] != (char) c)

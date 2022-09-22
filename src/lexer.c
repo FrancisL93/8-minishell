@@ -6,13 +6,12 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/20 11:03:32 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:49:00 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// Calcule le nombre de tokens se trouvant entre "" ou ''
 int	inquotes(int i, char *input, char c, t_vars *vars)
 {
 	int	ii;
@@ -30,7 +29,6 @@ int	inquotes(int i, char *input, char c, t_vars *vars)
 	return (ii);
 }
 
-// Calcule la longueur des tokens
 int	inquoteslen(int i, char *input, char c)
 {
 	int		varlen;
@@ -64,7 +62,6 @@ void	var_len(t_indexes *i, char *in)
 	}
 }
 
-//Compte le nombre de 'tokens' se trouvant entre double quotes, single quotes et espaces
 void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
 {
 	vars->nb_tokens = 0;
@@ -96,7 +93,6 @@ void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
 	}
 }
 
-// Crée les tokens
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 {
 	int	x;
@@ -114,8 +110,6 @@ void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 	ind->j++;
 }
 
-// Garder les ' ' " " dans les tokens et $
-// Sépare les tokens selon les '', "", ' ' et laisser $ dans les strings
 void	new_token(char *in, t_vars *vars, t_indexes i)
 {
 	while (in[i.i])

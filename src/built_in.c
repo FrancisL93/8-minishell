@@ -6,13 +6,11 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/20 08:55:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:48:09 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-// utiliser ft_putstr_fd plutot que printf et envoyer dans le outfile
 
 int	check_flag(char *flag)
 {
@@ -83,6 +81,15 @@ void	print_env(t_vars *vars)
 {
 	int	i;
 
+	i = 0;
+	while (vars->env[i] != NULL)
+	{
+		if (!strncmp("PATH", vars->env[i], 4))
+			break ;
+		i++;
+		if (vars->env[i] == NULL)
+			return ;
+	}
 	i = -1;
 	while (vars->env[++i] != NULL)
 		printf("%s\n", vars->env[i]);
@@ -102,13 +109,6 @@ void	cd(t_vars *vars, char *input)
 		new_path = ft_strchr(getenv("HOME="), '/');
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
-/* 	else if (input[0] == 36)
-	{
-		if (get_variable(vars, input) == NULL)
-			new_path = ft_strchr(getenv("HOME="), '/');
-		else
-			new_path = get_variable(vars, input);
-	} */
 	else if (ftstrnstr(current_path, input) != 0)
 		new_path = input;
 	else if (ft_strlen(input) == 1 && input[0] == '/')
@@ -117,16 +117,10 @@ void	cd(t_vars *vars, char *input)
 		new_path = ftstrjoin(input, current_path);
 	if (chdir(new_path) != 0)
 	{
-		//free(new_path);
 		printf("Not a directory\n");
 		return ;
 	}
-	//free(new_path);
 	set_pwd(vars, oldpath);
-	// Faire une fonction pour tout free
-/*	free (new_path);
-	free (cmd);
-	free (current_path); */
 }
 
 void	export(t_vars *vars, char *input)
@@ -160,4 +154,43 @@ void	export(t_vars *vars, char *input)
 		export_to_env(vars, input, get_variable(vars, input));
 	}
 	vars->var = head;
+}
+
+void	unset(t_vars *vars, char *variable)
+{
+	int		i;
+	int		ii;
+	char	**env;
+
+	i = 0;
+	ii = 0;
+	if (ft_strichr(variable, '=') != -1)
+	{
+		printf("%s: not a valid identifier\n", variable);
+		return ;
+	}
+	while (vars->env[i] != NULL)
+	{
+		if (!ft_strncmp(vars->env[i], variable, ft_strlen(variable)))
+			i++;
+		i++;
+		ii++;
+	}
+	env = malloc((sizeof(char *) * ii) + 1);
+	i = -1;
+	ii = 0;
+	while (vars->env[++i] != NULL)
+	{
+		if (!ft_strncmp(vars->env[i], variable, ft_strlen(variable)))
+			i++;
+		env[ii++] = ft_strdup(vars->env[i]);
+		free(vars->env[i]);
+	}
+	free (vars->env);
+	env[ii] = NULL;
+	vars->env = malloc((sizeof(char *) * ii) + 1);
+	i = -1;
+	while (env[++i] != NULL)
+		vars->env[i] = ft_strdup(env[i]);
+	vars->env[i] = NULL;
 }

@@ -6,18 +6,17 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:41:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/20 13:58:39 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:50:11 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//ctrl + à = ctrl-\ /
 void	sig_handler_children(int sig)
 {
 	if (sig == SIGQUIT)
 		(void) SIGQUIT;
-	if (sig == SIGINT) // ctrl-c
+	if (sig == SIGINT)
 		(void) SIGINT;
 }
 
@@ -33,12 +32,11 @@ void	sig_handler(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-	//	printf("\33[2K\r"dsfhjskdfhsdkf
-	 	rl_on_new_line();
-	 	rl_replace_line("", 0);
-	 	rl_redisplay();
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	if (sig == SIGINT) // ctrl-c
+	if (sig == SIGINT)
 	{
 		rl_on_new_line();
 		rl_replace_line("", 0);

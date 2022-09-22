@@ -6,13 +6,11 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/20 13:29:38 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:49:10 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-//Le main doit voir le dernier exit status
 
 int	init_struct(t_vars *vars, char **envp)
 {
@@ -26,7 +24,7 @@ int	init_struct(t_vars *vars, char **envp)
 	vars->pipe = 1;
 	while (envp[i])
 		i++;
-	vars->env = malloc(sizeof(char **) * (i + 1));
+	vars->env = malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	ii = 0;
 	while (envp[++i])

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/20 13:43:09 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:22:34 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 		new_var = ft_strjoin(ft_strjoin(input, "="), variable);
 	while (vars->env[i] != NULL)
 		i++;
-	env = malloc(sizeof(char **) * (i + 2));
+	env = malloc(sizeof(char *) * (i + 2));
 	i = -1;
 	while (vars->env[++i] != NULL)
 	{
@@ -45,7 +45,7 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 	}
 	free(vars->env);
 	env[i + 1] = NULL;
-	vars->env = malloc(sizeof(char **) * (i + 2));
+	vars->env = malloc(sizeof(char *) * (i + 2));
 	i = -1;
 	while (env[++i] != NULL)
 		vars->env[i] = ft_strdup(env[i]);

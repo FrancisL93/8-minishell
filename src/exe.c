@@ -21,19 +21,22 @@ void	ft_is_redirector(t_vars *vars, int i)
 	{
 		if (vars->args[i][ii][0] == '>' && vars->args[i][ii + 1][0] == '>')
 		{
-			vars->fd[OUT] = open(vars->args[i][ii + 2], O_CREAT | O_APPEND
+			vars->fd[i * 2 + 1] = open(vars->args[i][ii + 2], O_CREAT | O_APPEND
 					| O_WRONLY, 0777);
+			close(1);
 			return ;
 		}	
-		else if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
-		{
-			vars->fd[IN] = open(vars->args[i][ii + 1], O_RDONLY, 0777);
-			return ;
-		}
 		else if (vars->args[i][ii][0] == '>' && vars->args[i][ii][1] == '\0')
 		{
-			vars->fd[IN] = open(vars->args[i][ii + 1], O_CREAT | O_TRUNC
+			vars->fd[i * 2 + 1] = open(vars->args[i][ii + 1], O_CREAT | O_TRUNC
 					| O_WRONLY, 0777);
+			close(1);
+			return ;
+		}
+		else if (vars->args[i][ii][0] == '<' && vars->args[i][ii][1] == '\0')
+		{
+			vars->fd[(i - 1) * 2] = open(vars->args[i][ii + 1], O_RDONLY, 0777);
+			close(0);
 			return ;
 		}
 	}
@@ -43,6 +46,15 @@ int	check_export(t_vars *vars, int i)
 {
 	if (!ft_strncmp(vars->cmds[i].cmds[0], "export", 6))
 		export(vars, vars->cmds[i].cmds[1]);
+	else
+		return (0);
+	return (1);
+}
+
+int	check_unset(t_vars *vars, int i)
+{
+	if (!ft_strncmp(vars->cmds[i].cmds[0], "unset", 5))
+		unset(vars, vars->cmds[i].cmds[1]);
 	else
 		return (0);
 	return (1);
@@ -91,7 +103,6 @@ int	check_built_in(t_vars *vars, int i)
 	return (1);
 }
 
-// check built in, si derniere commande et contient =, ajouter la ou les variables à la linkedlist ,
 void	child_process(t_vars *vars, int i)
 {
 	int		ret;
@@ -101,7 +112,6 @@ void	child_process(t_vars *vars, int i)
 	ret = 0;
 	while (++j < (vars->pipe - 1) * 2)
 		close(vars->fd[j]);
-	ft_is_redirector(vars, i);
 	if (!vars->cmds || !vars->cmds[i].cmds[0])
 		exit(127);
 	ret = check_built_in(vars, i);
@@ -120,6 +130,7 @@ void	child_process(t_vars *vars, int i)
 
 void	execute_command(t_vars *vars, int i)
 {
+	ft_is_redirector(vars, i);
 	vars->cmds[i].pid = fork();
 	if (vars->cmds[i].pid < 0)
 		return ;
@@ -167,6 +178,8 @@ void	execute(t_vars *vars)
 			break ;
 		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
+		if (ret != 1 && vars->pipe == 1)
+			ret = check_unset(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_export(vars, i);
 		if (ret != 1 && vars->pipe == 1)
