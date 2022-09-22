@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:02:42 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:40:45 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 char	*set_here_prompt(int n_pipe)
 {
 	char	*prompt;
-	char	pipe[5] = "pipe ";
-	char	heredoc[9] = "heredoc> ";
+	char	*pipe;
+	char	*heredoc;
 	int		i;
 	int		j;
 
 	i = -1;
 	j = -1;
+	pipe = "pipe ";
+	heredoc = "heredoc> ";
 	prompt = malloc(sizeof(char) * (9 + (n_pipe - 1) + 1));
 	while (++i < (n_pipe - 1) * 5)
 		prompt[++j] = pipe[i % 5];

@@ -6,19 +6,30 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:03:26 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:37:28 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+void	set_shell_lvl(t_vars *vars)
+{
+	int		lev;
+	char	*lvl;
+	char	*shlvl;
+
+	lev = ft_atoi(get_variable(vars, "SHLVL"));
+	lvl = ft_itoa(lev + 1);
+	shlvl = ft_strjoin("SHLVL=", lvl);
+	export(vars, shlvl);
+	free(shlvl);
+	free(lvl);
+}
+
 int	init_struct(t_vars *vars, char **envp)
 {
 	int		i;
 	int		ii;
-	int		lev;
-	char	*lvl;
-	char	*shlvl;
 
 	i = 0;
 	//vars->var = malloc(sizeof(*vars->var));
@@ -37,12 +48,7 @@ int	init_struct(t_vars *vars, char **envp)
 		ii++;
 	}
 	vars->env[i] = NULL;
-	lev = ft_atoi(get_variable(vars, "SHLVL"));
-	lvl = ft_itoa(lev += 1);
-	shlvl = ft_strjoin("SHLVL=", lvl);
-	export(vars, shlvl);
-	free(shlvl);
-	free(lvl);
+	set_shell_lvl(vars);
 	set_prompt(vars);
 	init_signals(0);
 	return (0);
@@ -61,10 +67,6 @@ int	main(int argc, char **argv, char **envp)
 		input = readline(vars.prompt);
 		while (input)
 		{
-			if (!ft_strncmp("exit", input, 4))
-				quit_terminal(&vars, vars.var);
-			if (input && *input)
-				add_history(input);
 			lexer(input, &vars);
 			if (vars.token.tokens[0])
 				execute(&vars);

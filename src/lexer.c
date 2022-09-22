@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:30:47 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:36:44 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,10 @@ void	lexer(char *input, t_vars *vars)
 	indexes.ii = 0;
 	indexes.j = 0;
 	indexes.jj = 0;
+	if (!ft_strncmp("exit", input, 4))
+		quit_terminal(vars, vars->var);
+	if (input && *input)
+		add_history(input);
 	vars->token_len = 0;
 	count_nb_tokens(input, vars, indexes);
 	vars->token.tokens = malloc(sizeof(char *) * (vars->nb_tokens + 1));

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:57:27 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:56:44 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 12:01:42 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,19 @@ void	token_len(char *token, t_vars *vars, char sep, int *len)
 	if (sep == 39)
 		while (token[*len] != 39)
 			*len += 1;
-	else
+	while (sep != 39 && token[i] && token[i] != 34)
 	{
-		while (token[i] && token[i] != 34)
+		if (token[i] == 36)
 		{
-			if (token[i] == 36)
-			{
-				*len += dolvar_len(get_variable(vars, &token[*len]));
-				vars->var = head;
-				while (token[i] && token[i] != ' ' && token[i] != 34)
-					i++;
-			}
-			else
-			{
-				*len += 1;
+			*len += dolvar_len(get_variable(vars, &token[*len]));
+			vars->var = head;
+			while (token[i] && token[i] != ' ' && token[i] != 34)
 				i++;
-			}
+		}
+		else
+		{
+			*len += 1;
+			i++;
 		}
 	}
 }

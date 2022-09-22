@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 11:06:16 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:46:05 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 //Revoir les trucs à free
 void	quit_terminal(t_vars *vars, t_list *variables)
 {
-	(void)vars;
-	(void)variables;
-/* 	int	i;
+	int	i;
 
 	i = -1;
 	clear_history();
@@ -25,7 +23,7 @@ void	quit_terminal(t_vars *vars, t_list *variables)
 		free(vars->env[i]);
 	free(vars->env);
 	free(variables);
-	free(vars->prompt); */
+	free(vars->prompt);
 	exit(0);
 }
 
