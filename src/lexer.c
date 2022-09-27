@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 11:36:44 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 08:47:02 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 		else if (in[i.i] != '\0')
 		{
 			while (in[i.i + 1] != ' ' && in[i.i + 1] != 39 && in[i.i + 1] != '"'
-				&& in[i.i + 1] != '\0' && in[i.i + 1] != '<' && in[i.i + 1] != '>'
-				&& in[i.i + 1] != '|')
+				&& in[i.i + 1] != '\0' && in[i.i + 1] != '<'
+				&& in[i.i + 1] != '>' && in[i.i + 1] != '|')
 			{
 				i.i++;
 				if (in[i.i] == '=')

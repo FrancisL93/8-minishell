@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:41:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 09:50:11 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 11:20:21 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	init_signals(int children)
 {
 	struct sigaction	sa;
 
+	sa.sa_mask = SA_SIGINFO;
 	if (children == 2)
 		sa.sa_handler = &sig_handler_parent;
 	else if (children == 1)

@@ -6,15 +6,31 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:17:18 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/22 11:53:47 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 13:57:19 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+void	export_new_var(t_vars *vars, char *input, int init)
+{
+	int	i;
+
+	i = 0;
+	while (vars->env[i] && ft_strncmp(vars->env[i],
+			input, init))
+		i++;
+	if (!vars->env[i])
+		export_to_env(vars, input, get_variable(vars, input));
+	else
+	{
+		free(vars->env[i]);
+		vars->env[i] = ft_strdup(input);
+	}
+}
+
 void	export(t_vars *vars, char *input)
 {
-	int		i;
 	int		init;
 	char	*var;
 	t_list	*head;
@@ -24,19 +40,7 @@ void	export(t_vars *vars, char *input)
 		return ;
 	init = ft_strichr(input, '=');
 	if (init > 0)
-	{
-		i = 0;
-		while (vars->env[i] && ft_strncmp(vars->env[i],
-				input, init))
-			i++;
-		if (!vars->env[i])
-			export_to_env(vars, input, get_variable(vars, input));
-		else
-		{
-			free(vars->env[i]);
-			vars->env[i] = ft_strdup(input);
-		}
-	}
+		export_new_var(vars, input, init);
 	else
 	{
 		var = get_variable(vars, input);

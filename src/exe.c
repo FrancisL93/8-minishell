@@ -102,23 +102,21 @@ void	child_process(t_vars *vars, int i)
 
 	j = -1;
 	ret = 0;
+	vars->exit_stat = 0;
 	while (++j < (vars->pipe - 1) * 2)
 		close(vars->fd[j]);
 	ft_is_redirector(vars, i);
-	if (!vars->cmds || !vars->cmds[i].cmds[0])
-		exit(127);
 	ret = check_built_in(vars, i);
 	if (ret)
-		exit(ret);
+		exit(vars->exit_stat);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
 	else
 		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
 	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
-	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
-	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
-	ft_putstr_fd(")\n", STDERR_FILENO);
-	exit(0);
+	if (ret == -1)
+		perror("Error");
+	exit(errno);
 }
 
 void	execute_command(t_vars *vars, int i)
@@ -136,7 +134,6 @@ void	execute_command(t_vars *vars, int i)
 
 void	execute(t_vars *vars)
 {
-	int	status;
 	int	i;
 	int	ret;
 
@@ -167,10 +164,15 @@ void	execute(t_vars *vars)
 	while (++i < (vars->pipe - 1) * 2)
 		close(vars->fd[i]);
 	i = -1;
-	i = -1;
 	while (++i < vars->pipe)
-		waitpid(vars->cmds[i].pid, &status, 0);
+	{
+		waitpid(vars->cmds[i].pid, &vars->exit_stat, 0);
+		if (WIFEXITED(vars->exit_stat))
+		{
+			vars->exit_stat = WEXITSTATUS(vars->exit_stat);
+			add_variable(vars, ft_strjoin("?=", ft_itoa(vars->exit_stat)));
+		}
+	}
 	free(vars->fd);
-	//vars->exit_status = status; ou créer une variable $? 
 	init_signals(0);
 }

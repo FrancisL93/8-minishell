@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmds_tools.c                                       :+:      :+:    :+:   */
+/*   splits2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:20:00 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 08:45:21 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,44 @@ char	*split_quotes(char *token, t_vars *vars, t_indexes i, int len)
 	return (cmd);
 }
 
+char	*retrieve_cmd(char *token, t_vars *vars, char *cmd, t_indexes i)
+{
+	char	*var;
+	t_list	*head;
+
+	head = vars->var;
+	while (token[i.i])
+	{
+		i.ii = 0;
+		if (token[i.i] == 34 || token[i.i] == 39)
+			i.i++;
+		else if (token[i.i] == 36)
+		{
+			var = get_variable(vars, &token[i.i]);
+			vars->var = head;
+			i.i += dolvar_len(&token[i.i]);
+			if (var != NULL)
+				while (var[i.ii])
+					cmd[i.j++] = var[i.ii++];
+		}
+		else
+			cmd[i.j++] = token[i.i++];
+	}
+	return (cmd);
+}
+
 char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
+{
+	char	*cmd;
+
+	token_len(token, vars, token[0], &len);
+	if (len == 0)
+		return (NULL);
+	cmd = ft_calloc(sizeof(char), len + 1);
+	return (retrieve_cmd(token, vars, cmd, i));
+}
+
+/* char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 {
 	char	*cmd;
 	char	*var;
@@ -106,4 +143,4 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 			cmd[i.j++] = token[i.i++];
 	}
 	return (cmd);
-}
+} */

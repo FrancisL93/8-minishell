@@ -6,32 +6,16 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 11:38:28 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 11:19:53 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	export_to_env(t_vars *vars, char *input, char *variable)
+void	create_new_env(t_vars *vars, char *new_var, int i, int ii)
 {
-	int		i;
-	int		ii;
-	char	*new_var;
 	char	**env;
 
-	i = 0;
-	ii = 0;
-	if (!variable && ft_strichr(input, '=') == -1)
-	{
-		if (get_variable(vars, input) != NULL)
-			new_var = ft_strjoin(input, "=");
-		else
-			return ;
-	}
-	else if (!variable && ft_strichr(input, '='))
-		new_var = input;
-	else
-		new_var = ft_strjoin(ft_strjoin(input, "="), variable);
 	while (vars->env[i] != NULL)
 		i++;
 	env = malloc(sizeof(char *) * (i + 2));
@@ -56,7 +40,30 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 	vars->env[i] = NULL;
 }
 
-char	*use_variable(t_vars *vars, char *var)
+void	export_to_env(t_vars *vars, char *input, char *variable)
+{
+	char	*new_var;
+	int		i;
+	int		ii;
+
+	i = 0;
+	ii = 0;
+	if (!variable && ft_strichr(input, '=') == -1)
+	{
+		if (get_variable(vars, input) != NULL)
+			new_var = ft_strjoin(input, "=");
+		else
+			return ;
+	}
+	else if (!variable && ft_strichr(input, '='))
+		new_var = ft_strdup(input);
+	else
+		new_var = ft_strjoin(ft_strjoin(input, "="), variable);
+	create_new_env(vars, new_var, i, ii);
+}
+
+// est-ce qu'on l'utilise?
+/* char	*use_variable(t_vars *vars, char *var)
 {
 	t_list	*tmp;
 	char	*var_content;
@@ -79,8 +86,8 @@ char	*use_variable(t_vars *vars, char *var)
 	{
 		var_content = &tmp->content[ft_strlen(var) + 1];
 		return (var_content);
-	}
-}
+	 }
+}*/
 
 int	add_variable(t_vars *vars, char *variable)
 {
@@ -116,7 +123,7 @@ char	*get_variable(t_vars *vars, char *dolvar)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	if (dolvar[0] != 36)
 		len = ft_strlen(dolvar);
@@ -125,12 +132,9 @@ char	*get_variable(t_vars *vars, char *dolvar)
 		len = dolvar_len(&dolvar[1]);
 		j = 1;
 	}
-	while (vars->env[i] != NULL)
-	{
+	while (vars->env[++i] != NULL)
 		if (!ft_strncmp(&dolvar[j], vars->env[i], len))
 			return (&vars->env[i][len + 1]);
-		i++;
-	}
 	while (vars->var != NULL)
 	{
 		if (!ft_strncmp(&dolvar[j], vars->var->name, len))

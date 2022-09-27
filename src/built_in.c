@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/22 10:36:18 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 14:01:35 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,11 @@ void	print_env(t_vars *vars)
 			break ;
 		i++;
 		if (vars->env[i] == NULL)
+		{
+			printf("env: %s\n", strerror(ENOENT));
+			vars->exit_stat = 127;
 			return ;
+		}
 	}
 	i = -1;
 	while (vars->env[++i] != NULL)
@@ -87,7 +91,9 @@ void	cd(t_vars *vars, char *input)
 		new_path = ftstrjoin(input, current_path);
 	if (chdir(new_path) != 0)
 	{
-		printf("Not a directory\n");
+		printf("cd: %s: %s\n", input, strerror(ENOTDIR));
+		vars->exit_stat = 127;
+		add_variable(vars, ft_strjoin("?=", ft_itoa(vars->exit_stat)));
 		return ;
 	}
 	set_pwd(vars, oldpath);

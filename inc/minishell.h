@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/22 10:59:28 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/27 11:27:19 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_vars
 	char	*prompt;
 	int		*fd;
 	int		pipe;
+	int		exit_stat;
 	int		nb_tokens;
 	int		token_len;
 	char	*heredoc_eof;
@@ -155,6 +156,9 @@ char	*tolower_str(char *str, int capital);
 void	set_prompt(t_vars *vars);
 int		ft_strichr(const char *s, int c);
 char	*get_cmd(char *input);
+
+//tools2.c
+int	ft_strcmp(char *s1, char *s2);
 
 //var.c
 void	export_to_env(t_vars *vars, char *input, char *variable);
