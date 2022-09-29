@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/27 11:27:19 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 13:56:33 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*ft_strndup(char *str, unsigned int n);
 
 //exe.c
 void	execute(t_vars *vars);
-void	ft_is_redirector(t_vars *vars, int i);
+void	check_cmds(t_vars *vars, int ret, int i);
 void	child_process(t_vars *vars, int i);
 void	execute_command(t_vars *vars, int i);
 
@@ -113,7 +113,7 @@ void	check_heredoc(t_vars *vars, int i);
 //lenght_tools.c
 size_t	ft_str_len(const char *str);
 int		dolvar_len(char *token);
-void	token_len(char *token, t_vars *vars, char sep, int *len);
+int		token_len(char *token, t_vars *vars, char sep);
 int		inquoteslen(int i, char *input, char c);
 void	var_len(t_indexes *i, char *in);
 
@@ -133,6 +133,9 @@ char	*ft_str_dup(const char *str);
 void	quit_terminal(t_vars *vars, t_list *variables);
 void	clean_command(t_vars *vars, char *input);
 
+//redirection
+void	ft_is_redirector(t_vars *vars, int i);
+
 //signals.c
 void	sig_handler_children(int sig);
 void	sig_handler_parent(int sig);
@@ -145,10 +148,9 @@ char	**subsplit(t_vars *vars, int *j, int index);
 void	split_cmds(t_vars *vars);
 
 //splits2.c
+int		ft_is_quote(t_indexes i, char *token, char sep);
 void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind);
-char	*split_db_quotes(char *token, t_vars *vars, t_indexes i, int len);
-char	*split_quotes(char *token, t_vars *vars, t_indexes i, int len);
-char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len);
+char	*split_tokens(char *token, t_vars *vars, t_indexes i);
 
 //tools.c
 char	*ft_getenv(t_vars *vars);
@@ -158,7 +160,7 @@ int		ft_strichr(const char *s, int c);
 char	*get_cmd(char *input);
 
 //tools2.c
-int	ft_strcmp(char *s1, char *s2);
+int		ft_strcmp(char *s1, char *s2);
 
 //var.c
 void	export_to_env(t_vars *vars, char *input, char *variable);

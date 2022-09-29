@@ -6,7 +6,7 @@
 #    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/09/27 11:27:35 by anhebert         ###   ########.fr        #
+#    Updated: 2022/09/27 14:33:56 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC = src/main.c \
 		src/heredoc.c \
 		src/lenght_tools.c src/lexer.c src/list_tools.c \
 		src/quit_clean.c \
+		src/redirection.c \
 		src/signals.c src/splits.c src/splits2.c \
 		src/tools.c src/tools2.c\
 		src/var.c

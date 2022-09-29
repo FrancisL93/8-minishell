@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/22 11:38:19 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 13:56:13 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,8 @@ char	*subsubsplit(t_vars *vars, int *j)
 	if (!vars->token.tokens[*j] || *j > vars->nb_tokens
 		|| !ft_strncmp(vars->token.tokens[*j], "|", 1))
 		return (NULL);
-	if (vars->token.tokens[*j][0] == 39 || vars->token.tokens[*j][0] == 34)
-	{
-		if (vars->token.tokens[*j][0] == 39)
-			return (split_quotes(vars->token.tokens[*j], vars, i, len));
-		else if (vars->token.tokens[*j][0] == 34)
-			return (split_db_quotes(vars->token.tokens[*j], vars, i, len));
-	}
 	i.i = 0;
-	return (split_tokens(vars->token.tokens[*j], vars, i, len));
+	return (split_tokens(vars->token.tokens[*j], vars, i));
 }
 
 char	**subsplit(t_vars *vars, int *j, int index)

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/27 08:47:02 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 13:54:41 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,82 +29,105 @@ int	inquotes(int i, char *input, char c, t_vars *vars)
 	return (ii);
 }
 
-void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind)
+void	count_nb_tokens(char *in, t_vars *vars, t_indexes i)
 {
 	vars->nb_tokens = 0;
-	while (input[ind.i])
+	while (in[i.i])
 	{
-		if (input[ind.i] == '<' || input[ind.i] == '>' || input[ind.i] == '|')
+		if (in[i.i] == 39 || in[i.i] == 34)
 		{
-			vars->nb_tokens++;
-			ind.i++;
+			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
+			if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
+				|| in[i.i] == '>' || in[i.i] == '|')
+				vars->nb_tokens++;
 		}
-		else if (input[ind.i] == 39 || input[ind.i] == 34)
-			ind.i = inquotes(ind.i + 1, input, input[ind.i], vars);
-		else if (input[ind.i] == ' ')
-			ind.i++;
-		else
+		else if (in[i.i] != '\0' && in[i.i] != ' ')
 		{
-			vars->nb_tokens++;
-			while (input[ind.i] != ' ' && input[ind.i] != 39
-				&& input[ind.i] != '"' && input[ind.i] != '<'
-				&& input[ind.i] != '>' && input[ind.i] != '|')
+			while (in[i.i] != ' ' && in[i.i] != '\0'
+				&& in[i.i] != '<' && in[i.i] != '>'
+				&& in[i.i] != '|')
 			{
-				ind.i++;
-				if (input[ind.i] == '=')
-					var_len(&ind, input);
-				if (input[ind.i] == '\0')
-					break ;
+				i.i++;
+				if (in[i.i] == '=')
+					var_len(&i, in);
+				else if (in[i.i] == 34 || in[i.i] == 39)
+					i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
+				if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
+					|| in[i.i] == '>' || in[i.i] == '|')
+					vars->nb_tokens++;
 			}
+		}
+		if (in[i.i] == '\0' || in[i.i] == ' ')
+		{
+			if (in[i.i] != '\0')
+				i.i++;
+		}
+		else if (in[i.i] == '<' || in[i.i] == '>'
+			|| in[i.i] == '|')
+		{
+			vars->nb_tokens ++;
+			i.i++;
 		}
 	}
 }
 
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 {
-	int	x;
-
-	x = 0;
+	ind->jj = 0;
 	vars->token_len = ind->i - ind->ii;
 	vars->token.tokens[ind->j] = ft_calloc(sizeof(char), vars->token_len + 2);
-	while (ind->ii <= ind->i)
+	while (ind->ii < ind->i)
 	{
 		vars->token.tokens[ind->j][ind->jj] = input[ind->ii];
 		ind->ii++;
 		ind->jj++;
 	}
-	ind->i++;
-	ind->j++;
+	ind->jj++;
+	if (input[ind->i] != '\0')
+		ind->j++;
 }
 
 void	new_token(char *in, t_vars *vars, t_indexes i)
 {
+	i.ii = i.i;
 	while (in[i.i])
 	{
-		i.ii = i.i;
-		i.jj = 0;
-		if (in[i.i] == '<' || in[i.i] == '>' || in[i.i] == '|')
-			tokenizer(vars, &i, in);
-		else if (in[i.i] == 39 || in[i.i] == 34)
+		if (in[i.i] == 39 || in[i.i] == 34)
 		{
-			i.i += inquoteslen(i.i + 1, in, in[i.i]);
-			if (i.i != i.ii)
+			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
+			if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
+				|| in[i.i] == '>' || in[i.i] == '|')
 				tokenizer(vars, &i, in);
-			else
-				i.i++;
 		}
-		else if (in[i.i] == ' ')
-			i.i++;
-		else if (in[i.i] != '\0')
+		else if (in[i.i] != '\0' && in[i.i] != ' ')
 		{
-			while (in[i.i + 1] != ' ' && in[i.i + 1] != 39 && in[i.i + 1] != '"'
-				&& in[i.i + 1] != '\0' && in[i.i + 1] != '<'
-				&& in[i.i + 1] != '>' && in[i.i + 1] != '|')
+			while (in[i.i] != ' ' && in[i.i] != '\0'
+				&& in[i.i] != '<' && in[i.i] != '>'
+				&& in[i.i] != '|')
 			{
 				i.i++;
 				if (in[i.i] == '=')
 					var_len(&i, in);
+				else if (in[i.i] == 34 || in[i.i] == 39)
+					i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
+				if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
+					|| in[i.i] == '>' || in[i.i] == '|')
+					tokenizer(vars, &i, in);
 			}
+		}
+		if (in[i.i] == '\0' || in[i.i] == ' ')
+		{
+			if (in[i.i] != '\0')
+			{
+				i.i++;
+				i.ii = i.i;
+			}
+		}
+		else if (in[i.i] == '<' || in[i.i] == '>'
+			|| in[i.i] == '|')
+		{
+			i.ii = i.i;
+			i.i++;
 			tokenizer(vars, &i, in);
 		}
 	}
@@ -130,6 +153,9 @@ void	lexer(char *input, t_vars *vars)
 	new_token(input, vars, indexes);
 	vars->token.tokens[vars->nb_tokens] = NULL;
 	while (vars->token.tokens[indexes.i])
+	{
+		//printf("%s\n", vars->token.tokens[indexes.i]);
 		if (!ft_strncmp(vars->token.tokens[indexes.i++], "|", 1))
 			vars->pipe++;
+	}
 }

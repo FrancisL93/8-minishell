@@ -6,11 +6,18 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/27 09:23:25 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 12:41:14 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+// Revoir le système de triage pour les redirection et les echo ' ' " ".
+// Pipes
+// Redirections
+// Heredoc
+// Free
+// Norme
 
 void	set_shell_lvl(t_vars *vars)
 {
