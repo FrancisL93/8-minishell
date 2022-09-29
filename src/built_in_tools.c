@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/20 13:21:38 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:47:54 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ void	set_pwd(t_vars *vars, char *oldpath)
 		i++;
 	if (vars->env[i])
 		vars->env[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
-	if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
+	if (vars->env[i] != NULL)
 	{
-		export(vars, ft_strjoin("OLDPWD=", oldpath));
-		return ;
+		if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
+		{
+			export(vars, ft_strjoin("OLDPWD=", oldpath));
+			return ;
+		}
 	}
 	i = 0;
 	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))
@@ -84,7 +87,7 @@ char	*ftstrtrim(char	*current_path)
 	i = 0;
 	ii = 0;
 	j = 0;
-	new_path = calloc(sizeof(char), ft_strlen(current_path));
+	new_path = ft_calloc(sizeof(char), ft_strlen(current_path));
 	while (current_path[i])
 		i++;
 	while (current_path[i] != '/')

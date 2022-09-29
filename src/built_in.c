@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/27 14:57:24 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:59:28 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,22 @@ void	print_env(t_vars *vars)
 		printf("%s\n", vars->env[i]);
 }
 
+void	check_dir(t_vars *vars, char *path)
+{
+	int		i;
+	char	*new_path;
+
+	i = 0;
+	while (vars->env[i] != NULL)
+	{
+		if (strncmp(vars->env[i], "PWD", 3) == 0)
+			return ;
+		i++;
+	}
+	new_path = ft_strjoin("PWD=", path);
+	export(vars, new_path);
+}
+
 void	cd(t_vars *vars, char *input)
 {
 	char	buff[1024];
@@ -89,6 +105,7 @@ void	cd(t_vars *vars, char *input)
 		new_path = input;
 	else
 		new_path = ftstrjoin(input, current_path);
+	check_dir(vars, new_path);
 	if (chdir(new_path) != 0)
 	{
 		printf("cd: %s: %s\n", input, strerror(ENOTDIR));

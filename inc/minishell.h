@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/29 13:56:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:17:25 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	split_cmds(t_vars *vars);
 //splits2.c
 int		ft_is_quote(t_indexes i, char *token, char sep);
 void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind);
-char	*split_tokens(char *token, t_vars *vars, t_indexes i);
+char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len);
 
 //tools.c
 char	*ft_getenv(t_vars *vars);

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/29 13:56:19 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:18:11 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,15 @@ void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
 	vars->cmds[ind].cmds[ii] = NULL;
 }
 
-char	*split_tokens(char *token, t_vars *vars, t_indexes i)
+char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 {
 	char	*cmd;
 	char	*var;
 	char	quote;
 	int		is_quote;
-	int		len;
 	t_list	*head;
 
 	quote = token[0];
-	len = 0;
 	if (quote == 34 || quote == 39)
 	{
 		len = token_len(&token[1], vars, token[0]);

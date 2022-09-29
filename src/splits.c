@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/29 13:56:13 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:18:00 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ char	*subsubsplit(t_vars *vars, int *j)
 	int			len;
 
 	i.j = 0;
-	i.i = 1;
 	len = 0;
 	if (!vars->token.tokens[*j] || *j > vars->nb_tokens
 		|| !ft_strncmp(vars->token.tokens[*j], "|", 1))
 		return (NULL);
 	i.i = 0;
-	return (split_tokens(vars->token.tokens[*j], vars, i));
+	return (split_tokens(vars->token.tokens[*j], vars, i, len));
 }
 
 char	**subsplit(t_vars *vars, int *j, int index)
