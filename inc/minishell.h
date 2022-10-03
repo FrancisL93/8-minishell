@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/03 10:55:23 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:06:00 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		set_output(t_vars *vars, int i);
 
 //heredoc.c
 void	start_heredoc(char *stopper, int fd);
-int		search_heredoc(t_vars *vars, int i, int ii);
+int		search_heredoc(t_vars *vars, int i, int *ii);
 
 //lenght_tools.c
 size_t	ft_str_len(const char *str);

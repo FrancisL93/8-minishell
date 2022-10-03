@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 09:37:07 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:35:33 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
 	while (j < i)
 	{
 		if (cmnd[j][0] == '>' && cmnd[j + 1][0] == '>')
+			j += 3;
+		else if (cmnd[j][0] == '<' && cmnd[j + 1][0] == '<')
 			j += 3;
 		else if (cmnd[j][0] == '>' || cmnd[j][0] == '<')
 			j += 2;

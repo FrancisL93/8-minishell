@@ -1,8 +1,8 @@
 total 592
--rw-r--r--   1 anhebert  2022_quebec    4524 Sep 22 10:59 Makefile
-drwxr-xr-x   8 anhebert  2022_quebec     272 Sep 22 09:57 inc
--rwxr-xr-x   1 anhebert  2022_quebec  293616 Sep 27 09:38 minishell
-drwxr-xr-x   3 anhebert  2022_quebec     102 Sep 22 11:07 minishell.dSYM
-drwxr-xr-x  20 anhebert  2022_quebec     680 Sep 27 09:38 obj
--rwxr-xr-x   1 anhebert  2022_quebec       0 Sep 27 09:55 out
-drwxr-xr-x  21 anhebert  2022_quebec     714 Sep 22 10:59 src
+-rw-r--r--   1 anhebert  2022_quebec    4706 Oct  3 11:01 Makefile
+drwxr-xr-x   7 anhebert  2022_quebec     238 Oct  3 11:01 inc
+-rwxr-xr-x   1 anhebert  2022_quebec  294192 Oct  3 11:10 minishell
+drwxr-xr-x   3 anhebert  2022_quebec     102 Oct  3 06:24 minishell.dSYM
+drwxr-xr-x  22 anhebert  2022_quebec     748 Oct  3 11:10 obj
+-rwxr-xr-x   1 anhebert  2022_quebec       0 Oct  3 11:10 out
+drwxr-xr-x  22 anhebert  2022_quebec     748 Oct  3 11:01 src
