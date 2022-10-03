@@ -6,18 +6,33 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/29 12:41:14 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 09:53:09 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// Revoir le système de triage pour les redirection et les echo ' ' " ".
 // Pipes
 // Redirections
 // Heredoc
 // Free
 // Norme
+//Unset les variables dans la struct, pas juste dans env
+
+void	set_prompt(t_vars *vars)
+{
+	int		i;
+	char	*prompt;
+	char	*tmp;
+
+	prompt = ft_getenv(vars);
+	i = ft_strlen(prompt) - 1;
+	while (prompt[i] != '/')
+		i--;
+	tmp = ft_strjoin(GREEN, &prompt[i]);
+	vars->prompt = ft_strjoin(tmp, " >> \e[0;37m");
+	free(tmp);
+}
 
 void	set_shell_lvl(t_vars *vars)
 {
@@ -36,26 +51,21 @@ void	set_shell_lvl(t_vars *vars)
 int	init_struct(t_vars *vars, char **envp)
 {
 	int		i;
-	int		ii;
+	char	*exit_stat;
 
 	i = 0;
-	vars->var = NULL;
 	vars->pipe = 1;
-	while (envp[i])
-		i++;
-	vars->env = malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	ii = 0;
-	while (envp[++i])
-	{
-		if (!ft_strncmp("OLDPWD", envp[i], 6))
-			i++;
-		vars->env[ii] = ft_strdup(envp[i]);
-		ii++;
-	}
-	vars->env[i] = NULL;
 	vars->exit_stat = 0;
-	add_variable(vars, ft_strjoin("?=", ft_itoa(vars->exit_stat)));
+	if (set_env(vars, envp))
+		return (1);
+	vars->var = NULL;
+	exit_stat = ft_itoa(vars->exit_stat);
+	if (add_variable(vars, ft_strjoin("?=", exit_stat)))
+	{
+		free(exit_stat);
+		return (1);
+	}
+	free(exit_stat);
 	set_shell_lvl(vars);
 	set_prompt(vars);
 	init_signals(0);
@@ -75,14 +85,15 @@ int	main(int argc, char **argv, char **envp)
 		input = readline(vars.prompt);
 		while (input)
 		{
-			lexer(input, &vars);
-			if (vars.token.tokens[0])
+			if (!lexer(input, &vars))
+			{
 				execute(&vars);
-			clean_command(&vars, input);
+				clean_command(&vars, input); //possiblement devoir free du stock de plus
+			}
 			set_prompt(&vars);
 			input = readline(vars.prompt);
 		}
-		quit_terminal(&vars, vars.var);
+		quit_terminal(&vars, vars.var, input);
 	}
 	else
 		printf("Error: Execute as ./minishell\n");

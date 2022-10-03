@@ -1,38 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   lexer_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 10:52:21 by anhebert         ###   ########.fr       */
+/*   Created: 2022/10/03 09:13:12 by anhebert          #+#    #+#             */
+/*   Updated: 2022/10/03 09:14:54 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
+int	check_meta(char *in, int i)
 {
-	ind->jj = 0;
-	vars->token_len = ind->i - ind->ii;
-	vars->token.tokens[ind->j] = ft_calloc(sizeof(char), vars->token_len + 2);
-	if (!vars->token.tokens[ind->j])
-		return ;
-	while (ind->ii < ind->i)
+	if (in[i + 1] && in[i] == '<')
 	{
-		vars->token.tokens[ind->j][ind->jj] = input[ind->ii];
-		ind->ii++;
-		ind->jj++;
+		if (in[i + 1] == '>' || in[i + 1] == '|')
+			return (1);
+		else if (in[i + 2] && (in[i + 2] == '>' || in [i + 2] == '|'
+				|| in[i + 2] == '<'))
+			return (1);
 	}
-	ind->jj++;
-	if (input[ind->i] != '\0')
-		ind->j++;
+	else if (in[i + 1] && in[i] == '>')
+	{
+		if (in[i + 1] == '<' || in[i + 1] == '|')
+			return (1);
+		else if (in[i + 2] && (in[i + 2] == '>' || in [i + 2] == '|'
+				|| in[i + 2] == '<'))
+			return (1);
+	}
+	else if (in[i + 1] && in[i] == '|')
+	{
+		if (in[i + 1] == '|')
+			return (1);
+	}
+	return (0);
 }
 
-void	new_token(char *in, t_vars *vars, t_indexes i)
+int	inquotes(int i, char *input, char c, t_vars *vars)
 {
-	i.ii = i.i;
+	int	ii;
+
+	ii = i;
+	while (input[i])
+	{
+		i++;
+		if (input[i] == c)
+		{
+			vars->nb_tokens++;
+			return (i);
+		}
+	}
+	return (ii);
+}
+
+int	count_nb_tokens(char *in, t_vars *vars, t_indexes i)
+{
+	vars->nb_tokens = 0;
 	while (in[i.i])
 	{
 		if (in[i.i] == 39 || in[i.i] == 34)
@@ -40,7 +65,7 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
 			if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
 				|| in[i.i] == '>' || in[i.i] == '|')
-				tokenizer(vars, &i, in);
+				vars->nb_tokens++;
 		}
 		else if (in[i.i] != '\0' && in[i.i] != ' ')
 		{
@@ -54,53 +79,25 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 					i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
 				if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
 					|| in[i.i] == '>' || in[i.i] == '|')
-					tokenizer(vars, &i, in);
+					vars->nb_tokens++;
 			}
 		}
 		if (in[i.i] == '\0' || in[i.i] == ' ')
 		{
 			if (in[i.i] != '\0')
-			{
 				i.i++;
-				i.ii = i.i;
-			}
 		}
 		else if (in[i.i] == '<' || in[i.i] == '>'
 			|| in[i.i] == '|')
 		{
-			i.ii = i.i;
+			if (check_meta(in, i.i) == 1)
+			{
+				printf("minishell: syntax error near unexpected token\n");
+				return (1);
+			}
+			vars->nb_tokens ++;
 			i.i++;
-			tokenizer(vars, &i, in);
 		}
-	}
-}
-
-int	lexer(char *input, t_vars *vars)
-{
-	t_indexes	indexes;
-	int			j;
-
-	j = 0;
-	indexes.i = 0;
-	indexes.ii = 0;
-	indexes.j = 0;
-	indexes.jj = 0;
-	if (!ft_strncmp("exit", input, 4))
-		quit_terminal(vars, vars->var, input);
-	if (input && *input)
-		add_history(input);
-	vars->token_len = 0;
-	if (count_nb_tokens(input, vars, indexes) == 1 || vars->nb_tokens == 0)
-		return (1);
-	vars->token.tokens = malloc(sizeof(char *) * (vars->nb_tokens + 1));
-	if (!vars->token.tokens)
-		return (1);
-	new_token(input, vars, indexes);
-	vars->token.tokens[vars->nb_tokens] = NULL;
-	while (vars->token.tokens[indexes.i])
-	{
-		if (!ft_strncmp(vars->token.tokens[indexes.i++], "|", 1))
-			vars->pipe++;
 	}
 	return (0);
 }

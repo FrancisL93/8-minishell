@@ -6,88 +6,43 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 11:40:45 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 10:56:31 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*set_here_prompt(int n_pipe)
+void	start_heredoc(char *eof, int fd)
 {
-	char	*prompt;
-	char	*pipe;
-	char	*heredoc;
-	int		i;
-	int		j;
+	char	*input;
 
-	i = -1;
-	j = -1;
-	pipe = "pipe ";
-	heredoc = "heredoc> ";
-	prompt = malloc(sizeof(char) * (9 + (n_pipe - 1) + 1));
-	while (++i < (n_pipe - 1) * 5)
-		prompt[++j] = pipe[i % 5];
-	while (++j < (n_pipe - 1) * 5 + 9)
-		prompt[j] = heredoc[(j - i) % 9];
-	return (prompt);
-}
-
-void	start_heredoc(t_vars *vars, char *stopper, int i)
-{
-	t_list	*heredoc;
-	t_list	*result;
-	char	*line;
-	char	*here_prompt;
-
-	here_prompt = set_here_prompt(vars->pipe);
-	heredoc = NULL;
-	result = heredoc;
-	line = readline(here_prompt);
-	while (ft_strncmp(line, stopper, ft_strlen(stopper)))
+	input = readline(">");
+	while (ft_strcmp(input, eof))
 	{
-		heredoc->content = line;
-		heredoc = heredoc->next;
-		if (line && line[0])
-			free(line);
-		ft_putstr_fd("Salut\n", STDERR_FILENO);
-		line = readline(here_prompt);
+		ft_putstr_fd(input, fd);
+		write(fd, "\n", 1);
+		free(input);
+		input = readline(">");
 	}
-	free(here_prompt);
-	while (result)
-	{
-		ft_putstr_fd(result->content, vars->fd[i * 2 + 1]);
-		write (vars->fd[i * 2 + 1], "\n", 1);
-		result = result->next;
-	}
+	free(input);
 }
 
-void	check_heredoc(t_vars *vars, int i)
+int	search_heredoc(t_vars *vars, int i, int ii)
 {
-	int		j;
-	char	*stopper;
-
-	j = 0;
-	while (vars->cmds[i].cmds[j + 1])
-		j++;
-	stopper = vars->cmds[i].cmds[j];
-	if (ft_strlen(stopper) < 1)
-		return ;
-	else
-		start_heredoc(vars, stopper, i);
+	if (vars->args[i][ii][0] == '<' && vars->args[i][ii + 1] \
+		&& vars->args[i][ii + 1][0] == '<')
+	{
+		if (vars->args[i][ii + 2])
+		{
+			vars->cmds[i].fd[1] = open("minishell_tmp_v2022", O_CREAT | O_TRUNC
+					| O_RDWR, 0777);
+			if (vars->cmds[i].fd[1] == -1)
+			{
+				perror("Error bitch: ");
+				return (1);
+			}
+			start_heredoc(vars->args[i][ii + 2], vars->cmds[i].fd[1]);
+		}
+	}
+	return (0);
 }
-
-//tmp files ?
-
-// void	check_heredoc(t_vars *vars, int i)
-// {
-// 	int		j;
-// 	char	*stopper;
-
-// 	j = 0;
-// 	while (vars->cmds[i].cmds[j] && ft_strncmp(vars->cmds[i].cmds[j], "<<", 2))
-// 		j++;
-// 	if (vars->cmds[i].cmds[j++] == NULL)
-// 		return ;
-// 	if (vars->cmds[i].cmds[j])
-// 		stopper = vars->cmds[i].cmds[j];
-// }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_builtins.c                                   :+:      :+:    :+:   */
+/*   check_built_ins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/27 14:01:08 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/01 13:40:30 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_built_in(t_vars *vars, int i)
 {
 	if (ft_strcmp(vars->cmds[i].cmds[0], "echo") == 0)
-		echo(vars, i);
+		echo_built(vars, i);
 	else if (ft_strcmp(vars->cmds[i].cmds[0], "pwd") == 0)
 		print_path();
 	else if (ft_strcmp(vars->cmds[i].cmds[0], "env") == 0)

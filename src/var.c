@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/27 11:19:53 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 07:28:08 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,28 +93,28 @@ int	add_variable(t_vars *vars, char *variable)
 {
 	int	nlen;
 	int	i;
-	int	j;
 
 	nlen = 0;
 	i = 0;
-	j = 0;
-	if (variable != NULL)
+	if (variable == NULL)
+		return (0);
+	while (variable[nlen] != '=')
+		nlen++;
+	if (variable[nlen] == '\0')
+		return (1);
+	while (vars->env[i] != NULL && variable != NULL
+		&& ft_strncmp(variable, vars->env[i], nlen))
+		i++;
+	if (vars->env[i] != NULL)
 	{
-		while (variable[nlen] != '=')
-			nlen++;
-		if (variable[nlen] == '\0')
-			return (0);
+		free(vars->env[i]);
+		vars->env[i] = ft_str_dup(variable);
+	}
+	else
 		ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
 				ft_strndup(variable, nlen)));
-		while (vars->env[i] != NULL && ft_strncmp(variable, vars->env[i], nlen))
-			i++;
-		if (vars->env[i] != NULL)
-		{
-			free(vars->env[i]);
-			vars->env[i] = ft_str_dup(variable);
-		}
-	}
-	return (1);
+	//free(variable); // à vérifier dans tous les cas
+	return (0);
 }
 
 char	*get_variable(t_vars *vars, char *dolvar)
@@ -147,15 +147,13 @@ char	*get_variable(t_vars *vars, char *dolvar)
 int	check_var(t_vars *vars, int i)
 {
 	int		j;
-	int		res;
 
 	j = -1;
 	if (i != vars->pipe - 1)
 		return (1);
 	while (vars->cmds[i].cmds[++j])
 	{
-		res = add_variable(vars, vars->cmds[i].cmds[j]);
-		if (res == 1)
+		if (add_variable(vars, vars->cmds[i].cmds[j]) == 0)
 			return (1);
 	}
 	return (0);

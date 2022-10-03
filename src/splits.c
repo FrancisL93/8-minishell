@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splits.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/29 14:18:00 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/01 12:25:55 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	split_cmds(t_vars *vars)
 	i = -1;
 	ii = 0;
 	j = 0;
-	vars->args = malloc(sizeof(char **) * vars->pipe);
+	vars->args = malloc(sizeof(char **) * (vars->pipe + 1));
 	vars->cmds = malloc(sizeof(t_cmds) * vars->pipe);
 	while (++i < vars->pipe)
 		vars->args[i] = subsplit(vars, &j, i);

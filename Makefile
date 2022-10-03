@@ -6,23 +6,22 @@
 #    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/09/27 14:33:56 by anhebert         ###   ########.fr        #
+#    Updated: 2022/10/03 09:21:10 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c \
-		src/built_in_tools.c src/built_in_tools2.c src/built_in.c src/built_in2.c \
-		src/check_builtins.c \
-		src/exe_tools.c src/exe.c \
+SRC = 	src/main.c \
+		src/built_in_cd.c src/built_in_env.c src/built_in_export_unset.c \
+		src/built_in_tools.c src/check_built_ins.c src/tools.c \
+		src/splits.c src/splits2.c \
+		src/exe.c src/exe_tools.c src/exe_pipe_tools.c\
 		src/heredoc.c \
-		src/lenght_tools.c src/lexer.c src/list_tools.c \
+		src/lenght_tools.c src/list_tools.c src/lexer_tools.c src/lexer.c \
+		src/signals.c \
+		src/var.c \
 		src/quit_clean.c \
-		src/redirection.c \
-		src/signals.c src/splits.c src/splits2.c \
-		src/tools.c src/tools2.c\
-		src/var.c
 
 LIBFT = inc/libft
 LIBFTA = inc/libft/libft.a
@@ -95,6 +94,9 @@ debug: $(LIBFTA) $(OBJ) #Compile for debugger
 	@echo "\033[0;32mCompiling minishell...\033[0m"
 	@$(CC) $(CFLAGS) $(LIBREADLINE) $(LIBFTA) $(OBJ) -o $(NAME) -lreadline -lcurses
 	@echo "\033[0;32mMinishell compiled! Execute as: ./minishell\033[0m"
+
+segfault: $(LIBFTA) $(OBJ)
+	@$(CC) $(CFLAGS) -fsanitize=address $(LIBREADLINE) $(LIBFTA) $(OBJ) -o $(NAME) -lreadline -lcurses
 	
 exe: $(NAME) #Execute program
 	./$(NAME)

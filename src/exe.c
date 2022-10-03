@@ -19,21 +19,22 @@ void	child_process(t_vars *vars, int i)
 
 	j = -1;
 	ret = 0;
-	vars->exit_stat = 0;
 	while (++j < (vars->pipe - 1) * 2)
 		close(vars->fd[j]);
-	ft_is_redirector(vars, i);
+	if (!vars->cmds || !vars->cmds[i].cmds[0])
+		exit(127);
 	ret = check_built_in(vars, i);
 	if (ret)
-		exit(vars->exit_stat);
+		exit(ret);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
 	else
 		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
 	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
-	if (ret == -1)
-		perror("Error");
-	exit(errno);
+	ft_putstr_fd("Error: Command not found (", STDERR_FILENO);
+	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
+	ft_putstr_fd(")\n", STDERR_FILENO);
+	exit(0);
 }
 
 void	execute_command(t_vars *vars, int i)
@@ -44,18 +45,26 @@ void	execute_command(t_vars *vars, int i)
 	if (vars->cmds[i].pid == 0)
 	{
 		init_signals(1);
+		if (set_input(vars, i))
+			exit (1);
+		if (set_output(vars, i))
+			exit (1);
 		child_process(vars, i);
 	}
 	init_signals(2);
 }
 
-void	check_cmds(t_vars *vars, int ret, int i)
+int	check_command(t_vars *vars)
 {
-	i = -1;
-	while (++i < vars->pipe)
+	int	i;
+	int	ret;
+
+	i = 0;
+	ret = 0;
+	while (i < vars->pipe)
 	{
-		if (!vars->cmds[i]. cmds[0])
-			break ;
+		if (!vars->cmds[i].cmds[0])
+			return (1);
 		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret != 1 && vars->pipe == 1)
@@ -64,36 +73,65 @@ void	check_cmds(t_vars *vars, int ret, int i)
 			ret = check_export(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_cd(vars, i);
+		if (set_fds(vars, i))
+			vars->cmds[i].cmds[0] = NULL;
 		if (ret != 1)
 			execute_command(vars, i);
+		i++;
+	}
+	return (ret);
+}
+
+void	close_fds(t_vars *vars)
+{
+	int		i;
+	char	*exec_args[4];
+	pid_t	pid;
+
+	i = 0;
+	while (i < (vars->pipe * 2))
+	{
+		close(vars->fd[i]);
+		i++;
+	}
+	free(vars->fd);
+	pid = fork();
+	if (pid < 0)
+		return ;
+	else if (pid == 0)
+	{
+		exec_args[0] = "/bin/rm";
+		exec_args[1] = "-rf";
+		exec_args[2] = "minishell_tmp_v2022";
+		exec_args[3] = NULL;
+		execve("/bin/rm", exec_args, vars->env);
 	}
 }
 
 void	execute(t_vars *vars)
 {
+	int	status;
 	int	i;
-	int	ret;
 
 	i = -1;
-	ret = 0;
-	vars->fd = malloc(sizeof(int) * (vars->pipe -1) * 2);
+	if (!vars->token.tokens)
+		return ;
+	vars->fd = malloc(sizeof(int) * vars->pipe * 2);
+	if (!vars->fd)
+		return ;
 	split_cmds(vars);
-	while (++i < vars->pipe - 1)
-		if (pipe(vars->fd + i * 2) == -1)
-			return ;
-	check_cmds(vars, ret, i);
-	i = -1;
-	while (++i < (vars->pipe - 1) * 2)
-		close(vars->fd[i]);
-	i = -1;
-	while (++i < vars->pipe)
+	if (create_pipes(vars))
 	{
-		waitpid(vars->cmds[i].pid, &vars->exit_stat, 0);
-		if (WIFEXITED(vars->exit_stat))
-		{
-			vars->exit_stat = WEXITSTATUS(vars->exit_stat);
-			add_variable(vars, ft_strjoin("?=", ft_itoa(vars->exit_stat)));
-		}
+		close_fds(vars);
+		return ;
 	}
+	if (check_command(vars))
+	{
+		close_fds(vars);
+		return ;
+	}
+	close_fds(vars);
+	while (++i < vars->pipe)
+		waitpid(vars->cmds[i].pid, &status, 0);
 	init_signals(0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:41:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/27 11:20:21 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/01 14:01:07 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	sig_handler_children(int sig)
 void	sig_handler_parent(int sig)
 {
 	if (sig == SIGQUIT)
-		printf("\n");
+		printf("Quit: 3\n");
 	else if (sig == SIGINT)
 		printf("\n");
 }
@@ -33,7 +33,6 @@ void	sig_handler(int sig)
 	if (sig == SIGQUIT)
 	{
 		rl_on_new_line();
-		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (sig == SIGINT)
@@ -50,8 +49,14 @@ void	sig_handler(int sig)
 
 void	init_signals(int children)
 {
+	struct termios		termios_save;
+	struct termios		termios_new;
 	struct sigaction	sa;
 
+	tcgetattr(0, &termios_save);
+	termios_new = termios_save;
+	termios_new.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, 0, &termios_new);
 	sa.sa_mask = SA_SIGINFO;
 	if (children == 2)
 		sa.sa_handler = &sig_handler_parent;

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/29 14:17:25 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 10:55:23 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "readline/history.h"
 # include "errno.h"
 # include "signal.h"
+# include "termios.h"
+# include "curses.h"
 # include "sys/ioctl.h"
 
 # define CLEAN "\e[1;1H\e[2J"
@@ -29,11 +31,12 @@
 
 typedef struct s_cmds
 {
-	char				*cmd;
-	char				**cmds;
-	int					index;
-	pid_t				pid;
-}					t_cmds;
+	char		*cmd;
+	char		**cmds;
+	int			fd[2];
+	int			index;
+	pid_t		pid;
+}t_cmds;
 
 typedef struct s_token
 {
@@ -67,37 +70,36 @@ typedef struct s_indexes
 	int	jj;
 }	t_indexes;
 
-//built_in_tools.c
+//built_in_cd.c
+void	cd(t_vars *vars, char *input);
+void	check_dir(t_vars *vars, char *path);
+char	*check_path(char *cmd, char *current_path);
+
+//built_in_env.c
+int		set_env(t_vars *vars, char **envp);
+void	print_path(void);
+void	print_env(t_vars *vars);
 void	set_pwd(t_vars *vars, char *oldpath);
+void	set_new_env(t_vars *vars, char *variable, char **env, int *ii);
+
+//built_in_export.c
+void	export(t_vars *vars, char *input);
+void	export_new_var(t_vars *vars, char *input, int init);
+void	unset(t_vars *vars, char *variable);
+void	unset_len(t_vars *vars, char *variable, int *ii);
+
+//built_in_tools.c
+int		check_flag(char *flag);
 int		ftstrnstr(char *current_path, char *cmd);
 char	*ftstrjoin(char *cmd, char *current_path);
 char	*ftstrtrim(char	*current_path);
-char	*check_path(char *cmd, char *current_path);
-int		check_flag(char *flag);
+void	echo_built(t_vars *vars, int i);
 
-//built_in_tools2.c
-int		check_flag(char *flag);
-
-//built_in.c
-void	cd(t_vars *vars, char *input);
-void	print_env(t_vars *vars);
-void	print_path(void);
-void	echo(t_vars *vars, int i);
-
-//built_in2.c
-void	export(t_vars *vars, char *input);
-void	unset(t_vars *vars, char *variable);
-
-//check builtins.c
+//check built_ins.c
 int		check_built_in(t_vars *vars, int i);
 int		check_export(t_vars *vars, int i);
 int		check_unset(t_vars *vars, int i);
 int		check_cd(t_vars *vars, int i);
-
-//exe_tools.c
-char	*join_path(char *path, char *bin);
-char	*get_path(char *cmnd, char **envp);
-char	*ft_strndup(char *str, unsigned int n);
 
 //exe.c
 void	execute(t_vars *vars);
@@ -105,10 +107,23 @@ void	check_cmds(t_vars *vars, int ret, int i);
 void	child_process(t_vars *vars, int i);
 void	execute_command(t_vars *vars, int i);
 
+//exe_tools.c
+int		search_infile(t_vars *vars, int i, int ii);
+int		search_outfile(t_vars *vars, int i, int *ii);
+char	*join_path(char *path, char *bin);
+char	*get_path(char *cmnd, char **envp);
+char	*ft_strndup(char *str, unsigned int n);
+
+//exe_pipe_tools.c
+int		put_fds(t_vars *vars, int i, int *ii, int out_type);
+int		create_pipes(t_vars *vars);
+int		set_fds(t_vars *vars, int i);
+int		set_input(t_vars *vars, int i);
+int		set_output(t_vars *vars, int i);
+
 //heredoc.c
-char	*set_here_prompt(int n_pipe);
-void	start_heredoc(t_vars *vars, char *stopper, int i);
-void	check_heredoc(t_vars *vars, int i);
+void	start_heredoc(char *stopper, int fd);
+int		search_heredoc(t_vars *vars, int i, int ii);
 
 //lenght_tools.c
 size_t	ft_str_len(const char *str);
@@ -117,12 +132,18 @@ int		token_len(char *token, t_vars *vars, char sep);
 int		inquoteslen(int i, char *input, char c);
 void	var_len(t_indexes *i, char *in);
 
-//lexer.c
+//lexer_tools.c
+int		check_meta(char *in, int i);
 int		inquotes(int i, char *input, char c, t_vars *vars);
-void	count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
-void	lexer(char *input, t_vars *vars);
+int		count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
+
+//lexer.c
+int		lexer(char *input, t_vars *vars);
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
 void	new_token(char *in, t_vars *vars, t_indexes i);
+
+//main.c
+void	set_prompt(t_vars *vars);
 
 //list_tools.c
 t_list	*ft_lst_new(void *content, void *name);
@@ -130,11 +151,8 @@ void	ft_lst_add_front(t_list **lst, t_list *new1);
 char	*ft_str_dup(const char *str);
 
 //quit_clean.c
-void	quit_terminal(t_vars *vars, t_list *variables);
 void	clean_command(t_vars *vars, char *input);
-
-//redirection
-void	ft_is_redirector(t_vars *vars, int i);
+void	quit_terminal(t_vars *vars, t_list *variables, char *input);
 
 //signals.c
 void	sig_handler_children(int sig);
@@ -155,12 +173,9 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len);
 //tools.c
 char	*ft_getenv(t_vars *vars);
 char	*tolower_str(char *str, int capital);
-void	set_prompt(t_vars *vars);
 int		ft_strichr(const char *s, int c);
-char	*get_cmd(char *input);
-
-//tools2.c
 int		ft_strcmp(char *s1, char *s2);
+char	*get_cmd(char *input);
 
 //var.c
 void	export_to_env(t_vars *vars, char *input, char *variable);

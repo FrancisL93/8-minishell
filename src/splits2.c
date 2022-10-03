@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/29 14:18:11 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 09:37:07 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
 	vars->cmds[ind].cmds = malloc(sizeof(char *) * (i + 1));
 	while (j < i)
 	{
-		if (ft_strnstr(cmnd[j], ">", 1)
-			&& ft_strnstr(cmnd[j + 1], ">", 1))
+		if (cmnd[j][0] == '>' && cmnd[j + 1][0] == '>')
 			j += 3;
-		else if (ft_strnstr(cmnd[j], ">", 1)
-			|| ft_strnstr(cmnd[j], "<", 1))
+		else if (cmnd[j][0] == '>' || cmnd[j][0] == '<')
 			j += 2;
 		else
 		{
@@ -74,7 +72,9 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 	while (token[i.i])
 	{
 		i.ii = 0;
-		if (token[i.i] == 36 && is_quote != 1)
+		if (token[i.i] == 36 && token[i.i + 1] != ' '
+			&& token[i.i + 1] != '\0' && token[i.i + 1] != 36
+			&& is_quote != 1)
 		{
 			var = get_variable(vars, &token[i.i]);
 			vars->var = head;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/22 10:04:21 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/30 10:39:53 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,14 @@ char	*ft_getenv(t_vars *vars)
 	return ("minishell");
 }
 
-void	set_prompt(t_vars *vars)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int		i;
-	char	*prompt;
-	char	*tmp;
+	int	i;
 
-	prompt = ft_getenv(vars);
-	i = ft_strlen(prompt) - 1;
-	while (prompt[i] != '/')
-		i--;
-	tmp = ft_strjoin(GREEN, &prompt[i]);
-	vars->prompt = ft_strjoin(tmp, " >> \e[0;37m");
-	free(tmp);
+	i = 0;
+	while ((s1[i] && s2[i]) && (s1[i] == s2[i]))
+		i++;
+	return (s1[i] - s2[i]);
 }
 
 int	ft_strichr(const char *s, int c)

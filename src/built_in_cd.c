@@ -1,73 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in.c                                         :+:      :+:    :+:   */
+/*   built_in_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/29 15:01:19 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/09/30 10:54:01 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	echo(t_vars *vars, int i)
-{
-	int	j;
-	int	nl;
-
-	j = 1;
-	nl = 1;
-	if (vars->cmds[i].cmds[j] == NULL)
-		printf("\n");
-	while (check_flag(vars->cmds[i].cmds[j]) == 1)
-		j++;
-	if (j != 1)
-		nl = 0;
-	while (vars->cmds[i].cmds[j] != NULL)
-	{
-		printf("%s", vars->cmds[i].cmds[j]);
-		j++;
-		if (vars->cmds[i].cmds[j] != NULL)
-			printf(" ");
-		if (vars->cmds[i].cmds[j] == NULL)
-		{
-			if (nl == 1)
-				printf("\n");
-		}
-	}
-}
-
-void	print_path(void)
+char	*check_path(char *cmd, char *current_path)
 {
 	char	*buff;
 
 	buff = NULL;
-	printf("%s\n", getcwd(buff, 1024));
-	free (buff);
-}
-
-void	print_env(t_vars *vars)
-{
-	int	i;
-
-	i = 0;
-	while (vars->env[i] != NULL)
-	{
-		if (!strncmp("PATH", vars->env[i], 4))
-			break ;
-		i++;
-		if (vars->env[i] == NULL)
-		{
-			printf("env: %s\n", strerror(ENOENT));
-			vars->exit_stat = 127;
-			return ;
-		}
-	}
-	i = -1;
-	while (vars->env[++i] != NULL)
-		printf("%s\n", vars->env[i]);
+	if (cmd[0] == '.' && cmd[1] == '\0')
+		return (getcwd(buff, 1024));
+	else if (ft_strlen(current_path) == 1 && current_path[0] == '/')
+		return (current_path);
+	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '\0')
+		return (ftstrtrim(current_path));
+	return (NULL);
 }
 
 void	check_dir(t_vars *vars, char *path)

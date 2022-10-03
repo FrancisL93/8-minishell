@@ -3,39 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/29 14:47:54 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/02 12:05:19 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	set_pwd(t_vars *vars, char *oldpath)
+void	echo_built(t_vars *vars, int i)
 {
-	int		i;
-	char	*buff;
+	int	j;
+	int	nl;
 
-	buff = NULL;
-	i = 0;
-	while (vars->env[i] && ft_strncmp(vars->env[i], "PWD=", 4))
-		i++;
-	if (vars->env[i])
-		vars->env[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
-	if (vars->env[i] != NULL)
+	j = 1;
+	nl = 1;
+	if (vars->cmds[i].cmds[j] == NULL)
+		printf("\n");
+	while (check_flag(vars->cmds[i].cmds[j]) == 1)
+		j++;
+	if (j != 1)
+		nl = 0;
+	while (vars->cmds[i].cmds[j] != NULL)
 	{
-		if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
+		printf("%s", vars->cmds[i].cmds[j]);
+		j++;
+		if (vars->cmds[i].cmds[j] != NULL)
+			printf(" ");
+		if (vars->cmds[i].cmds[j] == NULL)
 		{
-			export(vars, ft_strjoin("OLDPWD=", oldpath));
-			return ;
+			if (nl == 1)
+				printf("\n");
 		}
 	}
+}
+
+int	check_flag(char *flag)
+{
+	int	i;
+
 	i = 0;
-	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))
+	while (flag[i])
+	{
+		if (flag[0] != '-')
+			return (0);
 		i++;
-	if (vars->env[i])
-		vars->env[i] = ft_strjoin("OLDPWD=", oldpath);
+		if (flag[1] != 'n')
+			return (0);
+		i++;
+		if (flag[2] == '\0')
+			return (1);
+		if (flag[2] != 'n' && flag[2] != ' ')
+			return (0);
+		while (flag[i] == 'n')
+		{
+			i++;
+			if (flag[i] == ' ' || flag[i] == '\0')
+				return (1);
+		}
+	}
+	return (0);
 }
 
 int	ftstrnstr(char *current_path, char *cmd)
@@ -67,7 +95,9 @@ char	*ftstrjoin(char *cmd, char *current_path)
 	j = 0;
 	size = ft_strlen(current_path);
 	size += ft_strlen(cmd);
-	new_path = calloc(sizeof(char), size + 2);
+	new_path = ft_calloc(sizeof(char), size + 2);
+	if (!new_path)
+		return (NULL);
 	while (current_path[++i])
 		new_path[j++] = current_path[i];
 	new_path[j] = '/';
@@ -99,18 +129,4 @@ char	*ftstrtrim(char	*current_path)
 		ii++;
 	}
 	return (new_path);
-}
-
-char	*check_path(char *cmd, char *current_path)
-{
-	char	*buff;
-
-	buff = NULL;
-	if (cmd[0] == '.' && cmd[1] == '\0')
-		return (getcwd(buff, 1024));
-	else if (ft_strlen(current_path) == 1 && current_path[0] == '/')
-		return (current_path);
-	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '\0')
-		return (ftstrtrim(current_path));
-	return (NULL);
 }
