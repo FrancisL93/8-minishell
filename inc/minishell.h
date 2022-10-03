@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/03 11:06:00 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 12:01:19 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	start_heredoc(char *stopper, int fd);
 int		search_heredoc(t_vars *vars, int i, int *ii);
 
 //lenght_tools.c
-size_t	ft_str_len(const char *str);
+int		ft_str_len(const char *str);
 int		dolvar_len(char *token);
 int		token_len(char *token, t_vars *vars, char sep);
 int		inquoteslen(int i, char *input, char c);

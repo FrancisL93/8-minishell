@@ -6,14 +6,13 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 11:41:55 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 12:05:24 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-// Redirections
-// Heredoc
+ 
+// Redirections (S'assrure avec le here doc que le resultat soit envoyé dans la fonction apres)
 // Free
 // Norme
 

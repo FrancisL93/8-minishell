@@ -6,13 +6,13 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:57:27 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/29 14:07:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 12:02:25 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-size_t	ft_str_len(const char *str)
+int	ft_str_len(const char *str)
 {
 	int	size;
 
@@ -53,9 +53,11 @@ int	token_len(char *token, t_vars *vars, char sep)
 	while (token[i.i])
 	{
 		i.ii = 0;
-		if (token[i.i] == 36 && is_quote != 1)
+		if (token[i.i] == 36 && token[i.i + 1] != ' '
+			&& token[i.i + 1] != '\0' && token[i.i + 1] != 36
+			&& is_quote != 1)
 		{
-			len += dolvar_len(&token[i.i]);
+			len += ft_str_len(get_variable(vars, &token[i.i]));
 			i.i += dolvar_len(&token[i.i]);
 			vars->var = head;
 		}
