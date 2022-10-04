@@ -63,9 +63,9 @@ int	check_command(t_vars *vars)
 	ret = 0;
 	while (i < vars->pipe)
 	{
-		if (!vars->cmds[i].cmds[0])
-			return (1);
-		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
+		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
+			ret = 1;
+		if (ret != 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_unset(vars, i);
@@ -73,8 +73,7 @@ int	check_command(t_vars *vars)
 			ret = check_export(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_cd(vars, i);
-		if (set_fds(vars, i))
-			vars->cmds[i].cmds[0] = NULL;
+		set_fds(vars, i);
 		if (ret != 1)
 			execute_command(vars, i);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:03:22 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:48:21 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	main(int argc, char **argv, char **envp)
 			set_prompt(&vars);
 			input = readline(vars.prompt);
 		}
+		printf("%sexit\n", vars.prompt);
 		quit_terminal(&vars, input);
 	}
 	else

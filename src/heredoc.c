@@ -3,28 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 11:35:42 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 13:46:50 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	start_heredoc(char *eof, int fd)
+int	start_heredoc(char *eof)
 {
 	char	*input;
+	int		fd[2];
 
 	input = readline(">");
+	if (pipe(fd) < 0)
+		return (-1);
 	while (ft_strcmp(input, eof))
 	{
-		ft_putstr_fd(input, fd);
-		write(fd, "\n", 1);
+		ft_putstr_fd(input, fd[1]);
+		write(fd[1], "\n", 1);
 		free(input);
 		input = readline(">");
 	}
+	close (fd[1]);
 	free(input);
+	return (fd[0]);
 }
 
 int	search_heredoc(t_vars *vars, int i, int *ii)
@@ -34,15 +39,10 @@ int	search_heredoc(t_vars *vars, int i, int *ii)
 	{
 		if (vars->args[i][*ii + 2])
 		{
-			vars->cmds[i].fd[1] = open("minishell_tmp_v2022", O_CREAT | O_TRUNC
-					| O_RDWR, 0777);
-			if (vars->cmds[i].fd[1] == -1)
-			{
-				perror("Error bitch: ");
+			vars->cmds[i].fd[0] = start_heredoc(vars->args[i][*ii + 2]);
+			if (vars->cmds[i].fd[0] < 0)
 				return (1);
-			}
-			start_heredoc(vars->args[i][*ii + 2], vars->cmds[i].fd[1]);
-			*ii += 1;
+			*ii += 2;
 		}
 	}
 	return (0);
