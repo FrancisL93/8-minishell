@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 12:58:14 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:03:32 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	execute_command(t_vars *vars, int i);
 //exe_tools.c
 int		search_infile(t_vars *vars, int i, int ii);
 int		search_outfile(t_vars *vars, int i, int *ii);
+int		search_outfile_append(t_vars *vars, int i, int *ii);
 char	*join_path(char *path, char *bin);
 char	*get_path(char *cmnd, char **envp);
 char	*ft_strndup(char *str, unsigned int n);

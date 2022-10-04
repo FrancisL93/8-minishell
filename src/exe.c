@@ -63,9 +63,9 @@ int	check_command(t_vars *vars)
 	ret = 0;
 	while (i < vars->pipe)
 	{
-		if (!vars->cmds[i].cmds[0])
-			return (1);
-		if (ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
+		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
+			ret = 1;
+		if (ret != 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_unset(vars, i);
@@ -73,8 +73,7 @@ int	check_command(t_vars *vars)
 			ret = check_export(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_cd(vars, i);
-		if (set_fds(vars, i))
-			vars->cmds[i].cmds[0] = NULL;
+		ret = set_fds(vars, i);
 		if (ret != 1)
 			execute_command(vars, i);
 		i++;
@@ -85,8 +84,6 @@ int	check_command(t_vars *vars)
 void	close_fds(t_vars *vars)
 {
 	int		i;
-	char	*exec_args[4];
-	pid_t	pid;
 
 	i = 0;
 	while (i < (vars->pipe * 2))
@@ -95,17 +92,6 @@ void	close_fds(t_vars *vars)
 		i++;
 	}
 	free(vars->fd);
-	pid = fork();
-	if (pid < 0)
-		return ;
-	else if (pid == 0)
-	{
-		exec_args[0] = "/bin/rm";
-		exec_args[1] = "-rf";
-		exec_args[2] = "minishell_tmp_v2022";
-		exec_args[3] = NULL;
-		execve("/bin/rm", exec_args, vars->env);
-	}
 }
 
 void	execute(t_vars *vars)
@@ -129,10 +115,7 @@ void	execute(t_vars *vars)
 	{
 		waitpid(vars->cmds[i].pid, &vars->exit_stat, 0);
 		if (WIFEXITED(vars->exit_stat))
-		{
-			vars->exit_stat = WEXITSTATUS(vars->exit_stat);
-			add_variable(vars, ft_strjoin("?=", ft_itoa(vars->exit_stat)));
-		}
+			add_exit(vars, WEXITSTATUS(vars->exit_stat));
 	}
 	init_signals(0);
 }

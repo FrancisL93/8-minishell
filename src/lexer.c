@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:41:37 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:48:18 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	lexer(char *input, t_vars *vars)
 	vars->token.tokens[vars->nb_tokens] = NULL;
 	while (vars->token.tokens[indexes.i])
 	{
+		//printf("%s\n", vars->token.tokens[indexes.i]);
 		if (!ft_strncmp(vars->token.tokens[indexes.i++], "|", 1))
 			vars->pipe++;
 	}

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 11:59:43 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:41:49 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_is_quote(t_indexes i, char *token, char sep)
 	return (0);
 }
 
-void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
+void	ft_retrieve_commands(t_vars *vars, char **cmd, int i, int ind)
 {
 	int	j;
 	int	ii;
@@ -34,17 +34,25 @@ void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
 	ii = 0;
 	vars->cmds[ind].index = ind;
 	vars->cmds[ind].cmds = malloc(sizeof(char *) * (i + 1));
-	while (j < i)
+	while (cmd[j] != NULL)
 	{
-		if (cmnd[j][0] == '>' && cmnd[j + 1][0] == '>')
-			j += 3;
-		else if (cmnd[j][0] == '<' && cmnd[j + 1][0] == '<')
-			j += 3;
-		else if (cmnd[j][0] == '>' || cmnd[j][0] == '<')
-			j += 2;
+		if (cmd[j][0] == '>')
+		{
+			while (cmd[j] != NULL && cmd[j][0] == '>')
+			{
+				j++;
+			}
+		}
+		else if (cmd[j][0] == '<')
+		{
+			while (cmd[j] != NULL && cmd[j][0] == '<')
+			{
+				j++;
+			}
+		}
 		else
 		{
-			vars->cmds[ind].cmds[ii] = cmnd[j];
+			vars->cmds[ind].cmds[ii] = cmd[j];
 			ii++;
 			j++;
 		}
