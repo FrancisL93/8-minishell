@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:13:12 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/03 09:14:54 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 13:51:00 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 int	check_meta(char *in, int i)
 {
-	if (in[i + 1] && in[i] == '<')
+	if (in[i + 1] != '\0' && in[i] == '<')
 	{
 		if (in[i + 1] == '>' || in[i + 1] == '|')
 			return (1);
-		else if (in[i + 2] && (in[i + 2] == '>' || in [i + 2] == '|'
+		else if (in[i + 2] && in[i + 1] == '<'
+			&& (in[i + 2] == '>' || in [i + 2] == '|'
 				|| in[i + 2] == '<'))
 			return (1);
 	}
-	else if (in[i + 1] && in[i] == '>')
+	else if (in[i + 1] != '\0' && in[i] == '>')
 	{
 		if (in[i + 1] == '<' || in[i + 1] == '|')
 			return (1);
-		else if (in[i + 2] && (in[i + 2] == '>' || in [i + 2] == '|'
-				|| in[i + 2] == '<'))
+		else if (in[i + 2] && in[i + 1] == '>' && (in[i + 2] == '>'
+				|| in [i + 2] == '|' || in[i + 2] == '<'))
 			return (1);
 	}
-	else if (in[i + 1] && in[i] == '|')
+	else if (in[i + 1] != '\0' && in[i] == '|')
 	{
 		if (in[i + 1] == '|')
 			return (1);
@@ -55,40 +56,41 @@ int	inquotes(int i, char *input, char c, t_vars *vars)
 	return (ii);
 }
 
+void	check_if_is_token(char *in, t_vars *vars, t_indexes *i)
+{
+	while (in[i->i] != ' ' && in[i->i] != '\0' && in[i->i] != '<'
+		&& in[i->i] != '>' && in[i->i] != '|')
+	{
+		i->i++;
+		if (in[i->i] == '=')
+			var_len(i, in);
+		else if (in[i->i] == 34 || in[i->i] == 39)
+			i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
+		if (in[i->i] == '\0' || in[i->i] == ' ' || in[i->i] == '<'
+			|| in[i->i] == '>' || in[i->i] == '|')
+			vars->nb_tokens++;
+	}
+}
+
+void	check_if_is_token2(char *in, t_vars *vars, t_indexes *i)
+{
+	i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
+	if (in[i->i] == '\0' || in[i->i] == ' ' || in[i->i] == '<'
+		|| in[i->i] == '>' || in[i->i] == '|')
+		vars->nb_tokens++;
+}
+
 int	count_nb_tokens(char *in, t_vars *vars, t_indexes i)
 {
-	vars->nb_tokens = 0;
 	while (in[i.i])
 	{
 		if (in[i.i] == 39 || in[i.i] == 34)
-		{
-			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
-			if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
-				|| in[i.i] == '>' || in[i.i] == '|')
-				vars->nb_tokens++;
-		}
+			check_if_is_token2(in, vars, &i);
 		else if (in[i.i] != '\0' && in[i.i] != ' ')
-		{
-			while (in[i.i] != ' ' && in[i.i] != '\0' && in[i.i] != '<'
-				&& in[i.i] != '>' && in[i.i] != '|')
-			{
+			check_if_is_token(in, vars, &i);
+		if (in[i.i] == ' ')
 				i.i++;
-				if (in[i.i] == '=')
-					var_len(&i, in);
-				else if (in[i.i] == 34 || in[i.i] == 39)
-					i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
-				if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
-					|| in[i.i] == '>' || in[i.i] == '|')
-					vars->nb_tokens++;
-			}
-		}
-		if (in[i.i] == '\0' || in[i.i] == ' ')
-		{
-			if (in[i.i] != '\0')
-				i.i++;
-		}
-		else if (in[i.i] == '<' || in[i.i] == '>'
-			|| in[i.i] == '|')
+		else if (in[i.i] == '<' || in[i.i] == '>' || in[i.i] == '|')
 		{
 			if (check_meta(in, i.i) == 1)
 			{
