@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splits2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 11:59:43 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:48:13 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
 			j += 2;
 		else
 		{
-			vars->cmds[ind].cmds[ii] = cmnd[j];
+			vars->cmds[ind].cmds[ii] = ft_strdup(cmnd[j]);
 			ii++;
 			j++;
 		}

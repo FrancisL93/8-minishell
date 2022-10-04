@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 07:28:08 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:52:49 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	add_variable(t_vars *vars, char *variable)
 	else
 		ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
 				ft_strndup(variable, nlen)));
-	//free(variable); // à vérifier dans tous les cas
+	free(variable); // à vérifier dans tous les cas
 	return (0);
 }
 

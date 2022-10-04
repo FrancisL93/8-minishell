@@ -111,6 +111,7 @@ void	close_fds(t_vars *vars)
 void	execute(t_vars *vars)
 {
 	int	i;
+	char	*exit_char;
 
 	i = -1;
 	if (!vars->token.tokens)
@@ -131,7 +132,9 @@ void	execute(t_vars *vars)
 		if (WIFEXITED(vars->exit_stat))
 		{
 			vars->exit_stat = WEXITSTATUS(vars->exit_stat);
-			add_variable(vars, ft_strjoin("?=", ft_itoa(vars->exit_stat)));
+			exit_char = ft_itoa(vars->exit_stat);
+			add_variable(vars, ft_strjoin("?=", exit_char));
+			free(exit_char);
 		}
 	}
 	init_signals(0);

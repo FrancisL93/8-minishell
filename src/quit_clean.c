@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/01 15:46:13 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 12:51:55 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,44 @@
 
 void	clean_cmds(t_vars *vars)
 {
-	if (vars->cmds->cmds)
+	int	i;
+	int	j;
+	
+	i = 0;
+	while (i < vars->pipe)
+	{
+		j = 0;
+		while (vars->cmds[i].cmds[j])
+		{
+			free(vars->cmds[i].cmds[j]);
+			j++;
+		}
+		free(vars->cmds[i].cmds);
+		i++;
+	}
+	if (vars->cmds)
 		free(vars->cmds);
 }
 
 void	clean_args(t_vars *vars)
 {
-	// if (vars->args)
-	// 	free(vars->args);
-	(void) vars;
-	return ;
+	int	i;
+	int	j;
+	
+	i = 0;
+	while (vars->args && vars->args[i])
+	{
+		j = 0;
+		while (vars->args[i][j])
+		{
+			free(vars->args[i][j]);
+			j++;
+		}
+		free(vars->args[i]);
+		i++;
+	}
+	if (vars->args)
+		free(vars->args);
 }
 
 void	clean_tokens(t_vars *vars)
@@ -52,7 +80,7 @@ void	clean_command(t_vars *vars, char *input)
 	vars->pipe = 1;
 }
 
-void	quit_terminal(t_vars *vars, t_list *variables, char *input)
+void	quit_terminal(t_vars *vars, char *input)
 {
 	int	i;
 
@@ -70,8 +98,10 @@ void	quit_terminal(t_vars *vars, t_list *variables, char *input)
 		if (vars->var->content)
 			free(vars->var->content);
 		free(vars->var);
-		vars->var = vars->var->next;
+		if (vars->var->next)
+			vars->var = vars->var->next;
+		else
+			break ;
 	}
-	(void) variables;
 	exit(0);
 }

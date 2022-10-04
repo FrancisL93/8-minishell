@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 09:53:39 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:50:33 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	main(int argc, char **argv, char **envp)
 			set_prompt(&vars);
 			input = readline(vars.prompt);
 		}
-		quit_terminal(&vars, vars.var, input);
+		quit_terminal(&vars, input);
 	}
 	else
 		printf("Error: Execute as ./minishell\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 12:19:07 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:50:46 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ char	*ft_str_dup(const char *str);
 
 //quit_clean.c
 void	clean_command(t_vars *vars, char *input);
-void	quit_terminal(t_vars *vars, t_list *variables, char *input);
+void	quit_terminal(t_vars *vars, char *input);
 
 //signals.c
 void	sig_handler_children(int sig);
