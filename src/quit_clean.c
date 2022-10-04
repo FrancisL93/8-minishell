@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 12:51:55 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:01:43 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	clean_cmds(t_vars *vars)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	while (i < vars->pipe)
 	{
@@ -37,7 +37,7 @@ void	clean_args(t_vars *vars)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	while (vars->args && vars->args[i])
 	{

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipe_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 11:19:06 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 13:16:03 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//is < infile does not exist skip command
 int	set_fds(t_vars *vars, int i)
 {
 	int	ii;
@@ -68,7 +67,7 @@ int	set_input(t_vars *vars, int i)
 			close(vars->cmds[i].fd[0]);
 			return (1);
 		}
-		close(vars->cmds[i].fd[0]);// à vérifier si cause problème
+		close(vars->cmds[i].fd[0]);
 	}
 	else if (i != 0)
 	{
@@ -91,7 +90,7 @@ int	set_output(t_vars *vars, int i)
 			close(vars->cmds[i].fd[1]);
 			return (1);
 		}
-		close(vars->cmds[i].fd[1]); // à vérifier si cause problème
+		close(vars->cmds[i].fd[1]);
 	}
 	else if (i < vars->pipe - 1)
 	{

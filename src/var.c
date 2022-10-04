@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 12:52:49 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:18:09 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,33 +62,6 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 	create_new_env(vars, new_var, i, ii);
 }
 
-// est-ce qu'on l'utilise?
-/* char	*use_variable(t_vars *vars, char *var)
-{
-	t_list	*tmp;
-	char	*var_content;
-	int		i;
-
-	i = 0;
-	while (ft_strncmp(vars->env[i], var, ft_strlen(var)))
-		i++;
-	if (vars->env[i])
-	{
-		var_content = &vars->env[i][ft_strlen(var) + 1];
-		return (var_content);
-	}
-	tmp = vars->var;
-	while (tmp && ft_strncmp(var, tmp->content, ft_strlen(var)))
-		tmp = tmp->next;
-	if (!tmp)
-		return (NULL);
-	else
-	{
-		var_content = &tmp->content[ft_strlen(var) + 1];
-		return (var_content);
-	 }
-}*/
-
 int	add_variable(t_vars *vars, char *variable)
 {
 	int	nlen;
@@ -113,7 +86,7 @@ int	add_variable(t_vars *vars, char *variable)
 	else
 		ft_lst_add_front(&vars->var, ft_lst_new(ft_str_dup(&variable[nlen + 1]),
 				ft_strndup(variable, nlen)));
-	free(variable); // à vérifier dans tous les cas
+	free(variable);
 	return (0);
 }
 
@@ -153,7 +126,7 @@ int	check_var(t_vars *vars, int i)
 		return (1);
 	while (vars->cmds[i].cmds[++j])
 	{
-		if (add_variable(vars, vars->cmds[i].cmds[j]) == 0)
+		if (add_variable(vars, ft_strdup(vars->cmds[i].cmds[j])) == 0)
 			return (1);
 	}
 	return (0);

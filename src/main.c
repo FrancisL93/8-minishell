@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 12:50:33 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:03:22 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,8 @@ int	main(int argc, char **argv, char **envp)
 		while (input)
 		{
 			if (!lexer(input, &vars))
-			{
 				execute(&vars);
-				clean_command(&vars, input); //possiblement devoir free du stock de plus
-			}
+			clean_command(&vars, input);
 			set_prompt(&vars);
 			input = readline(vars.prompt);
 		}

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/09/30 10:54:01 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:20:11 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	cd(t_vars *vars, char *input)
 	if (chdir(new_path) != 0)
 	{
 		printf("cd: %s: %s\n", input, strerror(ENOTDIR));
-		add_variable(vars, ft_strjoin("?=", ft_itoa(127)));
+		add_exit(vars, 127);
 		return ;
 	}
 	set_pwd(vars, oldpath);

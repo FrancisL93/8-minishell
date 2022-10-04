@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 12:50:46 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:20:28 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ typedef struct s_vars
 	int		exit_stat;
 	int		nb_tokens;
 	int		token_len;
-	char	*heredoc_eof;
 	int		pipe_num;
-	int		**pipefd;
+	char	*exit_char;
 	pid_t	*pid;
 	t_list	*var;
 	t_token	token;
@@ -82,11 +81,12 @@ void	print_env(t_vars *vars);
 void	set_pwd(t_vars *vars, char *oldpath);
 void	set_new_env(t_vars *vars, char *variable, char **env, int *ii);
 
-//built_in_export.c
+//built_in_export_unset.c
 void	export(t_vars *vars, char *input);
 void	export_new_var(t_vars *vars, char *input, int init);
 void	unset(t_vars *vars, char *variable);
 void	unset_len(t_vars *vars, char *variable, int *ii);
+void	add_exit(t_vars *vars, int exit_n);
 
 //built_in_tools.c
 int		check_flag(char *flag);

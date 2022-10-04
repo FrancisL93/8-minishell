@@ -110,8 +110,7 @@ void	close_fds(t_vars *vars)
 
 void	execute(t_vars *vars)
 {
-	int	i;
-	char	*exit_char;
+	int		i;
 
 	i = -1;
 	if (!vars->token.tokens)
@@ -130,12 +129,7 @@ void	execute(t_vars *vars)
 	{
 		waitpid(vars->cmds[i].pid, &vars->exit_stat, 0);
 		if (WIFEXITED(vars->exit_stat))
-		{
-			vars->exit_stat = WEXITSTATUS(vars->exit_stat);
-			exit_char = ft_itoa(vars->exit_stat);
-			add_variable(vars, ft_strjoin("?=", exit_char));
-			free(exit_char);
-		}
+			add_exit(vars, WEXITSTATUS(vars->exit_stat));
 	}
 	init_signals(0);
 }
