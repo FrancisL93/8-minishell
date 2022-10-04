@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 12:57:02 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:54:20 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,27 @@ void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 		ind->j++;
 }
 
+void	check_if_token(char *in, t_vars *vars, t_indexes *i)
+{
+	while (in[i->i] != '\0' && in[i->i] != ' ' && in[i->i] != '<'
+		&& in[i->i] != '>' && in[i->i] != '|')
+	{
+		i->i++;
+		if (in[i->i] == '=')
+			var_len(i, in);
+		else if (in[i->i] == 34 || in[i->i] == 39)
+			i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
+		if (in[i->i] == '\0' || in[i->i] == ' ' || in[i->i] == '<'
+			|| in[i->i] == '>' || in[i->i] == '|')
+			tokenizer(vars, i, in);
+	}
+}
+
 void	new_token(char *in, t_vars *vars, t_indexes i)
 {
-	i.ii = i.i;
 	while (in[i.i])
 	{
+		i.ii = i.i;
 		if (in[i.i] == 39 || in[i.i] == 34)
 		{
 			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
@@ -43,34 +59,14 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 				tokenizer(vars, &i, in);
 		}
 		else if (in[i.i] != '\0' && in[i.i] != ' ')
-		{
-			while (in[i.i] != ' ' && in[i.i] != '\0' && in[i.i] != '<'
-				&& in[i.i] != '>' && in[i.i] != '|')
-			{
-				i.i++;
-				if (in[i.i] == '=')
-					var_len(&i, in);
-				else if (in[i.i] == 34 || in[i.i] == 39)
-					i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
-				if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
-					|| in[i.i] == '>' || in[i.i] == '|')
-					tokenizer(vars, &i, in);
-			}
-		}
-		if (in[i.i] == '\0' || in[i.i] == ' ')
-		{
-			if (in[i.i] != '\0')
-			{
-				i.i++;
-				i.ii = i.i;
-			}
-		}
-		else if (in[i.i] == '<' || in[i.i] == '>'
+			check_if_token(in, vars, &i);
+		if (in[i.i] == ' ' || in[i.i] == '<' || in[i.i] == '>'
 			|| in[i.i] == '|')
 		{
 			i.ii = i.i;
 			i.i++;
-			tokenizer(vars, &i, in);
+			if (in[i.i - 1] == '<' || in[i.i - 1] == '>' || in[i.i - 1] == '|')
+				tokenizer(vars, &i, in);
 		}
 	}
 }
@@ -78,13 +74,12 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 int	lexer(char *input, t_vars *vars)
 {
 	t_indexes	indexes;
-	int			j;
 
-	j = 0;
 	indexes.i = 0;
 	indexes.ii = 0;
 	indexes.j = 0;
 	indexes.jj = 0;
+	vars->nb_tokens = 0;
 	if (!ft_strncmp("exit", input, 4))
 		quit_terminal(vars, input);
 	if (input && *input)

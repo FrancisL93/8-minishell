@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 13:39:53 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 13:54:14 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int		inquotes(int i, char *input, char c, t_vars *vars);
 int		count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
 
 //lexer.c
+void	check_if_token(char *in, t_vars *vars, t_indexes *i);
 int		lexer(char *input, t_vars *vars);
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
 void	new_token(char *in, t_vars *vars, t_indexes i);
