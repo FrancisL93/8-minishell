@@ -6,18 +6,16 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 09:53:09 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 09:53:39 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// Pipes
-// Redirections
-// Heredoc
+// Redirections (S'assrure avec le here doc
+// que le resultat soit envoyé dans la fonction apres)
 // Free
 // Norme
-//Unset les variables dans la struct, pas juste dans env
 
 void	set_prompt(t_vars *vars)
 {

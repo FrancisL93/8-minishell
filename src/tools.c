@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/09/30 10:39:53 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/03 11:51:58 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_getenv(t_vars *vars)
 			i++;
 		}
 	}
-	return ("minishell");
+	return ("/minishell");
 }
 
 int	ft_strcmp(char *s1, char *s2)

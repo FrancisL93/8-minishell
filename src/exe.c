@@ -119,12 +119,7 @@ void	execute(t_vars *vars)
 	if (!vars->fd)
 		return ;
 	split_cmds(vars);
-	if (create_pipes(vars))
-	{
-		close_fds(vars);
-		return ;
-	}
-	if (check_command(vars))
+	if (create_pipes(vars) || check_command(vars))
 	{
 		close_fds(vars);
 		return ;

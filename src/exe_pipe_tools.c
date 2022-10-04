@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 10:55:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:19:06 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	set_fds(t_vars *vars, int i)
 	vars->cmds[i].fd[1] = STDOUT_FILENO;
 	while (vars->args[i] && vars->args[i][++ii] != NULL)
 	{
-		if (search_heredoc(vars, i, ii))
+		if (search_heredoc(vars, i, &ii))
 			return (1);
 		if (search_infile(vars, i, ii))
 			return (1);
