@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/03 12:01:19 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:19:07 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,12 @@ int		search_heredoc(t_vars *vars, int i, int *ii);
 //lenght_tools.c
 int		ft_str_len(const char *str);
 int		dolvar_len(char *token);
-int		token_len(char *token, t_vars *vars, char sep);
 int		inquoteslen(int i, char *input, char c);
 void	var_len(t_indexes *i, char *in);
+
+//lenght_tools2.c
+int		token_len(char *token, t_vars *vars, char sep);
+void	commands_len(char *tok, t_vars *vars, t_indexes i, int *len);
 
 //lexer_tools.c
 int		check_meta(char *in, int i);
@@ -161,14 +164,16 @@ void	sig_handler(int sig);
 void	init_signals(int children);
 
 //splits.c
+char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len);
 char	*subsubsplit(t_vars *vars, int *j);
 char	**subsplit(t_vars *vars, int *j, int index);
 void	split_cmds(t_vars *vars);
 
 //splits2.c
+int		check_quotes(char *quote, char *token, t_indexes *i, int *is_quote);
 int		ft_is_quote(t_indexes i, char *token, char sep);
 void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind);
-char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len);
+char	*split_commands(char *token, t_vars *vars, t_indexes i, char *cmd);
 
 //tools.c
 char	*ft_getenv(t_vars *vars);

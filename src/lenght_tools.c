@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:57:27 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 12:02:25 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:17:22 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,63 +34,6 @@ int	dolvar_len(char *token)
 	while (token[len] && token[len] != ' ' && token[len] != 34
 		&& token[len] != 36 && token[len] != 39)
 		len++;
-	return (len);
-}
-
-int	token_len(char *token, t_vars *vars, char sep)
-{
-	t_indexes	i;
-	t_list		*head;
-	int			is_quote;
-	int			len;
-
-	i.i = 0;
-	len = 0;
-	head = vars->var;
-	if (sep == 34 || sep == 39)
-		i.i++;
-	is_quote = ft_is_quote(i, token, token[0]);
-	while (token[i.i])
-	{
-		i.ii = 0;
-		if (token[i.i] == 36 && token[i.i + 1] != ' '
-			&& token[i.i + 1] != '\0' && token[i.i + 1] != 36
-			&& is_quote != 1)
-		{
-			len += ft_str_len(get_variable(vars, &token[i.i]));
-			i.i += dolvar_len(&token[i.i]);
-			vars->var = head;
-		}
-		else if (sep == 34 && token[i.i] == 34)
-		{
-			is_quote = 0;
-			sep = ' ';
-			i.i++;
-		}
-		else if (sep == 39 && token[i.i] == 39)
-		{
-			is_quote = 0;
-			sep = ' ';
-			i.i++;
-		}
-		else if (sep != 39 && token[i.i] == 39 && is_quote == 0)
-		{
-			is_quote = ft_is_quote(i, token, 39);
-			sep = 39;
-			i.i++;
-		}
-		else if (sep != 34 && token[i.i] == 34 && is_quote == 0)
-		{
-			is_quote = ft_is_quote(i, token, 34);
-			sep = 34;
-			i.i++;
-		}
-		else
-		{
-			len ++;
-			i.i++;
-		}
-	}
 	return (len);
 }
 

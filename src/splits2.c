@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 11:35:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 11:59:43 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,82 @@ void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
 	vars->cmds[ind].cmds[ii] = NULL;
 }
 
-char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
+void	create_dolvar(t_vars *vars, char *token, char *cmd, t_indexes *i)
+{
+	char	*var;
+	t_list	*head;
+
+	i->ii = 0;
+	head = vars->var;
+	var = get_variable(vars, &token[i->i]);
+	vars->var = head;
+	i->i += dolvar_len(&token[i->i]);
+	if (var != NULL)
+	{
+		while (var[i->ii])
+		{
+			cmd[i->j] = var[i->ii];
+			i->j++;
+			i->ii++;
+		}
+	}
+}
+
+int	check_quotes(char *quote, char *token, t_indexes *i, int *is_quote)
+{
+	if ((*quote == 34 && token[i->i] == 34)
+		|| (*quote == 39 && token[i->i] == 39))
+	{
+		*is_quote = 0;
+		*quote = ' ';
+		i->i++;
+	}
+	else if (*quote != 39 && token[i->i] == 39 && *is_quote == 0)
+	{
+		*is_quote = ft_is_quote(*i, token, 39);
+		*quote = 39;
+		i->i++;
+	}
+	else if (*quote != 34 && token[i->i] == 34 && *is_quote == 0)
+	{
+		*is_quote = ft_is_quote(*i, token, 34);
+		*quote = 34;
+		i->i++;
+	}
+	else
+		return (1);
+	return (0);
+}
+
+char	*split_commands(char *token, t_vars *vars, t_indexes i, char *cmd)
+{
+	int		is_quote;
+	int		ret;
+	t_list	*head;
+	char	quote;
+
+	head = vars->var;
+	is_quote = ft_is_quote(i, token, token[0]);
+	quote = token[0];
+	while (token[i.i])
+	{
+		if (token[i.i] == 36 && token[i.i + 1] != ' '
+			&& token[i.i + 1] != '\0' && token[i.i + 1] != 36
+			&& is_quote != 1)
+			create_dolvar(vars, token, cmd, &i);
+		else if (token[i.i] == 34 || token[i.i] == 39)
+		{
+			ret = check_quotes(&quote, token, &i, &is_quote);
+			if (ret == 1)
+				cmd[i.j++] = token[i.i++];
+		}
+		else
+			cmd[i.j++] = token[i.i++];
+	}
+	return (cmd);
+}
+
+/* char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 {
 	char	*cmd;
 	char	*var;
@@ -113,4 +188,4 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 			cmd[i.j++] = token[i.i++];
 	}
 	return (cmd);
-}
+} */

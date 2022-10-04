@@ -6,11 +6,30 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/03 11:25:27 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:01:00 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
+{
+	char	*cmnd;
+	char	quote;
+
+	quote = token[0];
+	if (quote == 34 || quote == 39)
+	{
+		len = token_len(token, vars, token[0]);
+		i.i++;
+	}
+	else
+		len = token_len(token, vars, ' ');
+	cmnd = ft_calloc(sizeof(char), len + 1);
+	if (!cmnd)
+		return (NULL);
+	return (split_commands(token, vars, i, cmnd));
+}
 
 char	*subsubsplit(t_vars *vars, int *j)
 {
