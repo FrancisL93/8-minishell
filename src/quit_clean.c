@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/01 15:46:13 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 12:35:07 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,44 @@
 
 void	clean_cmds(t_vars *vars)
 {
-	if (vars->cmds->cmds)
+	int	i;
+	int	j;
+	
+	i = 0;
+	while (vars->cmds[i].cmds)
+	{
+		j = 0;
+		while (vars->cmds[i].cmds[j])
+		{
+			free(vars->cmds[i].cmds[j]);
+			j++;
+		}
+		free(vars->cmds[i].cmds);
+		i++;
+	}
+	if (vars->cmds)
 		free(vars->cmds);
 }
 
 void	clean_args(t_vars *vars)
 {
-	// if (vars->args)
-	// 	free(vars->args);
-	(void) vars;
-	return ;
+	int	i;
+	int	j;
+	
+	i = 0;
+	while (vars->args && vars->args[i])
+	{
+		j = 0;
+		while (vars->args[i][j])
+		{
+			free(vars->args[i][j]);
+			j++;
+		}
+		free(vars->args[i]);
+		i++;
+	}
+	if (vars->args)
+		free(vars->args);
 }
 
 void	clean_tokens(t_vars *vars)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
+#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/10/04 12:18:41 by anhebert         ###   ########.fr        #
+#    Updated: 2022/10/04 12:36:02 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,7 @@ clean: cleanobjdir #Delete obj directory and content
 
 fclean: clean #Delete objects and executable
 	@$(RM) $(NAME)
+	@$(RMDIR) $(NAME).dSYM
 	@echo "\033[0;31mExecutable deleted!\033[0m"
 
 fclean-all: fclean #Delete objects, executable, and libft
