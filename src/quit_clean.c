@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:01:43 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 14:45:59 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ void	clean_cmds(t_vars *vars)
 	while (i < vars->pipe)
 	{
 		j = 0;
-		while (vars->cmds[i].cmds[j])
+		while (vars->cmds && vars->cmds[i].cmds && vars->cmds[i].cmds[j])
 		{
 			free(vars->cmds[i].cmds[j]);
 			j++;
 		}
-		free(vars->cmds[i].cmds);
+		if (vars->cmds[i].cmds)
+			free(vars->cmds[i].cmds);
 		i++;
 	}
 	if (vars->cmds)
@@ -47,7 +48,8 @@ void	clean_args(t_vars *vars)
 			free(vars->args[i][j]);
 			j++;
 		}
-		free(vars->args[i]);
+		if (vars->args[i])
+			free(vars->args[i]);
 		i++;
 	}
 	if (vars->args)
@@ -73,8 +75,8 @@ void	clean_command(t_vars *vars, char *input)
 		free(vars->prompt);
 	if (!input || !*input)
 		return ;
-	clean_cmds(vars);
-	clean_args(vars);
+	//clean_cmds(vars);
+	//clean_args(vars);
 	clean_tokens(vars);
 	free(input);
 	vars->pipe = 1;

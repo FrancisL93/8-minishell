@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:46:50 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 14:03:31 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,19 @@ int	search_heredoc(t_vars *vars, int i, int *ii)
 	if (vars->args[i][*ii][0] == '<' && vars->args[i][*ii + 1] \
 		&& vars->args[i][*ii + 1][0] == '<')
 	{
-		if (vars->args[i][*ii + 2])
+		if (vars->args[i][*ii + 2] && vars->args[i][*ii + 2][0] != '<'
+			&& vars->args[i][*ii + 2][0] != '>')
 		{
 			vars->cmds[i].fd[0] = start_heredoc(vars->args[i][*ii + 2]);
 			if (vars->cmds[i].fd[0] < 0)
 				return (1);
 			*ii += 2;
+		}
+		else
+		{
+			*ii += 2;
+			printf("minishell: syntax error near unexpected token\n");
+			return (1);
 		}
 	}
 	return (0);

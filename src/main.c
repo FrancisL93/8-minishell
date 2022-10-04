@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:48:21 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 14:53:34 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (init_struct(&vars, envp))
 			return (1);
-		printf("\nWelcome to our minishell! v938.05.42\n\n");
+		printf("\n%sWelcome to our minishell! v938.05.42\e[0;37m\n\n", BLUE);
 		input = readline(vars.prompt);
 		while (input)
 		{

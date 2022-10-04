@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 13:54:14 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 14:28:51 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int		search_outfile(t_vars *vars, int i, int *ii);
 char	*join_path(char *path, char *bin);
 char	*get_path(char *cmnd, char **envp);
 char	*ft_strndup(char *str, unsigned int n);
+int		search_outfile_append(t_vars *vars, int i, int *ii);
 
 //exe_pipe_tools.c
 int		put_fds(t_vars *vars, int i, int *ii, int out_type);

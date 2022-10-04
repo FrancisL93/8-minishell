@@ -73,7 +73,7 @@ int	check_command(t_vars *vars)
 			ret = check_export(vars, i);
 		if (ret != 1 && vars->pipe == 1)
 			ret = check_cd(vars, i);
-		set_fds(vars, i);
+		ret = set_fds(vars, i);
 		if (ret != 1)
 			execute_command(vars, i);
 		i++;

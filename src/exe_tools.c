@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:39:03 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 10:28:19 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:42:25 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,33 @@ int	search_infile(t_vars *vars, int i, int ii)
 		}
 		else
 		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
+			printf("minishell: syntax error near unexpected token\n");
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int	search_outfile_append(t_vars *vars, int i, int *ii)
+{
+	if (vars->args[i][*ii] && vars->args[i][*ii][0] == '>'
+		&& vars->args[i][*ii + 1] && vars->args[i][*ii + 1][0] == '>')
+	{	
+		if (vars->args[i][*ii + 2] && vars->args[i][*ii + 2][0] != '<'
+			&& vars->args[i][*ii + 2][0] != '>')
+		{
+			if (vars->cmds[i].fd[1] != STDOUT_FILENO)
+				close (vars->cmds[i].fd[1]);
+			vars->cmds[i].fd[1] = open(vars->args[i][*ii + 2], O_CREAT | O_APPEND
+				| O_WRONLY, 0777);
+			*ii += 2;
+			if (vars->cmds[i].fd[1] < 0)
+				return (1);
+		}
+		else
+		{
+			*ii += 2;
+			printf("minishell: syntax error near unexpected token\n");
 			return (1);
 		}
 	}
@@ -40,19 +66,21 @@ int	search_outfile(t_vars *vars, int i, int *ii)
 {
 	if (vars->args[i][*ii] && vars->args[i][*ii][0] == '>')
 	{	
-		if (vars->args[i][*ii + 2] && vars->args[i][*ii + 1][0] == '>')
+		if (vars->args[i][*ii + 1] && vars->args[i][*ii + 1][0] != '>' &&
+			vars->args[i][*ii + 1][0] != '<')
 		{
-			if (put_fds(vars, i, ii, 1) == 1)
-				return (1);
-		}
-		else if (vars->args[i][*ii + 1] && vars->args[i][*ii + 1][0] != '>')
-		{
-			if (put_fds(vars, i, ii, 2) == 1)
+			if (vars->cmds[i].fd[1] != STDOUT_FILENO)
+				close(vars->cmds[i].fd[1]);
+			vars->cmds[i].fd[1] = open(vars->args[i][*ii + 1], O_CREAT | O_TRUNC
+					| O_WRONLY, 0777);
+			*ii += 1;
+			if (vars->cmds[i].fd[1] < 0)
 				return (1);
 		}
 		else
 		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
+			*ii += 1;
+			printf("minishell: syntax error near unexpected token\n");
 			return (1);
 		}
 	}
