@@ -22,19 +22,20 @@ void	child_process(t_vars *vars, int i)
 	vars->exit_stat = 0;
 	while (++j < (vars->pipe - 1) * 2)
 		close(vars->fd[j]);
-	if (!vars->cmds || !vars->cmds[i].cmds[0])
-		exit(127);
+	if (!vars->cmds || !vars->cmds[i].cmds[0] || !vars->cmds[i].cmds[0][0])
+		quit_terminal(vars, 127);
 	ret = check_built_in(vars, i);
 	if (ret)
-		exit(vars->exit_stat);
+		quit_terminal(vars, 0);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
 	else
 		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
 	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
-	if (ret == -1)
-		perror("Error");
-	exit(errno);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	quit_terminal(vars, 127); // ajouter un parametre a quit_terminal pour capturer le exit code? (avant exit erno ici)
 }
 
 void	execute_command(t_vars *vars, int i)
@@ -63,18 +64,24 @@ int	check_command(t_vars *vars)
 	ret = 0;
 	while (i < vars->pipe)
 	{
+		if (!vars->cmds[i].cmds[0] && !vars->args[i][0])
+		{
+			printf("syntax error near unexpected token `|'\n");
+			return (1);
+		}
 		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
-			ret = 1;
-		if (ret != 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
+			ret = 2;
+		if (ret < 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
-		if (ret != 1 && vars->pipe == 1)
+		if (ret < 1 && vars->pipe == 1)
 			ret = check_unset(vars, i);
-		if (ret != 1 && vars->pipe == 1)
+		if (ret < 1 && vars->pipe == 1)
 			ret = check_export(vars, i);
-		if (ret != 1 && vars->pipe == 1)
+		if (ret < 1 && vars->pipe == 1)
 			ret = check_cd(vars, i);
-		ret = set_fds(vars, i);
 		if (ret != 1)
+			ret = set_fds(vars, i);
+		if (ret!= 1)
 			execute_command(vars, i);
 		i++;
 	}

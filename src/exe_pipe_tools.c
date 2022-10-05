@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipe_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 15:23:32 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 12:56:11 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,6 @@ int	set_fds(t_vars *vars, int i)
 	return (0);
 }
 
-/* int	put_fds(t_vars *vars, int i, int *ii, int out_type)
-{
-	if (out_type == 1)
-	{
-		vars->cmds[i].fd[1] = open(vars->args[i][*ii + 2], O_CREAT | O_APPEND
-				| O_WRONLY, 0777);
-		*ii += 1;
-		if (vars->cmds[i].fd[1] == -1)
-		{
-			perror("Error: ");
-			return (1);
-		}
-	}
-	else if (out_type == 2)
-	{
-		vars->cmds[i].fd[1] = open(vars->args[i][*ii + 1], O_CREAT | O_TRUNC
-				| O_WRONLY, 0777);
-		if (vars->cmds[i].fd[1] == -1)
-		{
-			perror("Error: ");
-			return (1);
-		}
-	}
-	return (0);
-}
- */
 int	set_input(t_vars *vars, int i)
 {
 	if (vars->cmds[i].fd[0] != STDIN_FILENO)

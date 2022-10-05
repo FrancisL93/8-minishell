@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 08:16:54 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:29:34 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,26 +69,26 @@ void	clean_tokens(t_vars *vars)
 	}
 }
 
-void	clean_command(t_vars *vars, char *input)
+void	clean_command(t_vars *vars)
 {
 	if (vars->prompt)
 		free(vars->prompt);
-	if (!input || !*input)
+	if (!vars->input || !*vars->input)
 		return ;
-	//clean_cmds(vars);
-	//clean_args(vars);
+	clean_cmds(vars);
+	clean_args(vars);
 	clean_tokens(vars);
-	free(input);
+	free(vars->input);
 	vars->pipe = 1;
 }
 
-void	quit_terminal(t_vars *vars, char *input)
+void	quit_terminal(t_vars *vars, int exit_code)
 {
 	int	i;
 
 	i = -1;
 	clear_history();
-	clean_command(vars, input);
+	clean_command(vars);
 	while (vars->env && vars->env[++i])
 		free(vars->env[i]);
 	if (vars->env)
@@ -105,5 +105,5 @@ void	quit_terminal(t_vars *vars, char *input)
 		else
 			break ;
 	}
-	exit(0);
+	exit(exit_code);
 }

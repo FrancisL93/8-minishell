@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 11:31:59 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:27:29 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_vars
 	char	***args;
 	char	**env;
 	char	*prompt;
+	char	*input;
 	int		*fd;
 	int		pipe;
 	int		exit_stat;
@@ -141,15 +142,15 @@ void	commands_len(char *tok, t_vars *vars, t_indexes i, int *len);
 
 //lexer_tools.c
 int		check_meta(char *in, int i);
-int		inquotes(int i, char *input, char c, t_vars *vars);
-int		count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
+int		inquotes(int i, char c, t_vars *vars);
+int		count_nb_tokens(t_vars *vars, t_indexes ind);
 
 //lexer.c
 int		is_space(char c);
-void	check_if_token(char *in, t_vars *vars, t_indexes *i);
-int		lexer(char *input, t_vars *vars);
-void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
-void	new_token(char *in, t_vars *vars, t_indexes i);
+void	check_if_token(t_vars *vars, t_indexes *i);
+int		lexer(t_vars *vars);
+void	tokenizer(t_vars *vars, t_indexes *ind);
+void	new_token(t_vars *vars, t_indexes i);
 
 //main.c
 void	set_prompt(t_vars *vars);
@@ -160,8 +161,8 @@ void	ft_lst_add_front(t_list **lst, t_list *new1);
 char	*ft_str_dup(const char *str);
 
 //quit_clean.c
-void	clean_command(t_vars *vars, char *input);
-void	quit_terminal(t_vars *vars, char *input);
+void	clean_command(t_vars *vars);
+void	quit_terminal(t_vars *vars, int exit_code);
 
 //signals.c
 void	sig_handler_children(int sig);

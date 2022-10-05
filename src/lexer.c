@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 11:56:11 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:52:38 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_space(char c)
 	return (0);
 }
 
-void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
+void	tokenizer(t_vars *vars, t_indexes *ind)
 {
 	ind->jj = 0;
 	vars->token_len = ind->i - ind->ii;
@@ -28,57 +28,57 @@ void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 		return ;
 	while (ind->ii < ind->i)
 	{
-		vars->token.tokens[ind->j][ind->jj] = input[ind->ii];
+		vars->token.tokens[ind->j][ind->jj] = vars->input[ind->ii];
 		ind->ii++;
 		ind->jj++;
 	}
 	ind->jj++;
-	if (input[ind->i] != '\0')
+	if (vars->input[ind->i] != '\0')
 		ind->j++;
 }
 
-void	check_if_token(char *in, t_vars *vars, t_indexes *i)
+void	check_if_token(t_vars *vars, t_indexes *i)
 {
-	while (in[i->i] != '\0' && !is_space(in[i->i]) && in[i->i] != '<'
-		&& in[i->i] != '>' && in[i->i] != '|')
+	while (vars->input[i->i] != '\0' && !is_space(vars->input[i->i]) && vars->input[i->i] != '<'
+		&& vars->input[i->i] != '>' && vars->input[i->i] != '|')
 	{
 		i->i++;
-		if (in[i->i] == '=')
-			var_len(i, in);
-		else if (in[i->i] == 34 || in[i->i] == 39)
-			i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
-		if (in[i->i] == '\0' || is_space(in[i->i]) || in[i->i] == '<'
-			|| in[i->i] == '>' || in[i->i] == '|')
-			tokenizer(vars, i, in);
+		if (vars->input[i->i] == '=')
+			var_len(i, vars->input);
+		else if (vars->input[i->i] == 34 || vars->input[i->i] == 39)
+			i->i += inquoteslen(i->i + 1, vars->input, vars->input[i->i]) + 1;
+		if (vars->input[i->i] == '\0' || is_space(vars->input[i->i]) || vars->input[i->i] == '<'
+			|| vars->input[i->i] == '>' || vars->input[i->i] == '|')
+			tokenizer(vars, i);
 	}
 }
 
-void	new_token(char *in, t_vars *vars, t_indexes i)
+void	new_token(t_vars *vars, t_indexes i)
 {
-	while (in[i.i])
+	while (vars->input[i.i])
 	{
 		i.ii = i.i;
-		if (in[i.i] == 39 || in[i.i] == 34)
+		if (vars->input[i.i] == 39 || vars->input[i.i] == 34)
 		{
-			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
-			if (in[i.i] == '\0' || is_space(in[i.i]) || in[i.i] == '<'
-				|| in[i.i] == '>' || in[i.i] == '|')
-				tokenizer(vars, &i, in);
+			i.i += inquoteslen(i.i + 1, vars->input, vars->input[i.i]) + 1;
+			if (vars->input[i.i] == '\0' || is_space(vars->input[i.i]) || vars->input[i.i] == '<'
+				|| vars->input[i.i] == '>' || vars->input[i.i] == '|')
+				tokenizer(vars, &i);
 		}
-		else if (in[i.i] != '\0' && !is_space(in[i.i]))
-			check_if_token(in, vars, &i);
-		if (is_space(in[i.i]) || in[i.i] == '<' || in[i.i] == '>'
-			|| in[i.i] == '|')
+		else if (vars->input[i.i] != '\0' && !is_space(vars->input[i.i]))
+			check_if_token(vars, &i);
+		if (is_space(vars->input[i.i]) || vars->input[i.i] == '<' || vars->input[i.i] == '>'
+			|| vars->input[i.i] == '|')
 		{
 			i.ii = i.i;
 			i.i++;
-			if (in[i.i - 1] == '<' || in[i.i - 1] == '>' || in[i.i - 1] == '|')
-				tokenizer(vars, &i, in);
+			if (vars->input[i.i - 1] == '<' || vars->input[i.i - 1] == '>' || vars->input[i.i - 1] == '|')
+				tokenizer(vars, &i);
 		}
 	}
 }
 
-int	lexer(char *input, t_vars *vars)
+int	lexer(t_vars *vars)
 {
 	t_indexes	indexes;
 
@@ -87,21 +87,20 @@ int	lexer(char *input, t_vars *vars)
 	indexes.j = 0;
 	indexes.jj = 0;
 	vars->nb_tokens = 0;
-	if (!ft_strncmp("exit", input, 4))
-		quit_terminal(vars, input);
-	if (input && *input)
-		add_history(input);
+	if (!ft_strncmp("exit", vars->input, 4))
+		quit_terminal(vars, 0);
+	if (vars->input && *vars->input)
+		add_history(vars->input);
 	vars->token_len = 0;
-	if (count_nb_tokens(input, vars, indexes) == 1 || vars->nb_tokens == 0)
+	if (count_nb_tokens(vars, indexes) == 1 || vars->nb_tokens == 0)
 		return (1);
 	vars->token.tokens = malloc(sizeof(char *) * (vars->nb_tokens + 1));
 	if (!vars->token.tokens)
 		return (1);
-	new_token(input, vars, indexes);
+	new_token(vars, indexes);
 	vars->token.tokens[vars->nb_tokens] = NULL;
 	while (vars->token.tokens[indexes.i])
 	{
-		printf("%s\n", vars->token.tokens[indexes.i]);
 		if (!ft_strncmp(vars->token.tokens[indexes.i++], "|", 1))
 			vars->pipe++;
 	}

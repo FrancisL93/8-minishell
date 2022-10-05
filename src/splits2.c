@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splits2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 11:33:14 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 12:41:10 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,11 @@ void	ft_retrieve_commands(t_vars *vars, char **cmd, t_indexes i, int ind)
 	vars->cmds[ind].cmds = malloc(sizeof(char *) * (i.i + 1));
 	while (cmd[i.j] != NULL)
 	{
-		if (cmd[i.j][0] == '>')
+		if (cmd[i.j][0] == '>' || cmd[i.j][0] == '<')
 		{
-			while (cmd[i.j] != NULL && cmd[i.j][0] == '>')
-				i.j++;
-		}
-		else if (cmd[i.j][0] == '<')
-		{
-			while (cmd[i.j] != NULL && cmd[i.j][0] == '<')
+			while (cmd[i.j] != NULL && (cmd[i.j][0] == '>' || cmd[i.j][0] == '<'))
+				i.j ++;
+			if (cmd[i.j])
 				i.j++;
 		}
 		else

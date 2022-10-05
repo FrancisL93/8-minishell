@@ -3,21 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 11:56:45 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:30:08 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-// S'assurer que cat |cat | ls fonctionne bien
-// Faire en sorte que echo ... > ... fonctionne bien ( il met le nom du fichier dans le fichier)
+ 
 // Pipe seul sgefault
 // Gérer les tabs (devrait afficher des tabs, pas le contenu du folder)
 // "Réparer" le exit et s'assurer qu"on puisse utiliser des arguments (ajouter exit status)
-// S'assurer que ctrl-\ ne fasse rien si trucs écrit dans prompt
 // Check ret = set_fds pour eviter de tomber dans les execute commands
 // Free
 
@@ -76,7 +73,6 @@ int	init_struct(t_vars *vars, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
 	t_vars	vars;
 
 	if (argc == 1 && argv[0])
@@ -84,19 +80,19 @@ int	main(int argc, char **argv, char **envp)
 		if (init_struct(&vars, envp))
 			return (1);
 		printf("\n%sWelcome to our minishell! v938.05.42\e[0;37m\n\n", BLUE);
-		input = readline(vars.prompt);
-		while (input)
+		vars.input = readline(vars.prompt);
+		while (vars.input)
 		{
-			if (!lexer(input, &vars))
+			if (!lexer(&vars))
 			{
 				execute(&vars);
-				clean_command(&vars, input);
+				clean_command(&vars);
 			}
 			set_prompt(&vars);
-			input = readline(vars.prompt);
+			vars.input = readline(vars.prompt);
 		}
 		printf("%sexit\n", vars.prompt);
-		quit_terminal(&vars, input);
+		quit_terminal(&vars, 0);
 	}
 	else
 		printf("Error: Execute as ./minishell\n");

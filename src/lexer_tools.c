@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:13:12 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 11:55:43 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:25:48 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	check_meta(char *in, int i)
 	return (0);
 }
 
-int	inquotes(int i, char *input, char c, t_vars *vars)
+int	inquotes(int i, char c, t_vars *vars)
 {
 	int	ii;
 
 	ii = i;
-	while (input[i])
+	while (vars->input[i])
 	{
 		i++;
-		if (input[i] == c)
+		if (vars->input[i] == c)
 		{
 			vars->nb_tokens++;
 			return (i);
@@ -56,53 +56,53 @@ int	inquotes(int i, char *input, char c, t_vars *vars)
 	return (ii);
 }
 
-void	check_if_is_token(char *in, t_vars *vars, t_indexes *i)
+void	check_if_is_token(t_vars *vars, t_indexes *i)
 {
-	while (!is_space(in[i->i]) && in[i->i] != '\0' && in[i->i] != '<'
-		&& in[i->i] != '>' && in[i->i] != '|')
+	while (!is_space(vars->input[i->i]) && vars->input[i->i] != '\0' && vars->input[i->i] != '<'
+		&& vars->input[i->i] != '>' && vars->input[i->i] != '|')
 	{
 		i->i++;
-		if (in[i->i] == '=')
-			var_len(i, in);
-		else if (in[i->i] == 34 || in[i->i] == 39)
-			i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
-		if (in[i->i] == '\0' || is_space(in[i->i]) || in[i->i] == '<'
-			|| in[i->i] == '>' || in[i->i] == '|')
+		if (vars->input[i->i] == '=')
+			var_len(i, vars->input);
+		else if (vars->input[i->i] == 34 || vars->input[i->i] == 39)
+			i->i += inquoteslen(i->i + 1, vars->input, vars->input[i->i]) + 1;
+		if (vars->input[i->i] == '\0' || is_space(vars->input[i->i]) || vars->input[i->i] == '<'
+			|| vars->input[i->i] == '>' || vars->input[i->i] == '|')
 			vars->nb_tokens++;
 	}
 }
 
-void	check_if_is_token2(char *in, t_vars *vars, t_indexes *i)
+void	check_if_is_token2(t_vars *vars, t_indexes *i)
 {
 	int	ii;
 
 	ii = i->i;
-	i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
+	i->i += inquoteslen(i->i + 1, vars->input, vars->input[i->i]) + 1;
 	if (ii + 1 == i->i)
 	{
 		i += 1;
 		return ;
 	}
-	if (in[i->i] == '\0' || is_space(in[i->i]) || in[i->i] == '<'
-		|| in[i->i] == '>' || in[i->i] == '|')
+	if (vars->input[i->i] == '\0' || is_space(vars->input[i->i]) || vars->input[i->i] == '<'
+		|| vars->input[i->i] == '>' || vars->input[i->i] == '|')
 		vars->nb_tokens++;
 }
 
-int	count_nb_tokens(char *in, t_vars *vars, t_indexes i)
+int	count_nb_tokens(t_vars *vars, t_indexes i)
 {
-	while (in[i.i])
+	while (vars->input[i.i])
 	{
-		if (in[i.i] == 39 || in[i.i] == 34)
-			check_if_is_token2(in, vars, &i);
-		else if (in[i.i] != '\0' && !is_space(in[i.i]))
-			check_if_is_token(in, vars, &i);
-		if (is_space(in[i.i]))
+		if (vars->input[i.i] == 39 || vars->input[i.i] == 34)
+			check_if_is_token2(vars, &i);
+		else if (vars->input[i.i] != '\0' && !is_space(vars->input[i.i]))
+			check_if_is_token(vars, &i);
+		if (is_space(vars->input[i.i]))
 				i.i++;
-		else if (in[i.i] == '<' || in[i.i] == '>' || in[i.i] == '|')
+		else if (vars->input[i.i] == '<' || vars->input[i.i] == '>' || vars->input[i.i] == '|')
 		{
-			if (check_meta(in, i.i) == 1)
+			if (check_meta(vars->input, i.i) == 1)
 			{
-				printf("minishell: syntax error near unexpected token\n");
+				printf("minishell: syntax error near unexpected token `newline'\n");
 				return (1);
 			}
 			vars->nb_tokens ++;
