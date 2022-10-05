@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 13:30:08 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 14:14:12 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
- 
+
 // Pipe seul sgefault
 // Gérer les tabs (devrait afficher des tabs, pas le contenu du folder)
 // "Réparer" le exit et s'assurer qu"on puisse utiliser des arguments (ajouter exit status)
@@ -55,6 +55,9 @@ int	init_struct(t_vars *vars, char **envp)
 	i = 0;
 	vars->pipe = 1;
 	vars->exit_stat = 0;
+	vars->args = NULL;
+	vars->cmds = NULL;
+	vars->token.tokens = NULL;
 	if (set_env(vars, envp))
 		return (1);
 	vars->var = NULL;
@@ -84,10 +87,8 @@ int	main(int argc, char **argv, char **envp)
 		while (vars.input)
 		{
 			if (!lexer(&vars))
-			{
 				execute(&vars);
-				clean_command(&vars);
-			}
+			clean_command(&vars);
 			set_prompt(&vars);
 			vars.input = readline(vars.prompt);
 		}

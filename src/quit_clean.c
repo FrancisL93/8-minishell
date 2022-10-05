@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 13:29:34 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 14:07:09 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,12 @@ void	clean_command(t_vars *vars)
 		free(vars->prompt);
 	if (!vars->input || !*vars->input)
 		return ;
-	clean_cmds(vars);
-	clean_args(vars);
-	clean_tokens(vars);
+	if (vars->cmds)
+		clean_cmds(vars);
+	if (vars->args)
+		clean_args(vars);
+	if (vars->token.tokens)
+		clean_tokens(vars);
 	free(vars->input);
 	vars->pipe = 1;
 }

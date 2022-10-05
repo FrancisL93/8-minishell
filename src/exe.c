@@ -71,6 +71,8 @@ int	check_command(t_vars *vars)
 		}
 		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
 			ret = 2;
+		if (ret < 1 && vars->pipe == 1)
+			ret = check_exit(vars, i);
 		if (ret < 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret < 1 && vars->pipe == 1)
@@ -81,7 +83,7 @@ int	check_command(t_vars *vars)
 			ret = check_cd(vars, i);
 		if (ret != 1)
 			ret = set_fds(vars, i);
-		if (ret!= 1)
+		if (ret != 1)
 			execute_command(vars, i);
 		i++;
 	}

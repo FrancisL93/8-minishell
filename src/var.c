@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 09:45:33 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:04:12 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,23 @@ char	*get_variable(t_vars *vars, char *dolvar)
 int	check_var(t_vars *vars, int i)
 {
 	int		j;
+	int		ret;
 
-	j = -1;
+	j = 0;
 	if (i != vars->pipe - 1)
 		return (1);
-	while (vars->cmds[i].cmds[++j])
+	ret = add_variable(vars, ft_strdup(vars->cmds[i].cmds[j]));
+	while (vars->cmds[i].cmds[j])
 	{
-		if (add_variable(vars, ft_strdup(vars->cmds[i].cmds[j])) == 0)
-			return (1);
+		if (ft_strichr(vars->cmds[i].cmds[j], '=') < 0)
+			j++;
+		else
+		{
+			add_variable(vars, ft_strdup(vars->cmds[i].cmds[j]));
+			j++;
+		}
 	}
+	if (ret == 0)
+		return (1);
 	return (0);
 }

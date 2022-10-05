@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 10:24:04 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:15:16 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**subsplit(t_vars *vars, int *j, int index)
 	char		**cmds;
 
 	i.i = 0;
-	cmds = malloc(sizeof(char *) * vars->nb_tokens + 1);
+	cmds = malloc(sizeof(char *) * (vars->nb_tokens + 1));
 	while (1)
 	{
 		cmds[i.i] = subsubsplit(vars, j);

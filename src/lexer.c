@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 13:52:38 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 14:22:00 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	lexer(t_vars *vars)
 	indexes.j = 0;
 	indexes.jj = 0;
 	vars->nb_tokens = 0;
-	if (!ft_strncmp("exit", vars->input, 4))
-		quit_terminal(vars, 0);
+/* 	if (!ft_strncmp("exit", vars->input, 4))
+		quit_terminal(vars, 0); */
 	if (vars->input && *vars->input)
 		add_history(vars->input);
 	vars->token_len = 0;
