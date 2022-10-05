@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 14:24:39 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 16:23:42 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_flag(char *flag)
 	int	i;
 
 	i = 0;
-	while (flag[i])
+	while (flag && flag[i])
 	{
 		if (flag[0] != '-')
 			return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 14:07:09 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 16:20:45 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void	quit_terminal(t_vars *vars, int exit_code)
 			free(vars->var->name);
 		if (vars->var->content)
 			free(vars->var->content);
-		free(vars->var);
+		if (vars->var)
+			free(vars->var);
 		if (vars->var->next)
 			vars->var = vars->var->next;
 		else

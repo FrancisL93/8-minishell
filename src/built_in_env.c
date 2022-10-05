@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:48:55 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/01 15:46:46 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 15:44:41 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ void	print_env(t_vars *vars)
 void	print_path(void)
 {
 	char	*buff;
+	char	*ret;
 
 	buff = NULL;
-	printf("%s\n", getcwd(buff, 1024));
+	ret = getcwd(buff, 1024);
+	printf("%s\n", ret);
+	free(ret);
 	free (buff);
 }
 

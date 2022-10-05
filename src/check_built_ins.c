@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_built_ins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 15:18:40 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 16:24:11 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	check_built_in(t_vars *vars, int i, int ret)
 		ret = check_export(vars, i);
 	if (ret < 1 && vars->pipe == 1)
 		ret = check_cd(vars, i);
-	if (ret == 1)
-		return (1);
-	if (ft_strcmp(vars->cmds[i].cmds[0], "echo") == 0)
+	if (vars->cmds->cmds[0] && ft_strcmp(vars->cmds[i].cmds[0], "echo") == 0)
 		echo_built(vars, i);
-	else if (ft_strcmp(vars->cmds[i].cmds[0], "pwd") == 0)
+	else if (vars->cmds->cmds[0] && ft_strcmp(vars->cmds[i].cmds[0],
+			"pwd") == 0)
 		print_path();
-	else if (ft_strcmp(vars->cmds[i].cmds[0], "env") == 0)
+	else if (vars->cmds->cmds[0] && ft_strcmp(vars->cmds[i].cmds[0],
+			"env") == 0)
 		print_env(vars);
 	else
 		return (0);

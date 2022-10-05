@@ -71,7 +71,8 @@ int	check_command(t_vars *vars)
 		}
 		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
 			ret = 2;
-		ret = check_built_in(vars, i, ret);
+		else
+			ret = check_built_in(vars, i, ret);
 		if (ret < 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret != 1)

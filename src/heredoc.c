@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 14:03:31 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 16:22:47 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	start_heredoc(char *eof)
 	input = readline(">");
 	if (pipe(fd) < 0)
 		return (-1);
-	while (ft_strcmp(input, eof))
+	while (input && ft_strcmp(input, eof))
 	{
 		ft_putstr_fd(input, fd[1]);
 		write(fd[1], "\n", 1);
