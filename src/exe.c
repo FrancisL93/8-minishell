@@ -24,7 +24,7 @@ void	child_process(t_vars *vars, int i)
 		close(vars->fd[j]);
 	if (!vars->cmds || !vars->cmds[i].cmds[0] || !vars->cmds[i].cmds[0][0])
 		quit_terminal(vars, 127);
-	ret = check_built_in(vars, i);
+	ret = check_built_in(vars, i, 2);
 	if (ret)
 		quit_terminal(vars, 0);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
@@ -35,7 +35,7 @@ void	child_process(t_vars *vars, int i)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	quit_terminal(vars, 127); // ajouter un parametre a quit_terminal pour capturer le exit code? (avant exit erno ici)
+	quit_terminal(vars, 127);
 }
 
 void	execute_command(t_vars *vars, int i)
@@ -71,16 +71,9 @@ int	check_command(t_vars *vars)
 		}
 		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
 			ret = 2;
-		if (ret < 1 && vars->pipe == 1)
-			ret = check_exit(vars, i);
+		ret = check_built_in(vars, i, ret);
 		if (ret < 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
-		if (ret < 1 && vars->pipe == 1)
-			ret = check_unset(vars, i);
-		if (ret < 1 && vars->pipe == 1)
-			ret = check_export(vars, i);
-		if (ret < 1 && vars->pipe == 1)
-			ret = check_cd(vars, i);
 		if (ret != 1)
 			ret = set_fds(vars, i);
 		if (ret != 1)

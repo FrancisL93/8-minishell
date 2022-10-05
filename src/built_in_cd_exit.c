@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in_cd.c                                      :+:      :+:    :+:   */
+/*   built_in_cd_exit.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 10:04:55 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:11:39 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,23 @@ void	cd(t_vars *vars, char *input)
 		return ;
 	}
 	set_pwd(vars, oldpath);
+}
+
+void	ft_exit(t_vars *vars, char *exit_status)
+{
+	int	i;
+
+	i = 0;
+	while (exit_status[i])
+	{
+		if (!ft_isdigit(exit_status[i]))
+		{
+			printf("exit: %s: numeric argument required\n", exit_status);
+			quit_terminal(vars, 255);
+		}
+		i++;
+		if (exit_status[i] == '\0')
+			add_exit(vars, ft_atoi(exit_status));
+	}
+	quit_terminal(vars, ft_atoi(exit_status));
 }

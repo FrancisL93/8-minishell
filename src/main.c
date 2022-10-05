@@ -6,16 +6,12 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 14:14:12 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:07:18 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// Pipe seul sgefault
-// Gérer les tabs (devrait afficher des tabs, pas le contenu du folder)
-// "Réparer" le exit et s'assurer qu"on puisse utiliser des arguments (ajouter exit status)
-// Check ret = set_fds pour eviter de tomber dans les execute commands
 // Free
 
 void	set_prompt(t_vars *vars)

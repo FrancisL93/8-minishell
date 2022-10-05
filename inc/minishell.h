@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 14:34:53 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:14:47 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ typedef struct s_indexes
 	int	jj;
 }	t_indexes;
 
-//built_in_cd.c
+//built_in_cd_exit.c
 void	cd(t_vars *vars, char *input);
 void	check_dir(t_vars *vars, char *path);
 char	*check_path(char *cmd, char *current_path);
+void	ft_exit(t_vars *vars, char *exit_status);
 
 //built_in_env.c
 int		set_env(t_vars *vars, char **envp);
@@ -97,7 +98,7 @@ char	*ftstrtrim(char	*current_path);
 void	echo_built(t_vars *vars, int i);
 
 //check built_ins.c
-int		check_built_in(t_vars *vars, int i);
+int		check_built_in(t_vars *vars, int i, int ret);
 int		check_export(t_vars *vars, int i);
 int		check_unset(t_vars *vars, int i);
 int		check_cd(t_vars *vars, int i);

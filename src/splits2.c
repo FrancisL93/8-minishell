@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splits2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 12:41:10 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 15:25:41 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	ft_retrieve_commands(t_vars *vars, char **cmd, t_indexes i, int ind)
 	{
 		if (cmd[i.j][0] == '>' || cmd[i.j][0] == '<')
 		{
-			while (cmd[i.j] != NULL && (cmd[i.j][0] == '>' || cmd[i.j][0] == '<'))
+			while (cmd[i.j] != NULL && (cmd[i.j][0] == '>'
+				|| cmd[i.j][0] == '<'))
 				i.j ++;
 			if (cmd[i.j])
 				i.j++;

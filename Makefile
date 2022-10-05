@@ -6,14 +6,14 @@
 #    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/10/05 10:19:52 by anhebert         ###   ########.fr        #
+#    Updated: 2022/10/05 15:10:10 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = 	src/main.c \
-		src/built_in_cd.c src/built_in_env.c src/built_in_export_unset.c \
+		src/built_in_cd_exit.c src/built_in_env.c src/built_in_export_unset.c \
 		src/built_in_tools.c src/check_built_ins.c src/tools.c \
 		src/splits.c src/splits2.c \
 		src/exe.c src/exe_tools.c src/exe_pipe_tools.c\

@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 14:22:00 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:21:35 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,18 @@ void	tokenizer(t_vars *vars, t_indexes *ind)
 
 void	check_if_token(t_vars *vars, t_indexes *i)
 {
-	while (vars->input[i->i] != '\0' && !is_space(vars->input[i->i]) && vars->input[i->i] != '<'
-		&& vars->input[i->i] != '>' && vars->input[i->i] != '|')
+	while (vars->input[i->i] != '\0' && !is_space(vars->input[i->i])
+		&& vars->input[i->i] != '<' && vars->input[i->i] != '>'
+		&& vars->input[i->i] != '|')
 	{
 		i->i++;
 		if (vars->input[i->i] == '=')
 			var_len(i, vars->input);
 		else if (vars->input[i->i] == 34 || vars->input[i->i] == 39)
 			i->i += inquoteslen(i->i + 1, vars->input, vars->input[i->i]) + 1;
-		if (vars->input[i->i] == '\0' || is_space(vars->input[i->i]) || vars->input[i->i] == '<'
-			|| vars->input[i->i] == '>' || vars->input[i->i] == '|')
+		if (vars->input[i->i] == '\0' || is_space(vars->input[i->i])
+			|| vars->input[i->i] == '<' || vars->input[i->i] == '>'
+			|| vars->input[i->i] == '|')
 			tokenizer(vars, i);
 	}
 }
@@ -61,18 +63,20 @@ void	new_token(t_vars *vars, t_indexes i)
 		if (vars->input[i.i] == 39 || vars->input[i.i] == 34)
 		{
 			i.i += inquoteslen(i.i + 1, vars->input, vars->input[i.i]) + 1;
-			if (vars->input[i.i] == '\0' || is_space(vars->input[i.i]) || vars->input[i.i] == '<'
-				|| vars->input[i.i] == '>' || vars->input[i.i] == '|')
+			if (vars->input[i.i] == '\0' || is_space(vars->input[i.i])
+				|| vars->input[i.i] == '<' || vars->input[i.i] == '>'
+				|| vars->input[i.i] == '|')
 				tokenizer(vars, &i);
 		}
 		else if (vars->input[i.i] != '\0' && !is_space(vars->input[i.i]))
 			check_if_token(vars, &i);
-		if (is_space(vars->input[i.i]) || vars->input[i.i] == '<' || vars->input[i.i] == '>'
-			|| vars->input[i.i] == '|')
+		if (is_space(vars->input[i.i]) || vars->input[i.i] == '<'
+			|| vars->input[i.i] == '>' || vars->input[i.i] == '|')
 		{
 			i.ii = i.i;
 			i.i++;
-			if (vars->input[i.i - 1] == '<' || vars->input[i.i - 1] == '>' || vars->input[i.i - 1] == '|')
+			if (vars->input[i.i - 1] == '<' || vars->input[i.i - 1] == '>'
+				|| vars->input[i.i - 1] == '|')
 				tokenizer(vars, &i);
 		}
 	}
@@ -87,8 +91,6 @@ int	lexer(t_vars *vars)
 	indexes.j = 0;
 	indexes.jj = 0;
 	vars->nb_tokens = 0;
-/* 	if (!ft_strncmp("exit", vars->input, 4))
-		quit_terminal(vars, 0); */
 	if (vars->input && *vars->input)
 		add_history(vars->input);
 	vars->token_len = 0;
