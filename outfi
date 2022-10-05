@@ -1,9 +1,0 @@
-total 600
--rw-r--r--   1 anhebert  2022_quebec    4524 Sep 22 10:59 Makefile
-drwxr-xr-x   8 anhebert  2022_quebec     272 Sep 22 09:57 inc
--rwxr-xr-x   1 anhebert  2022_quebec  293344 Sep 22 10:59 minishell
-drwxr-xr-x  20 anhebert  2022_quebec     680 Sep 22 10:59 obj
--rwxr-xr-x   1 anhebert  2022_quebec       0 Sep 22 11:00 out
--rwxr-xr-x   1 anhebert  2022_quebec       0 Sep 22 11:00 outfi
--rwxr-xr-x   1 anhebert  2022_quebec       6 Sep 22 08:35 outfile
-drwxr-xr-x  21 anhebert  2022_quebec     714 Sep 22 10:59 src
