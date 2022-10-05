@@ -3,19 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 14:53:34 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 11:56:45 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// Redirections (S'assrure avec le here doc
-// que le resultat soit envoyé dans la fonction apres)
+// S'assurer que cat |cat | ls fonctionne bien
+// Faire en sorte que echo ... > ... fonctionne bien ( il met le nom du fichier dans le fichier)
+// Pipe seul sgefault
+// Gérer les tabs (devrait afficher des tabs, pas le contenu du folder)
+// "Réparer" le exit et s'assurer qu"on puisse utiliser des arguments (ajouter exit status)
+// S'assurer que ctrl-\ ne fasse rien si trucs écrit dans prompt
+// Check ret = set_fds pour eviter de tomber dans les execute commands
 // Free
-// Norme
 
 void	set_prompt(t_vars *vars)
 {
@@ -84,8 +88,10 @@ int	main(int argc, char **argv, char **envp)
 		while (input)
 		{
 			if (!lexer(input, &vars))
+			{
 				execute(&vars);
-			clean_command(&vars, input);
+				clean_command(&vars, input);
+			}
 			set_prompt(&vars);
 			input = readline(vars.prompt);
 		}

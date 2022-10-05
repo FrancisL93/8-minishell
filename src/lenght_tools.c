@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 14:57:27 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 12:17:22 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:55:10 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ int	dolvar_len(char *token)
 	len = 1;
 	if (token == NULL)
 		return (0);
-	while (token[len] && token[len] != ' ' && token[len] != 34
-		&& token[len] != 36 && token[len] != 39)
+	if (token[0] == 36 && token[1] == '?')
+		return (2);
+	while (token[len] && !is_space(token[len]) && token[len] != 34
+		&& token[len] != 36 && token[len] != 39 && ft_isalnum(token[len]) == 1)
 		len++;
 	return (len);
 }
@@ -42,6 +44,8 @@ int	inquoteslen(int i, char *input, char c)
 	int		varlen;
 
 	varlen = 1;
+	if (input[i] == '\0')
+		return (0);
 	while (input[i])
 	{	
 		if (input[i] == c)
@@ -54,7 +58,7 @@ int	inquoteslen(int i, char *input, char c)
 
 void	var_len(t_indexes *i, char *in)
 {
-	while (in[i->i + 1] != '\0' && in[i->i + 1] != ' ')
+	while (in[i->i + 1] != '\0' && !is_space(in[i->i + 1]))
 	{
 		i->i++;
 		if (in[i->i] == 34)

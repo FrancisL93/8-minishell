@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:18:09 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 09:45:33 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*get_variable(t_vars *vars, char *dolvar)
 	i = -1;
 	j = 0;
 	if (dolvar[0] != 36)
-		len = ft_strlen(dolvar);
+		len = ft_str_len(dolvar);
 	else
 	{
 		len = dolvar_len(&dolvar[1]);

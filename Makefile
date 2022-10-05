@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
+#    By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/10/04 12:36:37 by flahoud          ###   ########.fr        #
+#    Updated: 2022/10/05 10:19:52 by anhebert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC = 	src/main.c \
 		src/built_in_tools.c src/check_built_ins.c src/tools.c \
 		src/splits.c src/splits2.c \
 		src/exe.c src/exe_tools.c src/exe_pipe_tools.c\
+		src/files_tools.c \
 		src/heredoc.c \
 		src/lenght_tools.c src/lenght_tools2.c src/list_tools.c src/lexer_tools.c src/lexer.c \
 		src/signals.c \

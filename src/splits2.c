@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splits2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 12:48:13 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 11:33:14 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,32 @@ int	ft_is_quote(t_indexes i, char *token, char sep)
 	return (0);
 }
 
-void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind)
+void	ft_retrieve_commands(t_vars *vars, char **cmd, t_indexes i, int ind)
 {
-	int	j;
-	int	ii;
-
-	j = 0;
-	ii = 0;
+	i.j = 0;
+	i.ii = 0;
 	vars->cmds[ind].index = ind;
-	vars->cmds[ind].cmds = malloc(sizeof(char *) * (i + 1));
-	while (j < i)
+	vars->cmds[ind].cmds = malloc(sizeof(char *) * (i.i + 1));
+	while (cmd[i.j] != NULL)
 	{
-		if (cmnd[j][0] == '>' && cmnd[j + 1][0] == '>')
-			j += 3;
-		else if (cmnd[j][0] == '<' && cmnd[j + 1][0] == '<')
-			j += 3;
-		else if (cmnd[j][0] == '>' || cmnd[j][0] == '<')
-			j += 2;
+		if (cmd[i.j][0] == '>')
+		{
+			while (cmd[i.j] != NULL && cmd[i.j][0] == '>')
+				i.j++;
+		}
+		else if (cmd[i.j][0] == '<')
+		{
+			while (cmd[i.j] != NULL && cmd[i.j][0] == '<')
+				i.j++;
+		}
 		else
 		{
-			vars->cmds[ind].cmds[ii] = ft_strdup(cmnd[j]);
-			ii++;
-			j++;
+			vars->cmds[ind].cmds[i.ii] = ft_strdup(cmd[i.j]);
+			i.ii++;
+			i.j++;
 		}
 	}
-	vars->cmds[ind].cmds[ii] = NULL;
+	vars->cmds[ind].cmds[i.ii] = NULL;
 }
 
 void	create_dolvar(t_vars *vars, char *token, char *cmd, t_indexes *i)
@@ -111,7 +112,7 @@ char	*split_commands(char *token, t_vars *vars, t_indexes i, char *cmd)
 	quote = token[0];
 	while (token[i.i])
 	{
-		if (token[i.i] == 36 && token[i.i + 1] != ' '
+		if (token[i.i] == 36 && !is_space(token[i.i + 1])
 			&& token[i.i + 1] != '\0' && token[i.i + 1] != 36
 			&& is_quote != 1)
 			create_dolvar(vars, token, cmd, &i);

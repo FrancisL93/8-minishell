@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipe_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 14:09:51 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/04 15:23:32 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ int	set_fds(t_vars *vars, int i)
 			return (1);
 		if (search_infile(vars, i, ii))
 			return (1);
-		if (search_outfile(vars, i, &ii))
-			return (1);
 		if (search_outfile_append(vars, i, &ii))
+			return (1);
+		if (search_outfile(vars, i, &ii))
 			return (1);
 	}
 	return (0);
 }
 
-int	put_fds(t_vars *vars, int i, int *ii, int out_type)
+/* int	put_fds(t_vars *vars, int i, int *ii, int out_type)
 {
 	if (out_type == 1)
 	{
@@ -58,7 +58,7 @@ int	put_fds(t_vars *vars, int i, int *ii, int out_type)
 	}
 	return (0);
 }
-
+ */
 int	set_input(t_vars *vars, int i)
 {
 	if (vars->cmds[i].fd[0] != STDIN_FILENO)

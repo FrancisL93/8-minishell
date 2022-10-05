@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 14:28:51 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 11:31:59 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_cmds
 	int			fd[2];
 	int			index;
 	pid_t		pid;
-}t_cmds;
+}	t_cmds;
 
 typedef struct s_token
 {
@@ -59,7 +59,7 @@ typedef struct s_vars
 	t_list	*var;
 	t_token	token;
 	t_cmds	*cmds;
-}t_vars;
+}	t_vars;
 
 typedef struct s_indexes
 {
@@ -108,8 +108,6 @@ void	child_process(t_vars *vars, int i);
 void	execute_command(t_vars *vars, int i);
 
 //exe_tools.c
-int		search_infile(t_vars *vars, int i, int ii);
-int		search_outfile(t_vars *vars, int i, int *ii);
 char	*join_path(char *path, char *bin);
 char	*get_path(char *cmnd, char **envp);
 char	*ft_strndup(char *str, unsigned int n);
@@ -121,6 +119,11 @@ int		create_pipes(t_vars *vars);
 int		set_fds(t_vars *vars, int i);
 int		set_input(t_vars *vars, int i);
 int		set_output(t_vars *vars, int i);
+
+//files_tools.c
+int		search_infile(t_vars *vars, int i, int ii);
+int		search_outfile(t_vars *vars, int i, int *ii);
+int		search_outfile_append(t_vars *vars, int i, int *ii);
 
 //heredoc.c
 int		start_heredoc(char *stopper);
@@ -142,6 +145,7 @@ int		inquotes(int i, char *input, char c, t_vars *vars);
 int		count_nb_tokens(char *input, t_vars *vars, t_indexes ind);
 
 //lexer.c
+int		is_space(char c);
 void	check_if_token(char *in, t_vars *vars, t_indexes *i);
 int		lexer(char *input, t_vars *vars);
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input);
@@ -174,7 +178,7 @@ void	split_cmds(t_vars *vars);
 //splits2.c
 int		check_quotes(char *quote, char *token, t_indexes *i, int *is_quote);
 int		ft_is_quote(t_indexes i, char *token, char sep);
-void	ft_retrieve_commands(t_vars *vars, char **cmnd, int i, int ind);
+void	ft_retrieve_commands(t_vars *vars, char **cmnd, t_indexes i, int ind);
 char	*split_commands(char *token, t_vars *vars, t_indexes i, char *cmd);
 
 //tools.c

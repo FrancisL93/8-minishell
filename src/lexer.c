@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/04 13:54:20 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 11:56:11 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	is_space(char c)
+{
+	if (c == 32 || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
+}
 
 void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 {
@@ -32,7 +39,7 @@ void	tokenizer(t_vars *vars, t_indexes *ind, char *input)
 
 void	check_if_token(char *in, t_vars *vars, t_indexes *i)
 {
-	while (in[i->i] != '\0' && in[i->i] != ' ' && in[i->i] != '<'
+	while (in[i->i] != '\0' && !is_space(in[i->i]) && in[i->i] != '<'
 		&& in[i->i] != '>' && in[i->i] != '|')
 	{
 		i->i++;
@@ -40,7 +47,7 @@ void	check_if_token(char *in, t_vars *vars, t_indexes *i)
 			var_len(i, in);
 		else if (in[i->i] == 34 || in[i->i] == 39)
 			i->i += inquoteslen(i->i + 1, in, in[i->i]) + 1;
-		if (in[i->i] == '\0' || in[i->i] == ' ' || in[i->i] == '<'
+		if (in[i->i] == '\0' || is_space(in[i->i]) || in[i->i] == '<'
 			|| in[i->i] == '>' || in[i->i] == '|')
 			tokenizer(vars, i, in);
 	}
@@ -54,13 +61,13 @@ void	new_token(char *in, t_vars *vars, t_indexes i)
 		if (in[i.i] == 39 || in[i.i] == 34)
 		{
 			i.i += inquoteslen(i.i + 1, in, in[i.i]) + 1;
-			if (in[i.i] == '\0' || in[i.i] == ' ' || in[i.i] == '<'
+			if (in[i.i] == '\0' || is_space(in[i.i]) || in[i.i] == '<'
 				|| in[i.i] == '>' || in[i.i] == '|')
 				tokenizer(vars, &i, in);
 		}
-		else if (in[i.i] != '\0' && in[i.i] != ' ')
+		else if (in[i.i] != '\0' && !is_space(in[i.i]))
 			check_if_token(in, vars, &i);
-		if (in[i.i] == ' ' || in[i.i] == '<' || in[i.i] == '>'
+		if (is_space(in[i.i]) || in[i.i] == '<' || in[i.i] == '>'
 			|| in[i.i] == '|')
 		{
 			i.ii = i.i;
@@ -94,6 +101,7 @@ int	lexer(char *input, t_vars *vars)
 	vars->token.tokens[vars->nb_tokens] = NULL;
 	while (vars->token.tokens[indexes.i])
 	{
+		printf("%s\n", vars->token.tokens[indexes.i]);
 		if (!ft_strncmp(vars->token.tokens[indexes.i++], "|", 1))
 			vars->pipe++;
 	}

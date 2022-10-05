@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:28:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/03 11:51:58 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:41:12 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char	*get_cmd(char *input)
 	i = 2;
 	j = 0;
 	cmd = calloc(sizeof(char), ft_strlen(input) - 2);
-	while (input[i] == ' ')
+	while (is_space(input[i]))
 		i++;
-	while (input[i] != ' ' && input[i])
+	while (input[i] && !is_space(input[i]))
 	{
 		cmd[j] = input[i];
 		j++;

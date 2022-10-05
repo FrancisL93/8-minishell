@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:16:55 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 12:19:11 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:37:54 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	commands_len(char *tok, t_vars *vars, t_indexes i, int *len)
 	quote = tok[0];
 	while (tok[i.i])
 	{
-		if (tok[i.i] == 36 && tok[i.i + 1] != ' ' && tok[i.i + 1] != '\0'
+		if (tok[i.i] == 36 && !is_space(tok[i.i + 1]) && tok[i.i + 1] != '\0'
 			&& tok[i.i + 1] != 36 && quote_ret[0] != 1)
 		{
 			*len += ft_str_len(get_variable(vars, &tok[i.i]));

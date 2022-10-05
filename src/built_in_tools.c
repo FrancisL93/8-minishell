@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_tools.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/02 12:05:19 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 11:35:41 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ int	check_flag(char *flag)
 		i++;
 		if (flag[2] == '\0')
 			return (1);
-		if (flag[2] != 'n' && flag[2] != ' ')
+		if (flag[2] != 'n' && !is_space(flag[2]))
 			return (0);
 		while (flag[i] == 'n')
 		{
 			i++;
-			if (flag[i] == ' ' || flag[i] == '\0')
+			if (is_space(flag[i]) || flag[i] == '\0')
 				return (1);
+			if (flag[i] == '-')
+				return (0);
 		}
 	}
 	return (0);

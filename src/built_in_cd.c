@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 13:20:11 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/05 10:04:55 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*check_path(char *cmd, char *current_path)
 		return (current_path);
 	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '\0')
 		return (ftstrtrim(current_path));
+	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '/')
+		return (ft_strjoin(ftstrtrim(current_path), strdup(&cmd[2])));
 	return (NULL);
 }
 

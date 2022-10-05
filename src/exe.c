@@ -84,8 +84,6 @@ int	check_command(t_vars *vars)
 void	close_fds(t_vars *vars)
 {
 	int		i;
-	char	*exec_args[4];
-	pid_t	pid;
 
 	i = 0;
 	while (i < (vars->pipe * 2))
@@ -94,17 +92,6 @@ void	close_fds(t_vars *vars)
 		i++;
 	}
 	free(vars->fd);
-	pid = fork();
-	if (pid < 0)
-		return ;
-	else if (pid == 0)
-	{
-		exec_args[0] = "/bin/rm";
-		exec_args[1] = "-rf";
-		exec_args[2] = "minishell_tmp_v2022";
-		exec_args[3] = NULL;
-		execve("/bin/rm", exec_args, vars->env);
-	}
 }
 
 void	execute(t_vars *vars)

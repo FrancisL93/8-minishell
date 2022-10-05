@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/04 12:01:00 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/05 10:24:04 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ char	*subsubsplit(t_vars *vars, int *j)
 
 char	**subsplit(t_vars *vars, int *j, int index)
 {
-	int		i;
-	char	**cmds;
+	t_indexes	i;
+	char		**cmds;
 
-	i = 0;
-	cmds = malloc(sizeof(char *) * (vars->nb_tokens + 1));
+	i.i = 0;
+	cmds = malloc(sizeof(char *) * vars->nb_tokens + 1);
 	while (1)
 	{
-		cmds[i] = subsubsplit(vars, j);
-		if (cmds[i] == NULL)
+		cmds[i.i] = subsubsplit(vars, j);
+		if (cmds[i.i] == NULL)
 		{
 			*j += 1;
 			break ;
@@ -63,7 +63,7 @@ char	**subsplit(t_vars *vars, int *j, int index)
 		else
 		{
 			*j += 1;
-			i++;
+			i.i++;
 		}
 	}
 	ft_retrieve_commands(vars, cmds, i, index);
