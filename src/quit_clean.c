@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 13:15:50 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:16:00 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ void	clean_cmds(t_vars *vars)
 			free(vars->cmds[i].cmds[j]);
 			j++;
 		}
-		if (vars->cmds[i].cmds)
+		if (vars->cmds && vars->cmds[i].cmds)
 			free(vars->cmds[i].cmds);
 		i++;
 	}
 	if (vars->cmds)
+	{
 		free(vars->cmds);
+		vars->cmds = NULL;
+	}
+	
 }
 
 void	clean_args(t_vars *vars)
@@ -53,7 +57,10 @@ void	clean_args(t_vars *vars)
 		i++;
 	}
 	if (vars->args)
+	{
 		free(vars->args);
+		vars->args = NULL;	
+	}
 }
 
 void	clean_tokens(t_vars *vars)
@@ -66,6 +73,7 @@ void	clean_tokens(t_vars *vars)
 		while (vars->token.tokens[i])
 			free(vars->token.tokens[i++]);
 		free(vars->token.tokens);
+		vars->token.tokens = NULL;
 	}
 }
 

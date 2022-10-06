@@ -12,6 +12,19 @@
 
 #include "../inc/minishell.h"
 
+void	close_fds(t_vars *vars)
+{
+	int		i;
+
+	i = 0;
+	while (i < (vars->pipe * 2))
+	{
+		close(vars->fd[i]);
+		i++;
+	}
+	free(vars->fd);
+}
+
 void	child_process(t_vars *vars, int i)
 {
 	int		ret;
@@ -28,13 +41,15 @@ void	child_process(t_vars *vars, int i)
 	if (ret)
 		quit_terminal(vars, 0);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
-		vars->cmds[i].cmd = vars->cmds[i].cmds[0];
+		vars->cmds[i].cmd = ft_strdup(vars->cmds[i].cmds[0]);
 	else
 		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
 	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	free(vars->cmds[i].cmd);
+	close_fds(vars);
 	quit_terminal(vars, 127);
 }
 
@@ -82,19 +97,6 @@ int	check_command(t_vars *vars)
 		i++;
 	}
 	return (ret);
-}
-
-void	close_fds(t_vars *vars)
-{
-	int		i;
-
-	i = 0;
-	while (i < (vars->pipe * 2))
-	{
-		close(vars->fd[i]);
-		i++;
-	}
-	free(vars->fd);
 }
 
 void	execute(t_vars *vars)
