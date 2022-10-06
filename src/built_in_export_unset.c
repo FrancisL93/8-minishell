@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:46:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 13:27:31 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 16:01:06 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	export(t_vars *vars, char *input)
 		export_to_env(vars, input, get_variable(vars, input));
 	}
 	vars->var = head;
+	free(input);
 }
 
 void	add_exit(t_vars *vars, int exit_n)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_built_ins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 15:22:23 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/06 16:03:00 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	check_export(t_vars *vars, int i)
 	{
 		while (vars->cmds[i].cmds[j] != NULL)
 		{
-			export(vars, vars->cmds[i].cmds[j]);
+			export(vars, ft_strdup(vars->cmds[i].cmds[j]));
 			j++;
 		}
 	}

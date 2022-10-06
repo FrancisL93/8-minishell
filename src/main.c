@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 13:59:32 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 16:04:38 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	set_shell_lvl(t_vars *vars)
 	lev = ft_atoi(get_variable(vars, "SHLVL"));
 	lvl = ft_itoa(lev + 1);
 	shlvl = ft_strjoin("SHLVL=", lvl);
-	export(vars, shlvl);
+	export(vars, ft_strdup(shlvl));
 	free(shlvl);
 	free(lvl);
 }

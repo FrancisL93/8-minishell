@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:48:55 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 14:57:51 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 16:00:25 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,10 @@ void	set_pwd(t_vars *vars, char *oldpath)
 
 	i = 0;
 	buff = NULL;
-	while (vars->env[i] && ft_strncmp(vars->env[i], "PWD=", 4))
-		i++;
-	if (vars->env[i])
-	{
-		free(vars->env[i]);
-		cwd = getcwd(buff, 1024);
-		vars->env[i] = ft_strjoin("PWD=", cwd);
-		free(cwd);
-	}
-	if (vars->env[i] != NULL && ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
-	{
-		cwd = ft_strjoin("OLDPWD=", oldpath);
-		export(vars, buff);
-		free(cwd);
-		return ;
-	}
-	i = 0;
-	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))
-		i++;
-	if (vars->env[i])
-	{
-		free(vars->env[i]);
-		vars->env[i] = ft_strjoin("OLDPWD=", oldpath);
-	}
+	cwd = getcwd(buff, 1024);
+	export(vars, ft_strjoin("PWD=", cwd));
+	free(cwd);
+	export(vars, ft_strjoin("OLDPWD=", oldpath));
 }
 
 void	set_new_env(t_vars *vars, char *variable, char **env, int *ii)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cd_exit.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 15:29:26 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/06 15:44:52 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 char	*check_path(char *cmd, char *current_path)
 {
 	char	*buff;
+	char	*trim;
+	char	*dup;
+	char	*join;
 
 	buff = NULL;
 	if (cmd[0] == '.' && cmd[1] == '\0')
@@ -24,7 +27,14 @@ char	*check_path(char *cmd, char *current_path)
 	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '\0')
 		return (ftstrtrim(current_path));
 	else if (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '/')
-		return (ft_strjoin(ftstrtrim(current_path), strdup(&cmd[2])));
+	{
+		trim = ftstrtrim(current_path);
+		dup = strdup(&cmd[2]);
+		join = ft_strjoin(trim, dup);
+		free(trim);
+		free(dup);
+		return (ft_strjoin(trim, dup));
+	}
 	return (NULL);
 }
 
