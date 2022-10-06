@@ -6,13 +6,13 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:39:20 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 16:23:42 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:26:19 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	echo_built(t_vars *vars, int i)
+int	echo_built(t_vars *vars, int i)
 {
 	int	j;
 	int	nl;
@@ -37,6 +37,7 @@ void	echo_built(t_vars *vars, int i)
 				printf("\n");
 		}
 	}
+	return (1);
 }
 
 int	check_flag(char *flag)

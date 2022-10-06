@@ -19,10 +19,12 @@ void	close_fds(t_vars *vars)
 	i = 0;
 	while (i < (vars->pipe * 2))
 	{
-		close(vars->fd[i]);
+		if (vars->fd)
+			close(vars->fd[i]);
 		i++;
 	}
-	free(vars->fd);
+	if (vars->fd)
+		free(vars->fd);
 }
 
 void	child_process(t_vars *vars, int i)
@@ -39,7 +41,10 @@ void	child_process(t_vars *vars, int i)
 		quit_terminal(vars, 127);
 	ret = check_built_in(vars, i, 0);
 	if (ret)
+	{
+		close_fds(vars);
 		quit_terminal(vars, 0);
+	}
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = ft_strdup(vars->cmds[i].cmds[0]);
 	else
@@ -48,7 +53,6 @@ void	child_process(t_vars *vars, int i)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	free(vars->cmds[i].cmd);
 	close_fds(vars);
 	quit_terminal(vars, 127);
 }

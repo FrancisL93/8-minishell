@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 12:58:11 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:29:28 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	ft_exit(t_vars *vars, char *exit_status);
 
 //built_in_env.c
 int		set_env(t_vars *vars, char **envp);
-void	print_path(void);
-void	print_env(t_vars *vars);
+int		print_path(void);
+int		print_env(t_vars *vars);
 void	set_pwd(t_vars *vars, char *oldpath);
 void	set_new_env(t_vars *vars, char *variable, char **env, int *ii);
 
@@ -95,7 +95,7 @@ int		check_flag(char *flag);
 int		ftstrnstr(char *current_path, char *cmd);
 char	*ftstrjoin(char *cmd, char *current_path);
 char	*ftstrtrim(char	*current_path);
-void	echo_built(t_vars *vars, int i);
+int		echo_built(t_vars *vars, int i);
 
 //check built_ins.c
 int		check_built_in(t_vars *vars, int i, int check);
@@ -105,6 +105,7 @@ int		check_cd(t_vars *vars, int i);
 int		check_exit(t_vars *vars, int i);
 
 //exe.c
+void	close_fds(t_vars *vars);
 void	execute(t_vars *vars);
 void	check_cmds(t_vars *vars, int ret, int i);
 void	child_process(t_vars *vars, int i);

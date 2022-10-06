@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 14:16:00 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:43:06 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	clean_cmds(t_vars *vars)
 		free(vars->cmds);
 		vars->cmds = NULL;
 	}
-	
 }
 
 void	clean_args(t_vars *vars)

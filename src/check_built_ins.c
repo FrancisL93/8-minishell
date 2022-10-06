@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 13:02:47 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:30:14 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,18 @@ int	check_built_in(t_vars *vars, int i, int check)
 		ret = check_cd(vars, i);
 	if (ret < 1 && vars->cmds->cmds[0] && check != 1
 		&& ft_strcmp(vars->cmds[i].cmds[0], "echo") == 0)
-		echo_built(vars, i);
+		ret = echo_built(vars, i);
 	if (ret < 1 && vars->cmds->cmds[0] && check != 1
 		&& ft_strcmp(vars->cmds[i].cmds[0],
 			"pwd") == 0)
-		print_path();
+		ret = print_path();
 	if (ret < 1 && vars->cmds->cmds[0] && check != 1
 		&& ft_strcmp(vars->cmds[i].cmds[0],
 			"env") == 0)
-		print_env(vars);
-	if (ret < 1)
-		return (0);
-	return (1);
+		ret = print_env(vars);
+	if (ret > 1)
+		close_fds(vars);
+	return (ret);
 }
 
 int	check_export(t_vars *vars, int i)

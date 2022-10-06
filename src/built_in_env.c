@@ -6,13 +6,13 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:48:55 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 13:50:29 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:40:46 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	print_env(t_vars *vars)
+int	print_env(t_vars *vars)
 {
 	int	i;
 
@@ -26,15 +26,16 @@ void	print_env(t_vars *vars)
 		{
 			printf("env: %s\n", strerror(ENOENT));
 			vars->exit_stat = 127;
-			return ;
+			return (1);
 		}
 	}
 	i = -1;
 	while (vars->env[++i] != NULL)
 		printf("%s\n", vars->env[i]);
+		return (1);
 }
 
-void	print_path(void)
+int	print_path(void)
 {
 	char	*buff;
 	char	*ret;
@@ -44,30 +45,33 @@ void	print_path(void)
 	printf("%s\n", ret);
 	free(ret);
 	free (buff);
+	return (1);
 }
 
 void	set_pwd(t_vars *vars, char *oldpath)
 {
 	int		i;
 	char	*buff;
+	char	*cwd;
 
-	buff = NULL;
 	i = 0;
+	buff = NULL;
 	while (vars->env[i] && ft_strncmp(vars->env[i], "PWD=", 4))
 		i++;
 	if (vars->env[i])
 	{
 		free(vars->env[i]);
-		vars->env[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
-		free(buff);
+		cwd = getcwd(buff, 1024);
+		vars->env[i] = ft_strjoin("PWD=", cwd);
+		free(cwd);
 	}
 	if (vars->env[i] != NULL)
 	{
 		if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
 		{
-			buff = ft_strjoin("OLDPWD=", oldpath);
+			cwd = ft_strjoin("OLDPWD=", oldpath);
 			export(vars, buff);
-			free(buff);
+			free(cwd);
 			return ;
 		}
 	}
