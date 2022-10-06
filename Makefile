@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/10/06 12:50:02 by flahoud          ###   ########.fr        #
+#    Updated: 2022/10/06 13:44:27 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,7 @@ exe: $(NAME) #Execute program
 	./$(NAME)
 
 exe-leak: $(NAME)
-	valgrind --suppressions=".ignore_read".txt --leak-check=full --trace-children=yes --track-origins=yes --show-leak-kinds=all ./$(NAME)
+	valgrind --suppressions=.ignore_read.txt  --leak-check=full --trace-children=yes --track-origins=yes --show-leak-kinds=all ./$(NAME)
 
 gitupdate:
 	printf '\nEnter pull or fetch to update from Origin: ' && read PULLFETCH && \

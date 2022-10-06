@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:48:55 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 15:44:41 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 13:50:29 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,18 @@ void	set_pwd(t_vars *vars, char *oldpath)
 	while (vars->env[i] && ft_strncmp(vars->env[i], "PWD=", 4))
 		i++;
 	if (vars->env[i])
+	{
+		free(vars->env[i]);
 		vars->env[i] = ft_strjoin("PWD=", getcwd(buff, 1024));
+		free(buff);
+	}
 	if (vars->env[i] != NULL)
 	{
 		if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
 		{
-			export(vars, ft_strjoin("OLDPWD=", oldpath));
+			buff = ft_strjoin("OLDPWD=", oldpath);
+			export(vars, buff);
+			free(buff);
 			return ;
 		}
 	}
@@ -69,7 +75,10 @@ void	set_pwd(t_vars *vars, char *oldpath)
 	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))
 		i++;
 	if (vars->env[i])
+	{
+		free(vars->env[i]);
 		vars->env[i] = ft_strjoin("OLDPWD=", oldpath);
+	}
 }
 
 void	set_new_env(t_vars *vars, char *variable, char **env, int *ii)
@@ -81,7 +90,10 @@ void	set_new_env(t_vars *vars, char *variable, char **env, int *ii)
 	while (vars->env[++i] != NULL)
 	{
 		if (!ft_strncmp(vars->env[i], variable, ft_strlen(variable)))
+		{
+			free(vars->env[i]);
 			i++;
+		}
 		env[*ii] = ft_strdup(vars->env[i]);
 		*ii += 1;
 		free(vars->env[i]);

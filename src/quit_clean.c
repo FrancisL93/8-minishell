@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 12:48:04 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 13:15:50 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,5 @@ void	quit_terminal(t_vars *vars, int exit_code)
 			break ;
 		}
 	}
-	if (vars->fd)
-		free(vars->fd);
 	exit(exit_code);
 }

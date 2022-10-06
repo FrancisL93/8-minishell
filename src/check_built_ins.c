@@ -6,14 +6,17 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 12:44:36 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 13:02:47 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	check_built_in(t_vars *vars, int i, int ret, int check)
+int	check_built_in(t_vars *vars, int i, int check)
 {
+	int	ret;
+
+	ret = 0;
 	if (ret < 1 && vars->pipe == 1)
 		ret = check_exit(vars, i);
 	if (ret < 1 && vars->pipe == 1)
@@ -35,7 +38,7 @@ int	check_built_in(t_vars *vars, int i, int ret, int check)
 		print_env(vars);
 	if (ret < 1)
 		return (0);
-	return (0);
+	return (1);
 }
 
 int	check_export(t_vars *vars, int i)

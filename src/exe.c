@@ -24,7 +24,7 @@ void	child_process(t_vars *vars, int i)
 		close(vars->fd[j]);
 	if (!vars->cmds || !vars->cmds[i].cmds[0] || !vars->cmds[i].cmds[0][0])
 		quit_terminal(vars, 127);
-	ret = check_built_in(vars, i, 2, 0);
+	ret = check_built_in(vars, i, 0);
 	if (ret)
 		quit_terminal(vars, 0);
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
@@ -72,7 +72,7 @@ int	check_command(t_vars *vars)
 		if (!vars->cmds[i].cmds[0] && vars->args[i][0])
 			ret = 2;
 		else
-			ret = check_built_in(vars, i, ret, 1);
+			ret = check_built_in(vars, i, 1);
 		if (ret < 1 && ft_strichr(vars->cmds[i].cmds[0], '=') > 0)
 			ret = check_var(vars, i);
 		if (ret != 1)

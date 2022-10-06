@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 12:44:53 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 12:58:11 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*ftstrtrim(char	*current_path);
 void	echo_built(t_vars *vars, int i);
 
 //check built_ins.c
-int		check_built_in(t_vars *vars, int i, int ret, int check);
+int		check_built_in(t_vars *vars, int i, int check);
 int		check_export(t_vars *vars, int i);
 int		check_unset(t_vars *vars, int i);
 int		check_cd(t_vars *vars, int i);
