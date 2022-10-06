@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 14:43:06 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:48:09 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	clean_args(t_vars *vars)
 	if (vars->args)
 	{
 		free(vars->args);
-		vars->args = NULL;	
+		vars->args = NULL;
 	}
 }
 
@@ -104,16 +104,12 @@ void	quit_terminal(t_vars *vars, int exit_code)
 		free(vars->env[i]);
 	if (vars->env)
 		free(vars->env);
-/* 	if (vars->exit_char != NULL)
-		free (vars->exit_char); */
 	while (vars->var)
 	{
 		if (vars->var->name)
 			free(vars->var->name);
 		if (vars->var->content)
 			free(vars->var->content);
-/* 		if (vars->var)
-			free(vars->var); */
 		if (vars->var->next != NULL)
 		{
 			temp = vars->var;

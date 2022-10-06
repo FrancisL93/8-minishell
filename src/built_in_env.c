@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:48:55 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 14:40:46 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:57:51 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	print_env(t_vars *vars)
 	i = -1;
 	while (vars->env[++i] != NULL)
 		printf("%s\n", vars->env[i]);
-		return (1);
+	return (1);
 }
 
 int	print_path(void)
@@ -65,15 +65,12 @@ void	set_pwd(t_vars *vars, char *oldpath)
 		vars->env[i] = ft_strjoin("PWD=", cwd);
 		free(cwd);
 	}
-	if (vars->env[i] != NULL)
+	if (vars->env[i] != NULL && ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
 	{
-		if (ft_strncmp(vars->env[i + 1], "OLDPWD", 6))
-		{
-			cwd = ft_strjoin("OLDPWD=", oldpath);
-			export(vars, buff);
-			free(cwd);
-			return ;
-		}
+		cwd = ft_strjoin("OLDPWD=", oldpath);
+		export(vars, buff);
+		free(cwd);
+		return ;
 	}
 	i = 0;
 	while (vars->env[i] && ft_strncmp(vars->env[i], "OLDPWD=", 7))

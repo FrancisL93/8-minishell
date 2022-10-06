@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 14:30:14 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 14:51:26 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_built_in(t_vars *vars, int i, int check)
 		&& ft_strcmp(vars->cmds[i].cmds[0],
 			"env") == 0)
 		ret = print_env(vars);
-	if (ret > 1)
+	if (ret == 1)
 		close_fds(vars);
 	return (ret);
 }

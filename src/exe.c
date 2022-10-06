@@ -41,10 +41,7 @@ void	child_process(t_vars *vars, int i)
 		quit_terminal(vars, 127);
 	ret = check_built_in(vars, i, 0);
 	if (ret)
-	{
-		close_fds(vars);
 		quit_terminal(vars, 0);
-	}
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = ft_strdup(vars->cmds[i].cmds[0]);
 	else
