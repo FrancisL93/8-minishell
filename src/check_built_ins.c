@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_built_ins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 14:51:26 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 15:22:23 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_built_in(t_vars *vars, int i, int check)
 		&& ft_strcmp(vars->cmds[i].cmds[0],
 			"env") == 0)
 		ret = print_env(vars);
-	if (ret == 1)
+	if (ret == 1 && check != 1)
 		close_fds(vars);
 	return (ret);
 }
@@ -90,6 +90,7 @@ int	check_exit(t_vars *vars, int i)
 {
 	if (ft_strcmp(vars->cmds[i].cmds[0], "exit") == 0)
 	{
+		free(vars->fd);
 		if (vars->cmds[i].cmds[1] == NULL)
 			quit_terminal(vars, 0);
 		ft_exit(vars, vars->cmds[i].cmds[1]);

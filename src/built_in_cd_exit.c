@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_cd_exit.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 13:42:14 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 15:29:26 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ void	cd(t_vars *vars, char *input)
 		new_path = ft_strdup(ft_strchr(getenv("HOME="), '/'));
 	else if (input[0] == '.')
 		new_path = check_path(input, current_path);
-	else if (ftstrnstr(current_path, input) != 0)
-		new_path = ft_strdup(input);
-	else if (ft_strlen(input) == 1 && input[0] == '/')
+	else if (ftstrnstr(current_path, input) != 0
+		|| (ft_strlen(input) == 1 && input[0] == '/'))
 		new_path = ft_strdup(input);
 	else
 		new_path = ftstrjoin(input, current_path);
@@ -68,11 +67,10 @@ void	cd(t_vars *vars, char *input)
 	{
 		printf("cd: %s: %s\n", input, strerror(ENOTDIR));
 		add_exit(vars, 127);
-		free(new_path);
-		return ;
 	}
+	else
+		set_pwd(vars, oldpath);
 	free(new_path);
-	set_pwd(vars, oldpath);
 }
 
 void	ft_exit(t_vars *vars, char *exit_status)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 14:48:09 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 15:24:56 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,48 +62,10 @@ void	clean_args(t_vars *vars)
 	}
 }
 
-void	clean_tokens(t_vars *vars)
+void	clean_vars(t_vars *vars)
 {
-	int	i;
-
-	i = 0;
-	if (vars->token.tokens)
-	{
-		while (vars->token.tokens[i])
-			free(vars->token.tokens[i++]);
-		free(vars->token.tokens);
-		vars->token.tokens = NULL;
-	}
-}
-
-void	clean_command(t_vars *vars)
-{
-	if (vars->prompt)
-		free(vars->prompt);
-	if (!vars->input || !*vars->input)
-		return ;
-	if (vars->cmds)
-		clean_cmds(vars);
-	if (vars->args)
-		clean_args(vars);
-	if (vars->token.tokens)
-		clean_tokens(vars);
-	free(vars->input);
-	vars->pipe = 1;
-}
-
-void	quit_terminal(t_vars *vars, int exit_code)
-{
-	int		i;
 	t_list	*temp;
 
-	i = -1;
-	clear_history();
-	clean_command(vars);
-	while (vars->env && vars->env[++i])
-		free(vars->env[i]);
-	if (vars->env)
-		free(vars->env);
 	while (vars->var)
 	{
 		if (vars->var->name)
@@ -122,5 +84,44 @@ void	quit_terminal(t_vars *vars, int exit_code)
 			break ;
 		}
 	}
+}
+
+void	clean_command(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	if (vars->prompt)
+		free(vars->prompt);
+	if (!vars->input || !*vars->input)
+		return ;
+	if (vars->cmds)
+		clean_cmds(vars);
+	if (vars->args)
+		clean_args(vars);
+	if (vars->token.tokens)
+	{
+		while (vars->token.tokens[i])
+			free(vars->token.tokens[i++]);
+		free(vars->token.tokens);
+		vars->token.tokens = NULL;
+	}
+	free(vars->input);
+	vars->pipe = 1;
+}
+
+void	quit_terminal(t_vars *vars, int exit_code)
+{
+	int		i;
+
+	i = -1;
+	clear_history();
+	clean_command(vars);
+	while (vars->env && vars->env[++i])
+		free(vars->env[i]);
+	if (vars->env)
+		free(vars->env);
+	if (vars->var)
+		clean_vars(vars);
 	exit(exit_code);
 }
