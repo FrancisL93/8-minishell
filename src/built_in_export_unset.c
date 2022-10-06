@@ -6,7 +6,7 @@
 /*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 10:46:04 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 14:52:41 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/06 09:54:44 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	unset(t_vars *vars, char *variable)
 		return ;
 	}
 	unset_len(vars, variable, &ii);
-	env = malloc((sizeof(char *) * ii) + 1);
+	env = malloc(sizeof(char *) * (ii + 1));
 	set_new_env(vars, variable, env, &ii);
-	vars->env = malloc((sizeof(char *) * ii) + 1);
+	vars->env = malloc(sizeof(char *) * (ii + 1));
 	i = -1;
 	while (env[++i] != NULL)
 		vars->env[i] = ft_strdup(env[i]);

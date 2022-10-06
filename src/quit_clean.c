@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:25:38 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 16:20:45 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 10:06:30 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	clean_command(t_vars *vars)
 
 void	quit_terminal(t_vars *vars, int exit_code)
 {
-	int	i;
+	int		i;
+	t_list	*temp;
 
 	i = -1;
 	clear_history();
@@ -96,18 +97,27 @@ void	quit_terminal(t_vars *vars, int exit_code)
 		free(vars->env[i]);
 	if (vars->env)
 		free(vars->env);
+/* 	if (vars->exit_char != NULL)
+		free (vars->exit_char); */
 	while (vars->var)
 	{
 		if (vars->var->name)
 			free(vars->var->name);
 		if (vars->var->content)
 			free(vars->var->content);
-		if (vars->var)
-			free(vars->var);
-		if (vars->var->next)
+/* 		if (vars->var)
+			free(vars->var); */
+		if (vars->var->next != NULL)
+		{
+			temp = vars->var;
 			vars->var = vars->var->next;
+			free(temp);
+		}
 		else
+		{
+			free(vars->var);
 			break ;
+		}
 	}
 	exit(exit_code);
 }

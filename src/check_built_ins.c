@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_built_ins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 16:24:11 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 10:18:28 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ int	check_built_in(t_vars *vars, int i, int ret)
 		ret = check_export(vars, i);
 	if (ret < 1 && vars->pipe == 1)
 		ret = check_cd(vars, i);
-	if (vars->cmds->cmds[0] && ft_strcmp(vars->cmds[i].cmds[0], "echo") == 0)
+	if (ret < 1 && vars->cmds->cmds[0]
+		&& ft_strcmp(vars->cmds[i].cmds[0], "echo") == 0)
 		echo_built(vars, i);
-	else if (vars->cmds->cmds[0] && ft_strcmp(vars->cmds[i].cmds[0],
+	if (ret < 1 && vars->cmds->cmds[0]
+		&& ft_strcmp(vars->cmds[i].cmds[0],
 			"pwd") == 0)
 		print_path();
-	else if (vars->cmds->cmds[0] && ft_strcmp(vars->cmds[i].cmds[0],
+	if (ret < 1 && vars->cmds->cmds[0]
+		&& ft_strcmp(vars->cmds[i].cmds[0],
 			"env") == 0)
 		print_env(vars);
-	else
+	if (ret < 1)
 		return (0);
 	return (1);
 }
@@ -83,7 +86,11 @@ int	check_cd(t_vars *vars, int i)
 int	check_exit(t_vars *vars, int i)
 {
 	if (ft_strcmp(vars->cmds[i].cmds[0], "exit") == 0)
+	{
+		if (vars->cmds[i].cmds[1] == NULL)
+			quit_terminal(vars, 0);
 		ft_exit(vars, vars->cmds[i].cmds[1]);
+	}
 	else
 		return (0);
 	return (1);

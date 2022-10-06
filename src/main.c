@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 16:01:11 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/06 10:06:02 by anhebert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	init_struct(t_vars *vars, char **envp)
 	vars->args = NULL;
 	vars->cmds = NULL;
 	vars->token.tokens = NULL;
+	vars->exit_char = NULL;
 	if (set_env(vars, envp))
 		return (1);
 	vars->var = NULL;
