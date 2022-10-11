@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 11:40:37 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 15:44:52 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 10:27:41 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*check_path(char *cmd, char *current_path)
 		join = ft_strjoin(trim, dup);
 		free(trim);
 		free(dup);
-		return (ft_strjoin(trim, dup));
+		return (join);
 	}
 	return (NULL);
 }
