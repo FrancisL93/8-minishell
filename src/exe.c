@@ -17,10 +17,17 @@ void	close_fds(t_vars *vars)
 	int		i;
 
 	i = 0;
-	while (i < (vars->pipe * 2))
+	while (i < (vars->pipe))
 	{
 		if (vars->fd)
-			close(vars->fd[i]);
+		{
+			close(vars->fd[i * 2]);
+			close(vars->fd[i * 2 + 1]);
+		}
+		if (vars->cmds[i].fd[0] != STDIN_FILENO)
+			close(vars->cmds[i].fd[0]);
+		if (vars->cmds[i].fd[1] != STDOUT_FILENO)
+			close(vars->cmds[i].fd[1]);
 		i++;
 	}
 	if (vars->fd)
@@ -35,9 +42,11 @@ void	child_process(t_vars *vars, int i)
 {
 	int		ret;
 	int		j;
+	char	*path;
 
 	j = -1;
 	ret = 0;
+	path = NULL;
 	vars->exit_stat = 0;
 	while (++j < (vars->pipe - 1) * 2)
 		close(vars->fd[j]);
@@ -49,7 +58,7 @@ void	child_process(t_vars *vars, int i)
 	if (ft_strichr(vars->cmds[i].cmds[0], '/') > -1)
 		vars->cmds[i].cmd = ft_strdup(vars->cmds[i].cmds[0]);
 	else
-		vars->cmds[i].cmd = get_path(vars->cmds[i].cmds[0], vars->env);
+		vars->cmds[i].cmd = get_path(path, vars->cmds[i].cmds[0], vars->env);
 	ret = execve(vars->cmds[i].cmd, vars->cmds[i].cmds, vars->env);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);

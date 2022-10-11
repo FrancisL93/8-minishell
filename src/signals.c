@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 10:41:43 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/01 14:01:07 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 14:29:26 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	sig_handler(int sig)
 	{
 		rl_on_new_line();
 		rl_redisplay();
+		sigignore(SIGQUIT);
 	}
 	if (sig == SIGINT)
 	{
