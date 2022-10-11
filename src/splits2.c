@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splits2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:43:35 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 15:25:41 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:57:21 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	ft_is_quote(t_indexes i, char *token, char sep)
 	return (0);
 }
 
-void	ft_retrieve_commands(t_vars *vars, char **cmd, t_indexes i, int ind)
+//Create the command tokens from every args pipe
+void	ft_set_commands(t_vars *vars, char **cmd, t_indexes i, int ind)
 {
 	i.j = 0;
 	i.ii = 0;
@@ -51,6 +52,7 @@ void	ft_retrieve_commands(t_vars *vars, char **cmd, t_indexes i, int ind)
 	vars->cmds[ind].cmds[i.ii] = NULL;
 }
 
+//Expand $variables into their values
 void	create_dolvar(t_vars *vars, char *token, char *cmd, t_indexes *i)
 {
 	char	*var;
@@ -98,6 +100,7 @@ int	check_quotes(char *quote, char *token, t_indexes *i, int *is_quote)
 	return (0);
 }
 
+//Return each string of the array of args with expanded values
 char	*split_commands(char *token, t_vars *vars, t_indexes i, char *cmd)
 {
 	int		is_quote;

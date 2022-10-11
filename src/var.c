@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 16:04:24 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 11:06:58 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	add_variable(t_vars *vars, char *variable)
 	return (0);
 }
 
+//Retrieve $var from shell environement or local variables
 char	*get_variable(t_vars *vars, char *dolvar)
 {
 	int	len;
@@ -117,13 +118,15 @@ char	*get_variable(t_vars *vars, char *dolvar)
 	return (NULL);
 }
 
+//Check if $var in input is present in env or local variables, and add it
+//Return if $var is in a pipe command
 int	check_var(t_vars *vars, int i)
 {
 	int		j;
 	int		ret;
 
 	j = 0;
-	if (i != vars->pipe - 1)
+	if (vars->pipe > 1)
 		return (1);
 	ret = add_variable(vars, ft_strdup(vars->cmds[i].cmds[j]));
 	while (vars->cmds[i].cmds[j])

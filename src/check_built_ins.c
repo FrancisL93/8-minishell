@@ -6,12 +6,13 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 16:03:00 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 11:08:09 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Execute built-in in child or before depending on check
 int	check_built_in(t_vars *vars, int i, int check)
 {
 	int	ret;

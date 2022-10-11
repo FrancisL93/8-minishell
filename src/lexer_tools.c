@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:13:12 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 15:25:04 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:43:46 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Filter the meta characters and validate
 int	check_meta(char *in, int i)
 {
 	if (in[i + 1] != '\0' && in[i] == '<')
@@ -56,6 +57,7 @@ int	inquotes(int i, char c, t_vars *vars)
 	return (ii);
 }
 
+//Check normal tokens not in quotes
 void	check_if_is_token(t_vars *vars, t_indexes *i)
 {
 	while (!is_space(vars->input[i->i]) && vars->input[i->i] != '\0'
@@ -74,6 +76,7 @@ void	check_if_is_token(t_vars *vars, t_indexes *i)
 	}
 }
 
+//While in quotes " " or ' '
 void	check_if_is_token2(t_vars *vars, t_indexes *i)
 {
 	int	ii;

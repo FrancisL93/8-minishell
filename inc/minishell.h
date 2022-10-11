@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/06 14:29:28 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 10:55:17 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	split_cmds(t_vars *vars);
 //splits2.c
 int		check_quotes(char *quote, char *token, t_indexes *i, int *is_quote);
 int		ft_is_quote(t_indexes i, char *token, char sep);
-void	ft_retrieve_commands(t_vars *vars, char **cmnd, t_indexes i, int ind);
+void	ft_set_commands(t_vars *vars, char **cmnd, t_indexes i, int ind);
 char	*split_commands(char *token, t_vars *vars, t_indexes i, char *cmd);
 
 //tools.c

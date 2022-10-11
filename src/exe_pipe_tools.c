@@ -6,12 +6,13 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 12:56:11 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 11:11:28 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Set default fds and loop into redirections
 int	set_fds(t_vars *vars, int i)
 {
 	int	ii;
@@ -33,6 +34,7 @@ int	set_fds(t_vars *vars, int i)
 	return (0);
 }
 
+//dup2 redirection or pipe fd
 int	set_input(t_vars *vars, int i)
 {
 	if (vars->cmds[i].fd[0] != STDIN_FILENO)
@@ -79,6 +81,7 @@ int	set_output(t_vars *vars, int i)
 	return (0);
 }
 
+//Create number of pipes necessary to execute pipe commands
 int	create_pipes(t_vars *vars)
 {
 	int	i;
@@ -91,7 +94,7 @@ int	create_pipes(t_vars *vars)
 			perror("Error: ");
 			while (i >= 0)
 			{
-				close(vars->fd[i * 2]);
+				close (vars->fd[i * 2]);
 				close(vars->fd[i * 2 + 1]);
 				i--;
 			}

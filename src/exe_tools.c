@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:39:03 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 12:59:44 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 10:38:30 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	*join_path(char *path, char *bin)
 	return (joined);
 }
 
+//Get path of command if no "/"
 char	*get_path(char *cmnd, char **envp)
 {
 	char	*path;

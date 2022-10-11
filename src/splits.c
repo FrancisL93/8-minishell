@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   splits.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/05 14:15:16 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:55:35 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Split each command into arrays
 char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 {
 	char	*cmnd;
@@ -31,6 +32,7 @@ char	*split_tokens(char *token, t_vars *vars, t_indexes i, int len)
 	return (split_commands(token, vars, i, cmnd));
 }
 
+//Create the array of args
 char	*subsubsplit(t_vars *vars, int *j)
 {
 	t_indexes	i;
@@ -45,6 +47,8 @@ char	*subsubsplit(t_vars *vars, int *j)
 	return (split_tokens(vars->token.tokens[*j], vars, i, len));
 }
 
+//Return every pipe of args
+//Retrieve commands from args
 char	**subsplit(t_vars *vars, int *j, int index)
 {
 	t_indexes	i;
@@ -66,10 +70,12 @@ char	**subsplit(t_vars *vars, int *j, int index)
 			i.i++;
 		}
 	}
-	ft_retrieve_commands(vars, cmds, i, index);
+	ft_set_commands(vars, cmds, i, index);
 	return (cmds);
 }
 
+//Split tokens into args with redirections seperated by pipes
+//Reduce args into the commands and their arguments (without redirections)
 void	split_cmds(t_vars *vars)
 {
 	int		i;

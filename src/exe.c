@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   exe.c											  :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: anhebert <anhebert@student.42.fr>		  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/09/09 11:26:17 by flahoud		   #+#	#+#			 */
-/*   Updated: 2022/09/09 15:32:39 by anhebert		 ###   ########.fr	   */
-/*																			*/
+/*																		  	  */
+/*														:::	  ::::::::        */
+/*   exe.c											  :+:	  :+:	:+:       */
+/*													+:+ +:+		 +:+	      */
+/*   By: anhebert <anhebert@student.42.fr>		  +#+  +:+	   +#+		      */
+/*												+#+#+#+#+#+   +#+		      */
+/*   Created: 2022/09/09 11:26:17 by flahoud		   #+#	#+#		          */
+/*   Updated: 2022/09/09 15:32:39 by anhebert		 ###   ########.fr	      */
+/*																			  */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
@@ -27,6 +27,10 @@ void	close_fds(t_vars *vars)
 		free(vars->fd);
 }
 
+//Close all fds
+//Execute built-in if it is -> search path of command if no "/"
+//Execute command and save exit status into $?
+//close remaining fds if command fails
 void	child_process(t_vars *vars, int i)
 {
 	int		ret;
@@ -51,9 +55,12 @@ void	child_process(t_vars *vars, int i)
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	close_fds(vars);
-	quit_terminal(vars, 127);
+	quit_terminal(vars, ret);
 }
 
+//fork into a new process to exec command
+//dup2 redirections or stdin/stdout depending on needs
+//set new signals on parent to execute children signals only
 void	execute_command(t_vars *vars, int i)
 {
 	vars->cmds[i].pid = fork();
@@ -71,6 +78,7 @@ void	execute_command(t_vars *vars, int i)
 	init_signals(2);
 }
 
+//Check if built-in or error in input in a loop for each pipe
 int	check_command(t_vars *vars)
 {
 	int	i;
@@ -100,6 +108,7 @@ int	check_command(t_vars *vars)
 	return (ret);
 }
 
+//Parent wait for child exit status and reset signals to normal handling
 void	execute(t_vars *vars)
 {
 	int		i;

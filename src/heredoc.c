@@ -6,12 +6,13 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 16:22:47 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 11:09:48 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+//Start a readline until eof into a new pipe
 int	start_heredoc(char *eof)
 {
 	char	*input;

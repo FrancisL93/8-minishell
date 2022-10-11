@@ -6,14 +6,13 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/06 16:04:38 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/11 10:39:48 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// Free
-
+//set prompt for readline depending on current directory
 void	set_prompt(t_vars *vars)
 {
 	int		i;
@@ -29,6 +28,7 @@ void	set_prompt(t_vars *vars)
 	free(tmp);
 }
 
+//Set shell level in env
 void	set_shell_lvl(t_vars *vars)
 {
 	int		lev;
@@ -43,6 +43,7 @@ void	set_shell_lvl(t_vars *vars)
 	free(lvl);
 }
 
+//Initialize all variables of struct
 int	init_struct(t_vars *vars, char **envp)
 {
 	int		i;

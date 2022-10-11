@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anhebert <anhebert@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/05 15:21:35 by anhebert         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:41:43 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	is_space(char c)
 	return (0);
 }
 
+//Create the tokens
 void	tokenizer(t_vars *vars, t_indexes *ind)
 {
 	ind->jj = 0;
@@ -55,6 +56,7 @@ void	check_if_token(t_vars *vars, t_indexes *i)
 	}
 }
 
+//Check when to split the tokens
 void	new_token(t_vars *vars, t_indexes i)
 {
 	while (vars->input[i.i])
@@ -82,6 +84,7 @@ void	new_token(t_vars *vars, t_indexes i)
 	}
 }
 
+//Split input into tokens and add readline history
 int	lexer(t_vars *vars)
 {
 	t_indexes	indexes;
