@@ -48,7 +48,7 @@ void	child_process(t_vars *vars, int i)
 	ret = 0;
 	path = NULL;
 	vars->exit_stat = 0;
-	while (++j < (vars->pipe - 1) * 2)
+	while (++j < (vars->pipe) * 2)
 		close(vars->fd[j]);
 	if (!vars->cmds || !vars->cmds[i].cmds[0] || !vars->cmds[i].cmds[0][0])
 		quit_terminal(vars, 127);

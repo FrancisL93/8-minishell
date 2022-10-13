@@ -6,14 +6,51 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/11 11:09:48 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/13 11:54:03 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+void	write_var(t_vars *vars, char *str, int *fd, int i)
+{
+	int		j;
+	char 	*dup;
+	char	*var;
+
+	j = 0;
+	while (str[i + j] && (str[i + j] != ' ' || str[i + j] != '$'))
+		j++;
+	dup = ft_strndup(&str[i], j);
+	var = get_variable(vars, dup);
+	free(dup);
+	j = 0;
+	while (var && var[j])
+		write(fd[1], &var[j++], 1);
+}
+
+void	write_heredoc(t_vars *vars, char *str, int *fd)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '$')
+		{
+			write_var(vars, str, fd, i);
+			while (str[i] && str[i + 1] && str[i + 1] != ' ' && str[i + 1] != '$')
+				i++;
+		}
+		else
+			write(fd[1], &str[i], 1);	
+		i++;
+	}
+	write(fd[1], "\n", 1);
+}
+
 //Start a readline until eof into a new pipe
-int	start_heredoc(char *eof)
+int	start_heredoc(t_vars *vars, char *eof)
 {
 	char	*input;
 	int		fd[2];
@@ -23,8 +60,7 @@ int	start_heredoc(char *eof)
 		return (-1);
 	while (input && ft_strcmp(input, eof))
 	{
-		ft_putstr_fd(input, fd[1]);
-		write(fd[1], "\n", 1);
+		write_heredoc(vars, input, fd);
 		free(input);
 		input = readline(">");
 	}
@@ -41,7 +77,7 @@ int	search_heredoc(t_vars *vars, int i, int *ii)
 		if (vars->args[i][*ii + 2] && vars->args[i][*ii + 2][0] != '<'
 			&& vars->args[i][*ii + 2][0] != '>')
 		{
-			vars->cmds[i].fd[0] = start_heredoc(vars->args[i][*ii + 2]);
+			vars->cmds[i].fd[0] = start_heredoc(vars, vars->args[i][*ii + 2]);
 			if (vars->cmds[i].fd[0] < 0)
 				return (1);
 			*ii += 2;

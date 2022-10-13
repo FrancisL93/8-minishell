@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/11 14:08:55 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/13 12:06:29 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int		search_outfile(t_vars *vars, int i, int *ii);
 int		search_outfile_append(t_vars *vars, int i, int *ii);
 
 //heredoc.c
-int		start_heredoc(char *stopper);
+int		start_heredoc(t_vars *vars, char *stopper);
 int		search_heredoc(t_vars *vars, int i, int *ii);
 
 //lenght_tools.c
