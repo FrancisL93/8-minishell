@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:18:41 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/11 10:55:35 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/14 11:56:52 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,22 @@ char	*subsubsplit(t_vars *vars, int *j)
 {
 	t_indexes	i;
 	int			len;
+	static int	hd;
 
+	i.jj = 0;
 	i.j = 0;
 	len = 0;
 	if (!vars->token.tokens[*j] || *j > vars->nb_tokens
 		|| !ft_strncmp(vars->token.tokens[*j], "|", 1))
 		return (NULL);
 	i.i = 0;
+	if (vars->token.tokens[*j][0] == '<'
+		&& vars->token.tokens[*j + 1][0] == '<')
+		hd = 4;
+	if (hd > 0)
+		hd--;
+	if (hd == 1)
+		i.jj = 1;
 	return (split_tokens(vars->token.tokens[*j], vars, i, len));
 }
 

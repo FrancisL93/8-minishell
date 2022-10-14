@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 10:29:02 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/11 10:41:43 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/14 10:13:51 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	new_token(t_vars *vars, t_indexes i)
 				|| vars->input[i.i] == '|')
 				tokenizer(vars, &i);
 		}
-		else if (vars->input[i.i] != '\0' && !is_space(vars->input[i.i]))
+		if (vars->input[i.i] != '\0' && !is_space(vars->input[i.i]))
 			check_if_token(vars, &i);
 		if (is_space(vars->input[i.i]) || vars->input[i.i] == '<'
 			|| vars->input[i.i] == '>' || vars->input[i.i] == '|')

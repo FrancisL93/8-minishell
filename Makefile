@@ -6,7 +6,7 @@
 #    By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/28 10:55:27 by flahoud           #+#    #+#              #
-#    Updated: 2022/10/11 14:10:50 by flahoud          ###   ########.fr        #
+#    Updated: 2022/10/14 14:17:50 by flahoud          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC = 	src/main.c \
 
 LIBFT = inc/libft
 LIBFTA = inc/libft/libft.a
-LIBREADLINE = inc/readline/libhistory.a inc/readline/libreadline.a
+LIBREADLINE = inc/rdl_lib/libhistory.a inc/rdl_lib/libreadline.a
 
 S = src/
 O = obj/
@@ -54,13 +54,17 @@ $(OBJ): | $O
 $(OBJ): $O%.o: $S% #Build objectfs $< take the name on the right of ":", $@ take the name on the left of ":"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIBFTA): #Compile Liibft
+$(LIBREADLINE): #Compile readline
+	@cd inc/rdl_lib && ./configure
+	@make -C inc/rdl_lib
+
+$(LIBFTA): #Compile Libft
 	@echo "\033[0;32mCompiling libft...\033[0m"
 	@make -C $(LIBFT)
 	@make clean -C $(LIBFT)
 	@echo "\033[0;32mLibft compiled!\033[0m"
 	
-$(NAME): $(LIBFTA) $(OBJ) #Libft will compile only once, use "make libft" to recompile
+$(NAME): $(LIBREADLINE) $(LIBFTA) $(OBJ) #Libft will compile only once, use "make libft" to recompile
 	@echo "\033[0;32mCompiling minishell...\033[0m"
 	@$(CC) $(CFLAGS) $(LIBREADLINE) $(LIBFTA) $(OBJ) -o $(NAME) -lreadline -lcurses
 	@echo "\033[0;32mMinishell compiled! Execute as: ./minishell\033[0m"
@@ -75,13 +79,16 @@ clean: cleanobjdir #Delete obj directory and content
 	@echo "\033[0;31mObjects deleted!\033[0m"
 
 fclean: clean #Delete objects and executable
+	@make fclean -C $(LIBFT)
+	@echo "\033[0;31mLibft deleted!\033[0m"
 	@$(RM) $(NAME)
 	@$(RMDIR) $(NAME).dSYM
 	@echo "\033[0;31mExecutable deleted!\033[0m"
 
-fclean-all: fclean #Delete objects, executable, and libft
-	@make fclean -C $(LIBFT)
-	@echo "\033[0;31mLibft deleted!\033[0m"
+fclean-rl:
+	@make clean -C inc/rdl_lib
+	@$(RM) inc/rdl_lib/libreadline.a inc/rdl_lib/libhistory.a
+	@echo "\033[0;31mReadline lib deleted\033[0m"
 
 re: fclean #Delete all and rebuild executable
 	@make

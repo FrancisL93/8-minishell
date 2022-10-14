@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/13 12:06:25 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/14 10:25:20 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int	check_exit(t_vars *vars, int i)
 {
 	if (ft_strcmp(vars->cmds[i].cmds[0], "exit") == 0)
 	{
-		free(vars->fd);
+		printf("exit\n");
+		close_fds(vars);
 		if (vars->cmds[i].cmds[1] == NULL)
 			quit_terminal(vars, 0);
 		ft_exit(vars, vars->cmds[i].cmds[1]);

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/13 11:54:03 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/14 11:24:26 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	write_var(t_vars *vars, char *str, int *fd, int i)
 {
 	int		j;
-	char 	*dup;
+	char	*dup;
 	char	*var;
 
 	j = 0;
@@ -39,11 +39,12 @@ void	write_heredoc(t_vars *vars, char *str, int *fd)
 		if (str[i] == '$')
 		{
 			write_var(vars, str, fd, i);
-			while (str[i] && str[i + 1] && str[i + 1] != ' ' && str[i + 1] != '$')
+			while (str[i] && str[i + 1] && str[i + 1] != ' '
+				&& str[i + 1] != '$')
 				i++;
 		}
 		else
-			write(fd[1], &str[i], 1);	
+			write(fd[1], &str[i], 1);
 		i++;
 	}
 	write(fd[1], "\n", 1);

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 11:00:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/11 10:39:48 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/14 14:20:56 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,12 @@ void	set_prompt(t_vars *vars)
 {
 	int		i;
 	char	*prompt;
-	char	*tmp;
 
 	prompt = ft_getenv(vars);
 	i = ft_strlen(prompt) - 1;
 	while (prompt[i] != '/')
 		i--;
-	tmp = ft_strjoin(GREEN, &prompt[i]);
-	vars->prompt = ft_strjoin(tmp, " >> \e[0;37m");
-	free(tmp);
+	vars->prompt = ft_strjoin(&prompt[i], "$ ");
 }
 
 //Set shell level in env
@@ -91,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 			set_prompt(&vars);
 			vars.input = readline(vars.prompt);
 		}
-		printf("%sexit\n", vars.prompt);
+		printf("exit\n");
 		quit_terminal(&vars, 0);
 	}
 	else

@@ -64,7 +64,7 @@ void	child_process(t_vars *vars, int i)
 	ft_putstr_fd(vars->cmds[i].cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	close_fds(vars);
-	quit_terminal(vars, ret);
+	quit_terminal(vars, 127);
 }
 
 //fork into a new process to exec command

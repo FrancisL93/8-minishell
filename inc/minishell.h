@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/13 12:06:29 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/14 12:49:24 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "libft/inc/libft.h"
 # include "stdio.h"
-# include "readline/readline.h"
-# include "readline/history.h"
+# include "rdl_lib/readline.h"
+# include "rdl_lib/history.h"
 # include "errno.h"
 # include "signal.h"
 # include "termios.h"
