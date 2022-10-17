@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/17 10:24:45 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/17 11:09:55 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	set_fds(t_vars *vars, int i)
 	{
 		if (search_heredoc(vars, i, &ii))
 			return (1);
-		if (search_infile(vars, i, ii))
+		if (search_infile(vars, i, &ii))
 			return (1);
 		if (search_outfile_append(vars, i, &ii))
 			return (1);
