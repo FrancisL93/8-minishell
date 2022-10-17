@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 16:30:25 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/11 11:06:58 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/17 10:37:08 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	create_new_env(t_vars *vars, char *new_var, int i, int ii)
 void	export_to_env(t_vars *vars, char *input, char *variable)
 {
 	char	*new_var;
+	char	*tmp;
 	int		i;
 	int		ii;
 
@@ -58,7 +59,11 @@ void	export_to_env(t_vars *vars, char *input, char *variable)
 	else if (!variable && ft_strichr(input, '='))
 		new_var = ft_strdup(input);
 	else
-		new_var = ft_strjoin(ft_strjoin(input, "="), variable);
+	{
+		tmp = ft_strjoin(input, "=");
+		new_var = ft_strjoin(tmp, variable);
+		free (tmp);
+	}
 	create_new_env(vars, new_var, i, ii);
 }
 

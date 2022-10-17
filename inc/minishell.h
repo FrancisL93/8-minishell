@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:59:00 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/14 12:49:24 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/17 10:32:17 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		check_cd(t_vars *vars, int i);
 int		check_exit(t_vars *vars, int i);
 
 //exe.c
-void	close_fds(t_vars *vars);
+void	close_fds(t_vars *vars, int parent);
 void	execute(t_vars *vars);
 void	check_cmds(t_vars *vars, int ret, int i);
 void	child_process(t_vars *vars, int i);

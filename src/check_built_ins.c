@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 10:22:33 by anhebert          #+#    #+#             */
-/*   Updated: 2022/10/14 10:25:20 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/17 10:32:57 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_built_in(t_vars *vars, int i, int check)
 			"env") == 0)
 		ret = print_env(vars);
 	if (ret == 1 && check != 1)
-		close_fds(vars);
+		close_fds(vars, 1);
 	return (ret);
 }
 
@@ -92,7 +92,7 @@ int	check_exit(t_vars *vars, int i)
 	if (ft_strcmp(vars->cmds[i].cmds[0], "exit") == 0)
 	{
 		printf("exit\n");
-		close_fds(vars);
+		close_fds(vars, 1);
 		if (vars->cmds[i].cmds[1] == NULL)
 			quit_terminal(vars, 0);
 		ft_exit(vars, vars->cmds[i].cmds[1]);

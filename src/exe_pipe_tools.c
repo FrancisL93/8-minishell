@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:00:05 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/11 11:11:28 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/17 10:24:45 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	set_input(t_vars *vars, int i)
 			perror("Couldn't dup2 standard input fd\n");
 			return (1);
 		}
+		close(vars->fd[(i - 1) * 2]);
 	}
 	return (0);
 }
@@ -77,6 +78,7 @@ int	set_output(t_vars *vars, int i)
 			perror("Couldn't dup2 standard output fd\n");
 			return (1);
 		}
+		close(vars->fd[i * 2 + 1]);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: flahoud <flahoud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 08:22:52 by flahoud           #+#    #+#             */
-/*   Updated: 2022/10/14 11:24:26 by flahoud          ###   ########.fr       */
+/*   Updated: 2022/10/17 10:22:54 by flahoud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	search_heredoc(t_vars *vars, int i, int *ii)
 		if (vars->args[i][*ii + 2] && vars->args[i][*ii + 2][0] != '<'
 			&& vars->args[i][*ii + 2][0] != '>')
 		{
+			if (vars->cmds[i].fd[0] != STDIN_FILENO)
+				close(vars->cmds[i].fd[0]);
 			vars->cmds[i].fd[0] = start_heredoc(vars, vars->args[i][*ii + 2]);
 			if (vars->cmds[i].fd[0] < 0)
 				return (1);
